@@ -37,6 +37,10 @@ const loggerFormat = format.combine(
   }),
 );
 
+/**
+ * Winston logger
+ */
+
 export const logger = createLogger({
   format: loggerFormat,
   transports: [
