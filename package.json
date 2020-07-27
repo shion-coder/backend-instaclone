@@ -1,5 +1,5 @@
 {
-  "name": "backend-starter",
+  "name": "backend-sample",
   "version": "1.0.0",
   "main": "build/index.js",
   "scripts": {
