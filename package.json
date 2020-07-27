@@ -4,13 +4,19 @@
   "main": "build/index.js",
   "scripts": {
     "build": "rimraf build && tsc",
-    "start": "npm run build && node -r ts-node/register/transpile-only -r tsconfig-paths/register .",
+    "start": "npm run build && node -r dotenv/config -r ts-node/register/transpile-only -r tsconfig-paths/register .",
     "start:dev": "ts-node -r dotenv/config -r tsconfig-paths/register -r  src/index.ts",
     "dev": "nodemon",
     "lint": "eslint . --ext .ts"
   },
-  "author": "Shion",
-  "license": "ISC",
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.ts": "eslint --cache --fix"
+  },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.2",
     "@types/compression": "^1.7.0",
@@ -52,12 +58,6 @@
     "winston": "^3.3.3",
     "winston-daily-rotate-file": "^4.5.0"
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
-  },
-  "lint-staged": {
-    "*.ts": "eslint --cache --fix"
-  }
+  "author": "Shion",
+  "license": "ISC"
 }
