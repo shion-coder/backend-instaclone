@@ -8,7 +8,7 @@ import { validateRegister } from '@validation';
 
 export const register = async (req: Request, res: Response): Promise<Response> => {
   /**
-   * Validate input
+   * Validate input with default value is '' because validator only can validate string ( not undefined )
    */
 
   const {

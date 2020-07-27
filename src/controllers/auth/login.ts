@@ -8,7 +8,7 @@ import { validateLogin } from '@validation';
 
 export const login = async (req: Request, res: Response): Promise<Response> => {
   /**
-   * Validate input
+   * Validate input with default value is '' because validator only can validate string ( not undefined )
    */
 
   const { usernameOrEmail = '', password = '' }: ILoginData = req.body;
