@@ -27,9 +27,6 @@ export interface IUser extends IUserSchema, Document {
 
 export interface ITokenPayload {
   id: IUser['id'];
-  username: IUser['username'];
-  email: IUser['email'];
-  isAdmin: IUser['isAdmin'];
 }
 
 /**
@@ -129,9 +126,6 @@ userSchema.methods.comparePassword = async function (
 userSchema.methods.generateAuthToken = function (this: IUser): string {
   const payload: ITokenPayload = {
     id: this.id,
-    username: this.username,
-    email: this.email,
-    isAdmin: this.isAdmin,
   };
 
   return jwt.sign(payload, JWT_SECRET, { expiresIn: JWT_EXPIRE });

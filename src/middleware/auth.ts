@@ -12,7 +12,7 @@ export interface IAuthRequest extends Request {
 
 export const auth = (req: IAuthRequest, res: Response, next: NextFunction): Response | void => {
   /**
-   * Check whether token exist and start with Bearer
+   * Check whether  exist and start with Bearer
    */
 
   const { authorization } = req.headers;
