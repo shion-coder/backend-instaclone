@@ -1,13 +1,13 @@
-import { IUser } from '@model';
+import { UserProps } from '@model';
 
 /* -------------------------------------------------------------------------- */
 
-export interface ILoginData {
-  usernameOrEmail: IUser['username'] | IUser['email'];
-  password: IUser['password'];
-}
+export type LoginDataProps = {
+  usernameOrEmail: UserProps['username'] | UserProps['email'];
+  password: UserProps['password'];
+};
 
-export interface ILoginError {
-  usernameOrEmail: IUser['username'] | IUser['email'];
-  password?: IUser['password'];
-}
+export type LoginErrorProps = {
+  usernameOrEmail: UserProps['username'] | UserProps['email'];
+  password?: UserProps['password'];
+};

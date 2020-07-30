@@ -1,15 +1,11 @@
 import { Response, NextFunction } from 'express';
 
-import { IAuthRequest } from './auth';
+import { AuthRequestProps } from './auth';
 import { User } from '@model';
 
 /* -------------------------------------------------------------------------- */
 
-export const admin = async (
-  req: IAuthRequest,
-  res: Response,
-  next: NextFunction,
-): Promise<Response | void> => {
+export const admin = async (req: AuthRequestProps, res: Response, next: NextFunction): Promise<Response | void> => {
   try {
     /**
      * Find user by user id from token and check whether user is admin or not

@@ -1,19 +1,19 @@
 import validator from 'validator';
 import isEmpty from 'is-empty';
 
-import { User, IUser } from '@model';
+import { User, UserProps } from '@model';
 
-import { IValidator, ILoginData, ILoginError } from '@types';
+import { ValidatorProps, LoginDataProps, LoginErrorProps } from '@types';
 
 /* -------------------------------------------------------------------------- */
 
 export const validateLogin = async ({
   usernameOrEmail,
   password,
-}: ILoginData): Promise<IValidator<ILoginError>> => {
-  const errors = {} as ILoginError;
+}: LoginDataProps): Promise<ValidatorProps<LoginErrorProps>> => {
+  const errors = {} as LoginErrorProps;
 
-  let user: IUser | null = null;
+  let user: UserProps | null = null;
   let isMatch = false;
 
   /**

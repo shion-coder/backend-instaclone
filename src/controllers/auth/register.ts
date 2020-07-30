@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 
 import { User } from '@model';
-import { IRegisterData } from '@types';
+import { RegisterDataProps } from '@types';
 import { validateRegister } from '@validation';
 
 /* -------------------------------------------------------------------------- */
@@ -18,7 +18,7 @@ export const register = async (req: Request, res: Response): Promise<Response> =
     email = '',
     password = '',
     confirmPassword = '',
-  }: IRegisterData = req.body;
+  }: RegisterDataProps = req.body;
 
   const { errors, isValid } = await validateRegister({
     firstName,
@@ -39,5 +39,14 @@ export const register = async (req: Request, res: Response): Promise<Response> =
 
   const user = await User.create({ firstName, lastName, username, email, password });
 
-  return res.status(201).send({ token: user.generateAuthToken() });
+  return res.status(201).send({
+    user: {
+      firstName: user.firstName,
+      lastName: user.lastName,
+      fullName: user.fullName,
+      username: user.username,
+      email: user.email,
+    },
+    token: user.generateAuthToken(),
+  });
 };

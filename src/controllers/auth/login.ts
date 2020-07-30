@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 
 import { User } from '@model';
-import { ILoginData } from '@types';
+import { LoginDataProps } from '@types';
 import { validateLogin } from '@validation';
 
 /* -------------------------------------------------------------------------- */
@@ -11,7 +11,7 @@ export const login = async (req: Request, res: Response): Promise<Response> => {
    * Validate input with default value is '' because validator only can validate string ( not undefined )
    */
 
-  const { usernameOrEmail = '', password = '' }: ILoginData = req.body;
+  const { usernameOrEmail = '', password = '' }: LoginDataProps = req.body;
   const { errors, isValid } = await validateLogin({ usernameOrEmail, password });
 
   if (!isValid) {
@@ -26,5 +26,14 @@ export const login = async (req: Request, res: Response): Promise<Response> => {
     $or: [{ username: usernameOrEmail }, { email: usernameOrEmail }],
   });
 
-  return res.send({ token: user?.generateAuthToken() });
+  return res.send({
+    user: {
+      firstName: user?.firstName,
+      lastName: user?.lastName,
+      fullName: user?.fullName,
+      username: user?.username,
+      email: user?.email,
+    },
+    token: user?.generateAuthToken(),
+  });
 };

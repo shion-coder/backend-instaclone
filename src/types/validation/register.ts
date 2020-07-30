@@ -1,21 +1,21 @@
-import { IUser } from '@model';
+import { UserProps } from '@model';
 
 /* -------------------------------------------------------------------------- */
 
-export interface IRegisterData {
-  firstName: IUser['firstName'];
-  lastName?: IUser['lastName'];
-  username: IUser['username'];
-  email: IUser['email'];
-  password: IUser['password'];
-  confirmPassword: IUser['password'];
-}
+export type RegisterDataProps = {
+  firstName: UserProps['firstName'];
+  lastName?: UserProps['lastName'];
+  username: UserProps['username'];
+  email: UserProps['email'];
+  password: UserProps['password'];
+  confirmPassword: UserProps['password'];
+};
 
-export interface IRegisterError {
-  firstName?: IUser['firstName'];
-  username?: IUser['username'];
-  lastName?: IUser['lastName'];
-  email?: IUser['email'];
-  password?: IUser['password'];
-  confirmPassword?: IUser['password'];
-}
+export type RegisterErrorProps = {
+  firstName?: UserProps['firstName'];
+  username?: UserProps['username'];
+  lastName?: UserProps['lastName'];
+  email?: UserProps['email'];
+  password?: UserProps['password'];
+  confirmPassword?: UserProps['password'];
+};

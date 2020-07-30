@@ -1,16 +1,16 @@
 import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
 
-import { ITokenPayload } from '@model';
+import { TokenPayloadProps } from '@model';
 import { JWT_SECRET } from '@config';
 
 /* -------------------------------------------------------------------------- */
 
-export interface IAuthRequest extends Request {
-  user?: ITokenPayload;
-}
+export type AuthRequestProps = Request & {
+  user?: TokenPayloadProps;
+};
 
-export const auth = (req: IAuthRequest, res: Response, next: NextFunction): Response | void => {
+export const auth = (req: AuthRequestProps, res: Response, next: NextFunction): Response | void => {
   /**
    * Check whether  exist and start with Bearer
    */
@@ -28,7 +28,7 @@ export const auth = (req: IAuthRequest, res: Response, next: NextFunction): Resp
      * Decode token and set it to req.user
      */
 
-    const decoded = jwt.verify(token, JWT_SECRET) as ITokenPayload;
+    const decoded = jwt.verify(token, JWT_SECRET) as TokenPayloadProps;
 
     req.user = decoded;
     next();

@@ -7,27 +7,28 @@ import { JWT_SECRET, JWT_EXPIRE } from '@config';
 /* -------------------------------------------------------------------------- */
 
 /**
- * Interface
+ * Types
  */
 
-interface IUserSchema {
+type UserSchemaProps = {
   firstName: string;
   lastName?: string;
   username: string;
   email: string;
   password: string;
-}
+};
 
-export interface IUser extends IUserSchema, Document {
-  fullName?: string;
-  isAdmin?: boolean;
-  comparePassword: (password: string) => Promise<boolean>;
-  generateAuthToken: () => string;
-}
+export type UserProps = UserSchemaProps &
+  Document & {
+    fullName?: string;
+    isAdmin?: boolean;
+    comparePassword: (password: string) => Promise<boolean>;
+    generateAuthToken: () => string;
+  };
 
-export interface ITokenPayload {
-  id: IUser['id'];
-}
+export type TokenPayloadProps = {
+  id: UserProps['id'];
+};
 
 /**
  * User schema
@@ -76,7 +77,7 @@ const userSchema: Schema = new Schema({
  * Hash password before save user
  */
 
-userSchema.pre('save', async function (this: IUser, next: HookNextFunction): Promise<void> {
+userSchema.pre('save', async function (this: UserProps, next: HookNextFunction): Promise<void> {
   if (this.password && this.isModified('password')) {
     try {
       const salt = await genSalt(10);
@@ -94,7 +95,7 @@ userSchema.pre('save', async function (this: IUser, next: HookNextFunction): Pro
  * Get full name
  */
 
-userSchema.virtual('fullName').get(function (this: IUser): string {
+userSchema.virtual('fullName').get(function (this: UserProps): string {
   if (!this.lastName) {
     return this.firstName;
   }
@@ -106,10 +107,7 @@ userSchema.virtual('fullName').get(function (this: IUser): string {
  * Compare password
  */
 
-userSchema.methods.comparePassword = async function (
-  this: IUser,
-  password: string,
-): Promise<boolean> {
+userSchema.methods.comparePassword = async function (this: UserProps, password: string): Promise<boolean> {
   try {
     const isMatch: boolean = await compare(password, this.password);
 
@@ -123,12 +121,12 @@ userSchema.methods.comparePassword = async function (
  * Get token
  */
 
-userSchema.methods.generateAuthToken = function (this: IUser): string {
-  const payload: ITokenPayload = {
+userSchema.methods.generateAuthToken = function (this: UserProps): string {
+  const payload: TokenPayloadProps = {
     id: this.id,
   };
 
   return jwt.sign(payload, JWT_SECRET, { expiresIn: JWT_EXPIRE });
 };
 
-export const User: Model<IUser> = model<IUser>('User', userSchema);
+export const User: Model<UserProps> = model<UserProps>('User', userSchema);

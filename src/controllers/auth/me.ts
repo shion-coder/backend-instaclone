@@ -1,11 +1,11 @@
 import { Response } from 'express';
 
-import { IAuthRequest } from '@middleware';
+import { AuthRequestProps } from '@middleware';
 import { User } from '@model';
 
 /* -------------------------------------------------------------------------- */
 
-export const me = async (req: IAuthRequest, res: Response): Promise<Response> => {
+export const me = async (req: AuthRequestProps, res: Response): Promise<Response> => {
   /**
    * Get user after verify authentication & return user with out password
    */

@@ -1,9 +1,9 @@
 import validator from 'validator';
 import isEmpty from 'is-empty';
 
-import { User, IUser } from '@model';
+import { User, UserProps } from '@model';
 
-import { IValidator, IRegisterData, IRegisterError } from '@types';
+import { ValidatorProps, RegisterDataProps, RegisterErrorProps } from '@types';
 
 /* -------------------------------------------------------------------------- */
 
@@ -14,11 +14,11 @@ export const validateRegister = async ({
   email,
   password,
   confirmPassword,
-}: IRegisterData): Promise<IValidator<IRegisterError>> => {
-  const errors = {} as IRegisterError;
+}: RegisterDataProps): Promise<ValidatorProps<RegisterErrorProps>> => {
+  const errors = {} as RegisterErrorProps;
 
-  let existingUsername: IUser | null = null;
-  let existingEmail: IUser | null = null;
+  let existingUsername: UserProps | null = null;
+  let existingEmail: UserProps | null = null;
 
   /**
    * Find existing username & email
