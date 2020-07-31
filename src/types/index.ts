@@ -1,3 +1,3 @@
-export * from './node-env';
+export * from './environment';
 
 export * from './validation';
