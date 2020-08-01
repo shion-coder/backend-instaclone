@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 
 import { User } from '@model';
-import { RegisterDataProps } from '@types';
+import { RegisterProps } from '@types';
 import { validateRegister } from '@validation';
 
 /* -------------------------------------------------------------------------- */
@@ -18,7 +18,7 @@ export const register = async (req: Request, res: Response): Promise<Response> =
     email = '',
     password = '',
     confirmPassword = '',
-  }: RegisterDataProps = req.body;
+  }: RegisterProps = req.body;
 
   const { errors, isValid } = await validateRegister({
     firstName,

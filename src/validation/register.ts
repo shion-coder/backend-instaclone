@@ -3,7 +3,7 @@ import isEmpty from 'is-empty';
 
 import { User, UserProps } from '@model';
 
-import { ValidatorProps, RegisterDataProps, RegisterErrorProps } from '@types';
+import { ValidatorProps, RegisterProps } from '@types';
 
 /* -------------------------------------------------------------------------- */
 
@@ -14,8 +14,8 @@ export const validateRegister = async ({
   email,
   password,
   confirmPassword,
-}: RegisterDataProps): Promise<ValidatorProps<RegisterErrorProps>> => {
-  const errors = {} as RegisterErrorProps;
+}: RegisterProps): Promise<ValidatorProps<Partial<RegisterProps>>> => {
+  const errors: Partial<RegisterProps> = {};
 
   let existingUsername: UserProps | null = null;
   let existingEmail: UserProps | null = null;

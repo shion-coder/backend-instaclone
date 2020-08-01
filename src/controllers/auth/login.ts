@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 
 import { User } from '@model';
-import { LoginDataProps } from '@types';
+import { LoginProps } from '@types';
 import { validateLogin } from '@validation';
 
 /* -------------------------------------------------------------------------- */
@@ -11,7 +11,7 @@ export const login = async (req: Request, res: Response): Promise<Response> => {
    * Validate input with default value is '' because validator only can validate string ( not undefined )
    */
 
-  const { usernameOrEmail = '', password = '' }: LoginDataProps = req.body;
+  const { usernameOrEmail = '', password = '' }: LoginProps = req.body;
   const { errors, isValid } = await validateLogin({ usernameOrEmail, password });
 
   if (!isValid) {

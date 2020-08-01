@@ -3,15 +3,15 @@ import isEmpty from 'is-empty';
 
 import { User, UserProps } from '@model';
 
-import { ValidatorProps, LoginDataProps, LoginErrorProps } from '@types';
+import { ValidatorProps, LoginProps } from '@types';
 
 /* -------------------------------------------------------------------------- */
 
 export const validateLogin = async ({
   usernameOrEmail,
   password,
-}: LoginDataProps): Promise<ValidatorProps<LoginErrorProps>> => {
-  const errors = {} as LoginErrorProps;
+}: LoginProps): Promise<ValidatorProps<Partial<LoginProps>>> => {
+  const errors: Partial<LoginProps> = {};
 
   let user: UserProps | null = null;
   let isMatch = false;
