@@ -15,8 +15,8 @@ const connectDatabase = async (): Promise<void> => {
     });
 
     logger.info('MongoDB - Database is connected');
-  } catch (err) {
-    logger.error('MongoDB - Database connection error -', err);
+  } catch (exception) {
+    logger.error('MongoDB - Database connection error -', exception);
   }
 };
 
