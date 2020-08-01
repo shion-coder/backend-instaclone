@@ -50,6 +50,8 @@ export const validateLogin = async ({
 
   validator.isEmpty(password)
     ? (errors.password = 'Password is required')
+    : !validator.isLength(password, { min: 6 })
+    ? (errors.password = 'Password must be at least 6 characters')
     : !isMatch && !errors.usernameOrEmail
     ? (errors.password = 'Password incorrect')
     : null;
