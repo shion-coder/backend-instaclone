@@ -96,6 +96,8 @@ export const validateRegister = async ({
 
   validator.isEmpty(confirmPassword)
     ? (errors.confirmPassword = userMessage.confirmPassword.required)
+    : !validator.isLength(password, { min: 6 })
+    ? (errors.confirmPassword = userMessage.confirmPassword.minlength)
     : !validator.equals(password, confirmPassword)
     ? (errors.confirmPassword = userMessage.confirmPassword.notMatch)
     : null;

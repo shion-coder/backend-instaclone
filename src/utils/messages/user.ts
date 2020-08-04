@@ -33,6 +33,17 @@ export const userMessage = {
   },
   confirmPassword: {
     required: 'Confirm password is required',
-    notMatch: 'Password and confirm password do not match',
+    minlength: 'Password must be at least 6 characters',
+    notMatch: "Passwords don't match",
+  },
+  newPassword: {
+    required: 'New password is required',
+    minlength: 'Password must be at least 6 characters',
+    different: 'Your new password must be different from your previous password',
+  },
+  confirmNewPassword: {
+    required: 'Confirm new password is required',
+    minlength: 'Password must be at least 6 characters',
+    notMatch: "Passwords don't match",
   },
 };
