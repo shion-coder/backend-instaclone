@@ -1,7 +1,8 @@
 import { Response } from 'express';
 
-import { AuthRequestProps } from '@middleware';
 import { User } from '@model';
+import { AuthRequestProps } from '@types';
+import { errorMessage } from '@messages';
 
 /* -------------------------------------------------------------------------- */
 
@@ -13,7 +14,7 @@ export const me = async (req: AuthRequestProps, res: Response): Promise<Response
   const user = await User.findById(req.user?.id).select('-password');
 
   if (!user) {
-    return res.status(404).send({ error: 'No user found' });
+    return res.status(404).send({ error: errorMessage.noUser });
   }
 
   return res.send({ user });

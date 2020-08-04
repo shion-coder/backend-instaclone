@@ -3,6 +3,7 @@ import { genSalt, hash, compare } from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 
 import { JWT_SECRET, JWT_EXPIRE } from '@config';
+import { userMessage, errorMessage } from '@messages';
 
 /* -------------------------------------------------------------------------- */
 
@@ -16,12 +17,13 @@ type UserSchemaProps = {
   username: string;
   email: string;
   password: string;
+  isAdmin?: boolean;
+  confirmed?: boolean;
 };
 
 export type UserProps = UserSchemaProps &
   Document & {
     fullName?: string;
-    isAdmin?: boolean;
     comparePassword: (password: string) => Promise<boolean>;
     generateAuthToken: () => string;
   };
@@ -37,33 +39,37 @@ export type TokenPayloadProps = {
 const userSchema: Schema = new Schema({
   firstName: {
     type: String,
-    required: [true, 'First Name is required'],
-    maxlength: [30, 'First Name must be less than 30 characters'],
+    required: [true, userMessage.firstName.required],
+    maxlength: [30, userMessage.firstName.maxlength],
   },
   lastName: {
     type: String,
-    maxlength: [30, 'Last Name must be less than 30 characters'],
+    maxlength: [30, userMessage.lastName.maxlength],
   },
   username: {
     type: String,
-    required: [true, 'Username is required'],
-    maxlength: [30, 'Username must be less than 30 characters'],
+    required: [true, userMessage.username.required],
+    maxlength: [30, userMessage.username.required],
     lowercase: true,
     unique: true,
   },
   email: {
     type: String,
-    required: [true, 'Email is required'],
+    required: [true, userMessage.email.required],
     trim: true,
     lowercase: true,
     unique: true,
   },
   password: {
     type: String,
-    required: [true, 'Password is required'],
-    minlength: [6, 'Password must be at least 6 characters'],
+    required: [true, userMessage.password.required],
+    minlength: [6, userMessage.password.minlength],
   },
   isAdmin: {
+    type: Boolean,
+    default: false,
+  },
+  confirmed: {
     type: Boolean,
     default: false,
   },
@@ -84,7 +90,7 @@ userSchema.pre('save', async function (this: UserProps, next: HookNextFunction):
 
       this.password = await hash(this.password, salt);
     } catch {
-      throw new Error('Error hashing user password');
+      throw new Error(errorMessage.hashingPass);
     }
   }
 
@@ -113,7 +119,7 @@ userSchema.methods.comparePassword = async function (this: UserProps, password: 
 
     return isMatch;
   } catch {
-    throw new Error('Error comparing password');
+    throw new Error(errorMessage.comparingPass);
   }
 };
 

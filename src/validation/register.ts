@@ -2,8 +2,8 @@ import validator from 'validator';
 import isEmpty from 'is-empty';
 
 import { User, UserProps } from '@model';
-
 import { ValidatorProps, RegisterProps } from '@types';
+import { errorMessage, userMessage } from '@messages';
 
 /* -------------------------------------------------------------------------- */
 
@@ -28,7 +28,7 @@ export const validateRegister = async ({
     try {
       existingUsername = await User.findOne({ username });
     } catch {
-      throw new Error('Error finding user by username');
+      throw new Error(errorMessage.findingUsername);
     }
   }
 
@@ -36,7 +36,7 @@ export const validateRegister = async ({
     try {
       existingEmail = await User.findOne({ email });
     } catch {
-      throw new Error('Error finding user by email');
+      throw new Error(errorMessage.findingEmail);
     }
   }
 
@@ -45,29 +45,27 @@ export const validateRegister = async ({
    */
 
   validator.isEmpty(firstName)
-    ? (errors.firstName = 'First Name is required')
+    ? (errors.firstName = userMessage.firstName.required)
     : !validator.isLength(firstName, { max: 30 })
-    ? (errors.firstName = 'First Name must be less than 30 characters')
+    ? (errors.firstName = userMessage.firstName.maxlength)
     : null;
 
   /**
    * Last name validation
    */
 
-  lastName && !validator.isLength(lastName, { max: 30 })
-    ? (errors.lastName = 'Last Name must be less than 30 characters')
-    : null;
+  lastName && !validator.isLength(lastName, { max: 30 }) ? (errors.lastName = userMessage.lastName.maxlength) : null;
 
   /**
    * Username validation
    */
 
   validator.isEmpty(username)
-    ? (errors.username = 'Username is required')
+    ? (errors.username = userMessage.username.required)
     : !validator.isLength(username, { max: 30 })
-    ? (errors.username = 'Username must be less than 30 characters')
+    ? (errors.username = userMessage.username.maxlength)
     : existingUsername
-    ? (errors.username = 'This username is already taken')
+    ? (errors.username = userMessage.username.exist)
     : null;
 
   /**
@@ -75,11 +73,11 @@ export const validateRegister = async ({
    */
 
   validator.isEmpty(email)
-    ? (errors.email = 'Email is required')
+    ? (errors.email = userMessage.email.required)
     : !validator.isEmail(email)
-    ? (errors.email = 'Invalid email format')
+    ? (errors.email = userMessage.email.invalid)
     : existingEmail
-    ? (errors.email = 'This email is already taken')
+    ? (errors.email = userMessage.email.exist)
     : null;
 
   /**
@@ -87,9 +85,9 @@ export const validateRegister = async ({
    */
 
   validator.isEmpty(password)
-    ? (errors.password = 'Password is required')
+    ? (errors.password = userMessage.password.required)
     : !validator.isLength(password, { min: 6 })
-    ? (errors.password = 'Password must be at least 6 characters')
+    ? (errors.password = userMessage.password.minlength)
     : null;
 
   /**
@@ -97,9 +95,9 @@ export const validateRegister = async ({
    */
 
   validator.isEmpty(confirmPassword)
-    ? (errors.confirmPassword = 'Confirm password is required')
+    ? (errors.confirmPassword = userMessage.confirmPassword.required)
     : !validator.equals(password, confirmPassword)
-    ? (errors.confirmPassword = 'Password and confirm password do not match')
+    ? (errors.confirmPassword = userMessage.confirmPassword.notMatch)
     : null;
 
   return {

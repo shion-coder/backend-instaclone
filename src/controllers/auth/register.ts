@@ -3,10 +3,11 @@ import { Request, Response } from 'express';
 import { User } from '@model';
 import { RegisterProps } from '@types';
 import { validateRegister } from '@validation';
+import { sendEmail, templates } from '@email';
 
 /* -------------------------------------------------------------------------- */
 
-export const register = async (req: Request, res: Response): Promise<Response> => {
+export const register = async (req: Request, res: Response): Promise<Response | void> => {
   /**
    * Validate input with default value is '' because validator only can validate string ( not undefined )
    */
@@ -34,19 +35,22 @@ export const register = async (req: Request, res: Response): Promise<Response> =
   }
 
   /**
-   * Create new user & return token
+   * Create new user & return user info with token
    */
 
   const user = await User.create({ firstName, lastName, username, email, password });
 
-  return res.status(201).send({
+  res.status(201).send({
     user: {
       firstName: user.firstName,
       lastName: user.lastName,
       fullName: user.fullName,
       username: user.username,
       email: user.email,
+      confirmed: user.confirmed,
     },
     token: user.generateAuthToken(),
   });
+
+  sendEmail(user.email, templates.confirm(user.id));
 };

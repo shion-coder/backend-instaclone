@@ -1,14 +1,12 @@
-import { Request, Response, NextFunction } from 'express';
+import { Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
 
 import { TokenPayloadProps } from '@model';
+import { AuthRequestProps } from '@types';
 import { JWT_SECRET } from '@config';
+import { errorMessage } from '@messages';
 
 /* -------------------------------------------------------------------------- */
-
-export type AuthRequestProps = Request & {
-  user?: TokenPayloadProps;
-};
 
 export const auth = (req: AuthRequestProps, res: Response, next: NextFunction): Response | void => {
   /**
@@ -18,7 +16,7 @@ export const auth = (req: AuthRequestProps, res: Response, next: NextFunction): 
   const { authorization } = req.headers;
 
   if (!authorization || !authorization.startsWith('Bearer')) {
-    return res.status(401).send({ error: 'Access denied. No valid token provided' });
+    return res.status(401).send({ error: errorMessage.noToken });
   }
 
   const token = authorization.split('Bearer ')[1];
@@ -33,6 +31,6 @@ export const auth = (req: AuthRequestProps, res: Response, next: NextFunction): 
     req.user = decoded;
     next();
   } catch {
-    return res.status(400).send({ error: 'Invalid token' });
+    return res.status(401).send({ error: errorMessage.invalidToken });
   }
 };

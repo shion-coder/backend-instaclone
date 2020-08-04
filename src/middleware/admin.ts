@@ -1,7 +1,8 @@
 import { Response, NextFunction } from 'express';
 
-import { AuthRequestProps } from './auth';
 import { User } from '@model';
+import { AuthRequestProps } from '@types';
+import { errorMessage } from '@messages';
 
 /* -------------------------------------------------------------------------- */
 
@@ -14,11 +15,11 @@ export const admin = async (req: AuthRequestProps, res: Response, next: NextFunc
     const user = await User.findById(req.user?.id);
 
     if (!user?.isAdmin) {
-      return res.status(403).send('Access denied');
+      return res.status(403).send({ error: errorMessage.noPermission });
     }
 
     next();
   } catch {
-    return res.status(500).send({ error: 'Something went wrong. Error finding user by id' });
+    return res.status(500).send({ error: errorMessage.findingId });
   }
 };

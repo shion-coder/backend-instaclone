@@ -2,8 +2,8 @@ import validator from 'validator';
 import isEmpty from 'is-empty';
 
 import { User, UserProps } from '@model';
-
 import { ValidatorProps, LoginProps } from '@types';
+import { errorMessage, userMessage } from '@messages';
 
 /* -------------------------------------------------------------------------- */
 
@@ -30,7 +30,7 @@ export const validateLogin = async ({
         isMatch = await user.comparePassword(password);
       }
     } catch {
-      throw new Error('Error finding user by username, email or comparing password');
+      throw new Error(errorMessage.findingUsernameOrEmail);
     }
   }
 
@@ -39,9 +39,9 @@ export const validateLogin = async ({
    */
 
   validator.isEmpty(usernameOrEmail)
-    ? (errors.usernameOrEmail = 'Username or email is required')
+    ? (errors.usernameOrEmail = userMessage.usernameOrEmail.required)
     : !user
-    ? (errors.usernameOrEmail = 'Username or email not found')
+    ? (errors.usernameOrEmail = userMessage.usernameOrEmail.notfound)
     : null;
 
   /**
@@ -49,11 +49,11 @@ export const validateLogin = async ({
    */
 
   validator.isEmpty(password)
-    ? (errors.password = 'Password is required')
+    ? (errors.password = userMessage.password.required)
     : !validator.isLength(password, { min: 6 })
-    ? (errors.password = 'Password must be at least 6 characters')
+    ? (errors.password = userMessage.password.minlength)
     : !isMatch && !errors.usernameOrEmail
-    ? (errors.password = 'Password incorrect')
+    ? (errors.password = userMessage.password.incorrect)
     : null;
 
   return {

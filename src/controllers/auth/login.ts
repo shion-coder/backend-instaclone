@@ -19,7 +19,7 @@ export const login = async (req: Request, res: Response): Promise<Response> => {
   }
 
   /**
-   * Get user & return token
+   * Get user & return user info with token
    */
 
   const user = await User.findOne({
@@ -33,6 +33,7 @@ export const login = async (req: Request, res: Response): Promise<Response> => {
       fullName: user?.fullName,
       username: user?.username,
       email: user?.email,
+      confirmed: user?.confirmed,
     },
     token: user?.generateAuthToken(),
   });

@@ -1,7 +1,7 @@
 import { Router } from 'express';
 
 import { auth } from '@middleware';
-import { register, login, me } from '@controllers/auth';
+import { register, login, me, resendEmail, confirmEmail } from '@controllers/auth';
 
 /* -------------------------------------------------------------------------- */
 
@@ -22,7 +22,21 @@ authRouter.route('/register').post(register);
 authRouter.route('/login').post(login);
 
 /**
- * @route   Get /api/auth/me
+ * @route   POST /api/auth/email/resend
+ * @desc    Resend confirm email
+ * @access  Public
+ */
+authRouter.route('/email/resend').post(resendEmail);
+
+/**
+ * @route   GET /api/auth/email/confirm/:id
+ * @desc    Confirm email with id
+ * @access  Public
+ */
+authRouter.route('/email/confirm/:id').get(confirmEmail);
+
+/**
+ * @route   GET /api/auth/me
  * @desc    Verify auth & return user data
  * @access  Private
  */
