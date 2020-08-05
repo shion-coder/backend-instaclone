@@ -12,10 +12,10 @@ export const confirmEmail = async (req: Request, res: Response): Promise<Respons
    */
 
   const { id = '' } = req.params;
-  const { errors, isValid } = await validateId({ id });
+  const { isValid } = await validateId({ id });
 
   if (!isValid) {
-    return res.status(400).send({ errors });
+    return res.send({ message: emailMessage.couldNotFind });
   }
 
   /**
