@@ -1,6 +1,6 @@
 import { Router } from 'express';
+import passport from 'passport';
 
-import { auth } from '@middleware';
 import { register, login, password } from '@controllers/auth';
 
 /* -------------------------------------------------------------------------- */
@@ -26,4 +26,4 @@ authRouter.route('/login').post(login);
  * @desc    Verify auth & update password
  * @access  Private
  */
-authRouter.route('/password').put(auth, password);
+authRouter.route('/password').put(passport.authenticate('jwt', { session: false }), password);

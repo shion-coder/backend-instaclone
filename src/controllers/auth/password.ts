@@ -1,18 +1,17 @@
-import { Response } from 'express';
+import { Request, Response } from 'express';
 
-import { User } from '@model';
-import { ChangePasswordProps, AuthRequestProps } from '@types';
+import { UserProps } from '@model';
+import { ChangePasswordProps } from '@types';
 import { validateChangePassword } from '@validation';
 import { errorMessage, changePasswordMess } from '@messages';
 
 /* -------------------------------------------------------------------------- */
 
-export const password = async (req: AuthRequestProps, res: Response): Promise<Response> => {
+export const password = async (req: Request, res: Response): Promise<Response> => {
   /**
    * Validate input with default value is '' because validator only can validate string ( not undefined )
    */
-
-  const user = await User.findById(req.user?.id);
+  const user = req.user as UserProps;
 
   if (!user) {
     return res.status(404).send({ error: errorMessage.noUser });
@@ -35,6 +34,7 @@ export const password = async (req: AuthRequestProps, res: Response): Promise<Re
    */
 
   user.password = newPassword;
+
   await user.save();
 
   return res.send({ message: changePasswordMess.success });

@@ -1,21 +1,24 @@
-import { Response } from 'express';
+import { Request, Response } from 'express';
 
-import { User } from '@model';
-import { AuthRequestProps } from '@types';
+import { UserProps } from '@model';
 import { errorMessage } from '@messages';
 
 /* -------------------------------------------------------------------------- */
 
-export const me = async (req: AuthRequestProps, res: Response): Promise<Response> => {
+export const me = async (req: Request, res: Response): Promise<Response> => {
   /**
    * Get user after verify authentication & return user with out password
    */
 
-  const user = await User.findById(req.user?.id).select('-password -__v');
+  const user = req.user as UserProps;
 
   if (!user) {
     return res.status(404).send({ error: errorMessage.noUser });
   }
 
-  return res.send({ user });
+  const { firstName, lastName, fullName, username, email, confirmed } = user;
+
+  return res.send({
+    user: { firstName, lastName, fullName, username, email, confirmed },
+  });
 };

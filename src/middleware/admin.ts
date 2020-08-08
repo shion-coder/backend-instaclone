@@ -1,18 +1,17 @@
-import { Response, NextFunction } from 'express';
+import { Request, Response, NextFunction } from 'express';
 
-import { User } from '@model';
-import { AuthRequestProps } from '@types';
+import { UserProps } from '@model';
 import { errorMessage } from '@messages';
 
 /* -------------------------------------------------------------------------- */
 
-export const admin = async (req: AuthRequestProps, res: Response, next: NextFunction): Promise<Response | void> => {
+export const admin = async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
   try {
     /**
      * Find user by user id from token and check whether user is admin or not
      */
 
-    const user = await User.findById(req.user?.id);
+    const user = req.user as UserProps;
 
     if (!user?.isAdmin) {
       return res.status(403).send({ error: errorMessage.noPermission });

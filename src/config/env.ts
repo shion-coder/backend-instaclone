@@ -11,3 +11,7 @@ export const MAIL_USER: string = process.env.MAIL_USER || '';
 export const MAIL_PASS: string = process.env.MAIL_PASS || '';
 
 export const CLIENT_ORIGIN: string = process.env.CLIENT_ORIGIN || 'http://localhost:3000';
+
+export const FB_CLIENT_ID: string = process.env.FB_CLIENT_ID || '';
+
+export const FB_CLIENT_SECRET: string = process.env.FB_CLIENT_SECRET || '';

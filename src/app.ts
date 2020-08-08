@@ -1,5 +1,6 @@
 import express from 'express';
 import helmet from 'helmet';
+import passport from 'passport';
 import cors from 'cors';
 import compression from 'compression';
 import 'express-async-errors';
@@ -17,6 +18,7 @@ const app = express();
  *  Middleware
  */
 
+app.use(passport.initialize());
 app.use(helmet());
 app.use(cors());
 app.use(express.json());

@@ -21,6 +21,7 @@
       "@validation": ["src/validation"],
       "@services/*": ["src/services/*"],
       "@email": ["src/services/email"],
+      "@passport": ["src/services/passport"],
       "@utils/*": ["src/utils/*"],
       "@messages": ["src/utils/messages"]
     },

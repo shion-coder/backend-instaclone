@@ -1,6 +1,7 @@
 import { Router } from 'express';
+import passport from 'passport';
+import { admin } from '@middleware';
 
-import { auth } from '@middleware';
 import { confirmEmail, resendEmail, me } from '@controllers/users';
 
 /* -------------------------------------------------------------------------- */
@@ -26,4 +27,4 @@ usersRouter.route('/email/resend').post(resendEmail);
  * @desc    Verify auth & return user data
  * @access  Private
  */
-usersRouter.route('/me').get(auth, me);
+usersRouter.route('/me').get(passport.authenticate('jwt', { session: false }), admin, me);

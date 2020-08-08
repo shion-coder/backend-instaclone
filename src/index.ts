@@ -1,5 +1,6 @@
 import { PORT } from '@config';
 import connectDatabase from 'src/database';
+import { passportInit } from '@passport';
 import app from 'src/app';
 import { logger } from 'src/logger';
 
@@ -10,6 +11,12 @@ import { logger } from 'src/logger';
  */
 
 connectDatabase();
+
+/**
+ * Initialize passport
+ */
+
+passportInit();
 
 /**
  * Server
