@@ -12,6 +12,8 @@ import { userMessage, errorMessage } from '@messages';
  */
 
 type UserSchemaProps = {
+  googleId?: string;
+  facebookId?: string;
   firstName: string;
   lastName?: string;
   username: string;
@@ -37,6 +39,8 @@ export type TokenPayloadProps = {
  */
 
 const userSchema: Schema = new Schema({
+  googleId: String,
+  facebookId: String,
   firstName: {
     type: String,
     required: [true, userMessage.firstName.required],

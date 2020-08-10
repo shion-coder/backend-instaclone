@@ -1,36 +1,9 @@
-import { Response, NextFunction } from 'express';
-import jwt from 'jsonwebtoken';
-
-import { TokenPayloadProps } from '@model';
-import { AuthRequestProps } from '@types';
-import { JWT_SECRET } from '@config';
-import { errorMessage } from '@messages';
+import passport from 'passport';
 
 /* -------------------------------------------------------------------------- */
 
-export const auth = (req: AuthRequestProps, res: Response, next: NextFunction): Response | void => {
-  /**
-   * Check whether  exist and start with Bearer
-   */
+export const jwtAuth = passport.authenticate('jwt', { session: false });
 
-  const { authorization } = req.headers;
+export const googleAuth = passport.authenticate('google', { scope: ['profile'], prompt: 'select_account' });
 
-  if (!authorization || !authorization.startsWith('Bearer')) {
-    return res.status(401).send({ error: errorMessage.noToken });
-  }
-
-  const token = authorization.split('Bearer ')[1];
-
-  try {
-    /**
-     * Decode token and set it to req.user
-     */
-
-    const decoded = jwt.verify(token, JWT_SECRET) as TokenPayloadProps;
-
-    req.user = decoded;
-    next();
-  } catch {
-    return res.status(401).send({ error: errorMessage.invalidToken });
-  }
-};
+export const facebookAuth = passport.authenticate('facebook', { failureRedirect: '/login' });

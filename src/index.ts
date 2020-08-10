@@ -1,3 +1,6 @@
+import { createServer } from 'http';
+import socketIo from 'socket.io';
+
 import { PORT } from '@config';
 import connectDatabase from 'src/database';
 import { passportInit } from '@passport';
@@ -19,13 +22,12 @@ connectDatabase();
 passportInit();
 
 /**
- * Server
+ * Server and socket
  */
 
-app.listen(PORT, (err) => {
-  if (err) {
-    return logger.error(`Express - Error listening on port ${PORT} -`, err);
-  }
+const server = createServer(app);
+const io = socketIo(server);
 
-  return logger.info(`Express - Listening on port ${PORT}`);
-});
+app.set('io', io);
+
+server.listen(PORT, () => logger.info(`Express - Listening on port ${PORT}`));

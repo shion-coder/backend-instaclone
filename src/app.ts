@@ -1,14 +1,16 @@
 import express from 'express';
 import helmet from 'helmet';
 import passport from 'passport';
+import session from 'express-session';
 import cors from 'cors';
 import compression from 'compression';
 import 'express-async-errors';
 
 import { Environment } from '@types';
+import { SESSION_SECRET } from '@config';
 import { error } from '@middleware';
-import { request } from 'src/logger';
 import { apiRouter } from '@routes/api';
+import { request } from 'src/logger';
 
 /* -------------------------------------------------------------------------- */
 
@@ -18,7 +20,15 @@ const app = express();
  *  Middleware
  */
 
+app.use(
+  session({
+    secret: SESSION_SECRET,
+    resave: true,
+    saveUninitialized: true,
+  }),
+);
 app.use(passport.initialize());
+app.use(passport.session());
 app.use(helmet());
 app.use(cors());
 app.use(express.json());

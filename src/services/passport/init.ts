@@ -1,12 +1,10 @@
 import passport from 'passport';
 import { Strategy as JwtStrategy, ExtractJwt } from 'passport-jwt';
+import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
+import { Strategy as FacebookStrategy } from 'passport-facebook';
 
 import { User, TokenPayloadProps } from '@model';
-import { JWT_SECRET } from '@config';
-// import { Strategy as FacebookStrategy } from 'passport-facebook';
-
-// import { FACEBOOK_CONFIG } from '@config';
-// import { User } from '@model';
+import { JWT_SECRET, FACEBOOK_CONFIG, GOOGLE_CONFIG } from '@config';
 
 /* -------------------------------------------------------------------------- */
 
@@ -16,6 +14,18 @@ const options = {
 };
 
 export const passportInit = (): void => {
+  passport.serializeUser((user, cb) => {
+    cb(null, user);
+  });
+
+  passport.deserializeUser((user, cb) => {
+    cb(null, user);
+  });
+
+  /**
+   * Token
+   */
+
   passport.use(
     new JwtStrategy(options, async (payload: TokenPayloadProps, done) => {
       try {
@@ -32,19 +42,43 @@ export const passportInit = (): void => {
     }),
   );
 
-  // passport.serializeUser((user, cb) => {
-  //   cb(null, user);
-  // });
-  // passport.deserializeUser((user, cb) => {
-  //   cb(null, user);
-  // });
-  // passport.use(
-  //   new FacebookStrategy(FACEBOOK_CONFIG, async (accessToken, refreshToken, profile, cb) => {
-  //     const existingUser = await User.findOne({ facebookId: profile.id });
-  //     if (existingUser) {
-  //       return cb(null, existingUser);
-  //     }
-  //     cb(null, profile);
-  //   }),
-  // );
+  /**
+   * Google Strategy
+   */
+
+  passport.use(
+    new GoogleStrategy(GOOGLE_CONFIG, async (accessToken, refreshToken, profile, done) => {
+      try {
+        const user = await User.findOne({ googleId: profile.id });
+
+        if (user) {
+          return done(undefined, user);
+        }
+
+        return done(undefined, profile);
+      } catch (error) {
+        return done(error, false);
+      }
+    }),
+  );
+
+  /**
+   * Facebook Strategy
+   */
+
+  passport.use(
+    new FacebookStrategy(FACEBOOK_CONFIG, async (accessToken, refreshToken, profile, done) => {
+      try {
+        const user = await User.findOne({ facebookId: profile.id });
+
+        if (user) {
+          return done(null, user);
+        }
+
+        return done(null, profile);
+      } catch (error) {
+        return done(error, false);
+      }
+    }),
+  );
 };
