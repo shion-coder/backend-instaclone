@@ -6,6 +6,10 @@ export * from './register';
 
 export * from './login';
 
-export * from './password';
+export * from './update-name';
 
-export * from './username';
+export * from './update-username';
+
+export * from './update-email';
+
+export * from './update-password';

@@ -2,6 +2,7 @@ import { UserProps } from '@model';
 
 /* -------------------------------------------------------------------------- */
 
-export type UsernameProps = {
-  username: UserProps['username'];
+export type UpdateNameProps = {
+  firstName: UserProps['firstName'];
+  lastName?: UserProps['lastName'];
 };

@@ -3,7 +3,7 @@ import { genSalt, hash, compare } from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 
 import { JWT_SECRET, JWT_EXPIRE } from '@config';
-import { errorMessage } from '@messages';
+import { errorMessage, userMessage } from '@messages';
 
 /* -------------------------------------------------------------------------- */
 
@@ -43,12 +43,12 @@ const userSchema: Schema = new Schema({
   facebookId: String,
   firstName: {
     type: String,
-    // required: [true, userMessage.firstName.required],
-    // maxlength: [30, userMessage.firstName.maxlength],
+    required: [true, userMessage.firstName.required],
+    maxlength: [30, userMessage.firstName.maxlength],
   },
   lastName: {
     type: String,
-    // maxlength: [30, userMessage.lastName.maxlength],
+    maxlength: [30, userMessage.lastName.maxlength],
   },
   username: {
     type: String,
@@ -59,7 +59,7 @@ const userSchema: Schema = new Schema({
   },
   email: {
     type: String,
-    // required: [true, userMessage.email.required],
+    required: [true, userMessage.email.required],
     trim: true,
     lowercase: true,
     unique: true,

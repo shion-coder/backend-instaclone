@@ -52,6 +52,7 @@ export const passportInit = (): void => {
           firstName: profile.name?.givenName,
           lastName: profile.name?.familyName,
           email: profile.emails![0].value,
+          confirmed: true,
         });
 
         await newUser.save();

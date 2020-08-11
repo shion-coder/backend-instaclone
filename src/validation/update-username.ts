@@ -2,15 +2,15 @@ import validator from 'validator';
 import isEmpty from 'is-empty';
 
 import { User, UserProps } from '@model';
-import { ValidatorProps, UsernameProps } from '@types';
+import { ValidatorProps, UpdateUsernameProps } from '@types';
 import { errorMessage, userMessage } from '@messages';
 
 /* -------------------------------------------------------------------------- */
 
-export const validateUsername = async ({
+export const validateUpdateUsername = async ({
   username,
-}: UsernameProps): Promise<ValidatorProps<Partial<UsernameProps>>> => {
-  const errors: Partial<UsernameProps> = {};
+}: UpdateUsernameProps): Promise<ValidatorProps<Partial<UpdateUsernameProps>>> => {
+  const errors: Partial<UpdateUsernameProps> = {};
 
   let existingUsername: UserProps | null = null;
 
