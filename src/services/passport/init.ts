@@ -14,13 +14,14 @@ const options = {
 };
 
 export const passportInit = (): void => {
-  passport.serializeUser((user, cb) => {
-    cb(null, user);
-  });
+  // passport.serializeUser((user, cb) => {
+  //   cb(null, user);
+  // });
 
-  passport.deserializeUser((user, cb) => {
-    cb(null, user);
-  });
+  // passport.deserializeUser(async (user, cb) => {
+  //   console.log('de', user);
+  //   cb(null, user);
+  // });
 
   /**
    * Token
@@ -49,13 +50,22 @@ export const passportInit = (): void => {
   passport.use(
     new GoogleStrategy(GOOGLE_CONFIG, async (accessToken, refreshToken, profile, done) => {
       try {
-        const user = await User.findOne({ googleId: profile.id });
+        const user = await User.findOne({ $or: [{ googleId: profile.id }, { email: profile.emails![0].value }] });
 
         if (user) {
           return done(undefined, user);
         }
 
-        return done(undefined, profile);
+        const newUser = new User({
+          googleId: profile.id,
+          firstName: profile.name?.givenName,
+          lastName: profile.name?.familyName,
+          email: profile.emails![0].value,
+        });
+
+        await newUser.save();
+
+        return done(undefined, newUser);
       } catch (error) {
         return done(error, false);
       }

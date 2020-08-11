@@ -26,7 +26,9 @@ passportInit();
  */
 
 const server = createServer(app);
-const io = socketIo(server);
+const io = socketIo(server, {
+  pingTimeout: 60000,
+});
 
 app.set('io', io);
 

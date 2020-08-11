@@ -3,7 +3,7 @@ import { genSalt, hash, compare } from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 
 import { JWT_SECRET, JWT_EXPIRE } from '@config';
-import { userMessage, errorMessage } from '@messages';
+import { errorMessage } from '@messages';
 
 /* -------------------------------------------------------------------------- */
 
@@ -43,31 +43,31 @@ const userSchema: Schema = new Schema({
   facebookId: String,
   firstName: {
     type: String,
-    required: [true, userMessage.firstName.required],
-    maxlength: [30, userMessage.firstName.maxlength],
+    // required: [true, userMessage.firstName.required],
+    // maxlength: [30, userMessage.firstName.maxlength],
   },
   lastName: {
     type: String,
-    maxlength: [30, userMessage.lastName.maxlength],
+    // maxlength: [30, userMessage.lastName.maxlength],
   },
   username: {
     type: String,
-    required: [true, userMessage.username.required],
-    maxlength: [30, userMessage.username.required],
+    // required: [true, userMessage.username.required],
+    // maxlength: [30, userMessage.username.required],
     lowercase: true,
     unique: true,
   },
   email: {
     type: String,
-    required: [true, userMessage.email.required],
+    // required: [true, userMessage.email.required],
     trim: true,
     lowercase: true,
     unique: true,
   },
   password: {
     type: String,
-    required: [true, userMessage.password.required],
-    minlength: [6, userMessage.password.minlength],
+    // required: [true, userMessage.password.required],
+    // minlength: [6, userMessage.password.minlength],
   },
   isAdmin: {
     type: Boolean,
@@ -119,6 +119,10 @@ userSchema.virtual('fullName').get(function (this: UserProps): string {
 
 userSchema.methods.comparePassword = async function (this: UserProps, password: string): Promise<boolean> {
   try {
+    if (!this.password) {
+      return false;
+    }
+
     const isMatch: boolean = await compare(password, this.password);
 
     return isMatch;
