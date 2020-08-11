@@ -1,7 +1,7 @@
 import { Router } from 'express';
 
 import { jwtAuth, googleAuth, facebookAuth, addSocket } from '@middleware';
-import { register, login, google, facebook, password, logout } from '@controllers/auth';
+import { register, login, google, facebook, password, username, logout } from '@controllers/auth';
 
 /* -------------------------------------------------------------------------- */
 
@@ -43,6 +43,13 @@ authRouter.route('/facebook/callback').get(facebookAuth, facebook);
  * @access  Private
  */
 authRouter.route('/password').put(jwtAuth, password);
+
+/**
+ * @route   PUT /api/auth/username
+ * @desc    Verify auth & update username
+ * @access  Private
+ */
+authRouter.route('/username').put(jwtAuth, username);
 
 /**
  * @route   GET /api/auth/logout

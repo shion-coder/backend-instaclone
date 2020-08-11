@@ -2,18 +2,18 @@ import validator from 'validator';
 import isEmpty from 'is-empty';
 
 import { UserProps } from '@model';
-import { ValidatorProps, ChangePasswordProps } from '@types';
+import { ValidatorProps, PasswordProps } from '@types';
 import { errorMessage, userMessage } from '@messages';
 
 /* -------------------------------------------------------------------------- */
 
-export const validateChangePassword = async ({
+export const validatePassword = async ({
   password,
   newPassword,
   confirmNewPassword,
   user,
-}: ChangePasswordProps & { user: UserProps }): Promise<ValidatorProps<Partial<ChangePasswordProps>>> => {
-  const errors: Partial<ChangePasswordProps> = {};
+}: PasswordProps & { user: UserProps }): Promise<ValidatorProps<Partial<PasswordProps>>> => {
+  const errors: Partial<PasswordProps> = {};
 
   let isMatchCurrent = false;
   let isMatchOld = false;

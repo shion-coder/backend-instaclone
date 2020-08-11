@@ -14,15 +14,6 @@ const options = {
 };
 
 export const passportInit = (): void => {
-  // passport.serializeUser((user, cb) => {
-  //   cb(null, user);
-  // });
-
-  // passport.deserializeUser(async (user, cb) => {
-  //   console.log('de', user);
-  //   cb(null, user);
-  // });
-
   /**
    * Token
    */

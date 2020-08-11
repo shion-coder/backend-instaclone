@@ -2,7 +2,7 @@ import { UserProps } from '@model';
 
 /* -------------------------------------------------------------------------- */
 
-export type ChangePasswordProps = {
+export type PasswordProps = {
   password: UserProps['password'];
   newPassword: UserProps['password'];
   confirmNewPassword: UserProps['password'];

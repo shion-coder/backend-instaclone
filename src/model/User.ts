@@ -88,6 +88,10 @@ const userSchema: Schema = new Schema({
  */
 
 userSchema.pre('save', async function (this: UserProps, next: HookNextFunction): Promise<void> {
+  if (!this.username) {
+    this.username = this._id;
+  }
+
   if (this.password && this.isModified('password')) {
     try {
       const salt = await genSalt(10);

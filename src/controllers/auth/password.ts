@@ -1,9 +1,9 @@
 import { Request, Response } from 'express';
 
 import { UserProps } from '@model';
-import { ChangePasswordProps } from '@types';
-import { validateChangePassword } from '@validation';
-import { errorMessage, changePasswordMess } from '@messages';
+import { PasswordProps } from '@types';
+import { validatePassword } from '@validation';
+import { errorMessage, updatePasswordMess } from '@messages';
 
 /* -------------------------------------------------------------------------- */
 
@@ -17,8 +17,8 @@ export const password = async (req: Request, res: Response): Promise<Response> =
     return res.status(404).send({ error: errorMessage.noUser });
   }
 
-  const { password = '', newPassword = '', confirmNewPassword = '' }: ChangePasswordProps = req.body;
-  const { errors, isValid } = await validateChangePassword({
+  const { password = '', newPassword = '', confirmNewPassword = '' }: PasswordProps = req.body;
+  const { errors, isValid } = await validatePassword({
     password,
     newPassword,
     confirmNewPassword,
@@ -37,5 +37,5 @@ export const password = async (req: Request, res: Response): Promise<Response> =
 
   await user.save();
 
-  return res.send({ message: changePasswordMess.success });
+  return res.send({ message: updatePasswordMess.success });
 };

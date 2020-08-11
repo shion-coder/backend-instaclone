@@ -8,4 +8,6 @@ export * from './register';
 
 export * from './login';
 
-export * from './change-password';
+export * from './password';
+
+export * from './username';

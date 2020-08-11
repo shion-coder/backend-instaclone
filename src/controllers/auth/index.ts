@@ -8,4 +8,6 @@ export * from './facebook';
 
 export * from './password';
 
+export * from './username';
+
 export * from './logout';
