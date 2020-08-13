@@ -11,4 +11,5 @@ export const errorMessage = {
   hashingPass: 'Error hashing user password',
   comparingPass: 'Error comparing password',
   sendingEmail: 'Error sending confirm email',
+  uploadingImages: 'Error uploading images',
 };

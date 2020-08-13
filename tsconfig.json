@@ -22,6 +22,7 @@
       "@services/*": ["src/services/*"],
       "@email": ["src/services/email"],
       "@passport": ["src/services/passport"],
+      "@multer": ["src/services/multer"],
       "@utils/*": ["src/utils/*"],
       "@messages": ["src/utils/messages"]
     },
