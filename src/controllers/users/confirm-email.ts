@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 
 import { User } from '@model';
-import { validateId } from '@validation';
+import { validateUserId } from '@validation';
 import { emailMessage } from '@messages';
 
 /* -------------------------------------------------------------------------- */
@@ -12,7 +12,7 @@ export const confirmEmail = async (req: Request, res: Response): Promise<Respons
    */
 
   const { id = '' } = req.params;
-  const { isValid } = await validateId({ id });
+  const { isValid } = await validateUserId({ id });
 
   if (!isValid) {
     return res.send({ message: emailMessage.couldNotFind });

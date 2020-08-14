@@ -9,8 +9,10 @@ const storage = cloudinaryStorage({
   params: {
     folder: 'sample',
     format: 'jpg',
-    // transformation: [{ width: 500, height: 500, crop: 'limit' }],
+    allowed_formats: ['jpg', 'png', 'gif'],
   },
 });
 
-export const multerUpload = multer({ storage }).array('images');
+export const multerUploadSingle = multer({ storage }).single('image');
+
+export const multerUploadMulti = multer({ storage }).array('images');

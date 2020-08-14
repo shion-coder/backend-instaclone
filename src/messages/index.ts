@@ -11,3 +11,5 @@ export * from './update-username';
 export * from './update-email';
 
 export * from './update-password';
+
+export * from './post';

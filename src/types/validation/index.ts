@@ -1,6 +1,6 @@
 export * from './validator';
 
-export * from './id';
+export * from './user-id';
 
 export * from './email';
 
@@ -15,3 +15,5 @@ export * from './update-username';
 export * from './update-email';
 
 export * from './update-password';
+
+export * from './post-id';

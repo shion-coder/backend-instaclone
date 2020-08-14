@@ -57,6 +57,7 @@ export const logger = createLogger({
       datePattern: 'YYYY-MM-DD',
     }),
   ],
+  exitOnError: false,
 });
 
 export const request = expressWinston.logger({

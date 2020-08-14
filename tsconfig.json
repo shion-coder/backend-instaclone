@@ -24,7 +24,7 @@
       "@passport": ["src/services/passport"],
       "@multer": ["src/services/multer"],
       "@utils/*": ["src/utils/*"],
-      "@messages": ["src/utils/messages"]
+      "@messages": ["src/messages"]
     },
     "esModuleInterop": true /* Enables emit interoperability between CommonJS and ES Modules via creation of namespace objects for all imports. Implies 'allowSyntheticDefaultImports'. */,
     "skipLibCheck": true /* Skip type checking of declaration files. */,
