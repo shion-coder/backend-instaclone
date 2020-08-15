@@ -6,7 +6,7 @@ export const SESSION_SECRET = process.env.JWT_SECRET || 'meow';
 
 export const JWT_SECRET = process.env.JWT_SECRET || 'meow';
 
-export const JWT_EXPIRE = process.env.JWT_EXPIRE || '1h';
+export const JWT_EXPIRE = process.env.JWT_EXPIRE || '4h';
 
 export const MAIL_USER = process.env.MAIL_USER || '';
 
