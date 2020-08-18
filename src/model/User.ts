@@ -19,6 +19,7 @@ type UserSchemaProps = {
   username: string;
   email: string;
   password: string;
+  avatar?: string;
   isAdmin?: boolean;
   confirmed?: boolean;
 };
@@ -68,6 +69,10 @@ const userSchema: Schema = new Schema({
     type: String,
     // required: [true, userMessage.password.required],
     // minlength: [6, userMessage.password.minlength],
+  },
+  avatar: {
+    type: String,
+    default: 'https://res.cloudinary.com/shion-coder/image/upload/v1597746375/avatar/txxeacnh3vanuhsemfc8_hvlpn2.png',
   },
   isAdmin: {
     type: Boolean,
