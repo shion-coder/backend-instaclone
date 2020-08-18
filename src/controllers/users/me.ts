@@ -16,9 +16,9 @@ export const me = async (req: Request, res: Response): Promise<Response> => {
     return res.status(404).send({ error: errorMessage.noUser });
   }
 
-  const { firstName, lastName, fullName, username, email, confirmed } = user;
+  const { firstName, lastName, fullName, username, email, avatar, confirmed } = user;
 
   return res.send({
-    user: { firstName, lastName, fullName, username, email, confirmed },
+    user: { firstName, lastName, fullName, username, email, avatar, confirmed },
   });
 };

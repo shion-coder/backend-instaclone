@@ -47,6 +47,7 @@ export const register = async (req: Request, res: Response): Promise<Response | 
       fullName: user.fullName,
       username: user.username,
       email: user.email,
+      avatar: user.avatar,
       confirmed: user.confirmed,
     },
     token: user.generateAuthToken(),
