@@ -19,11 +19,15 @@ export const createPost = async (req: Request, res: Response): Promise<Response>
 
   const { path } = req.file;
 
+  const { caption, filter } = req.body;
+
   const post = await Post.create({
     image: path,
     thumbnail: formatCloudinaryUrl(path, { mode: 'thumb', width: 400, height: 400 }),
+    caption,
+    filter,
     author: user.id,
   });
 
-  return res.send({ image: path, thumbnail: post.thumbnail, author: user.username });
+  return res.send({ image: path, thumbnail: post.thumbnail, author: user.username, caption, filter });
 };
