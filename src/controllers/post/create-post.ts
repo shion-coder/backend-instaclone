@@ -2,16 +2,16 @@ import { Request, Response } from 'express';
 
 import { UserProps, Post } from '@model';
 import { formatCloudinaryUrl } from '@utils/format-cloudinary-url';
-import { postMessage, errorMessage } from '@messages';
+import { postMessage } from '@messages';
 
 /* -------------------------------------------------------------------------- */
 
 export const createPost = async (req: Request, res: Response): Promise<Response> => {
   const user = req.user as UserProps;
 
-  if (!user) {
-    return res.status(404).send({ error: errorMessage.noUser });
-  }
+  /**
+   * Create new post
+   */
 
   if (!req.file) {
     return res.status(400).send({ error: postMessage.image.required });
@@ -29,5 +29,19 @@ export const createPost = async (req: Request, res: Response): Promise<Response>
     author: user.id,
   });
 
-  return res.send({ image: path, thumbnail: post.thumbnail, author: user.username, caption, filter });
+  /**
+   * Save new post to user
+   */
+
+  user.posts?.push(post.id);
+
+  if (user.postCount !== undefined) {
+    user.postCount = user.postCount + 1;
+  }
+
+  user.save();
+
+  const data = await post.populate({ path: 'author', select: '-__v -password -posts' }).execPopulate();
+
+  return res.send({ data });
 };

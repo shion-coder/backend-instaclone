@@ -15,6 +15,7 @@ export const userMessage = {
     required: 'Username is required',
     maxlength: 'Username must be less than 30 characters',
     exist: 'This username is already taken',
+    notFound: 'Could not find a user with that username',
   },
   email: {
     required: 'Email is required',

@@ -1,7 +1,7 @@
 import { Router } from 'express';
 
 import { jwtAuth } from '@middleware';
-import { confirmEmail, resendEmail, me } from '@controllers/users';
+import { confirmEmail, resendEmail, me, getUser } from '@controllers/users';
 
 /* -------------------------------------------------------------------------- */
 
@@ -27,3 +27,10 @@ usersRouter.route('/email/resend').post(resendEmail);
  * @access  Private
  */
 usersRouter.route('/me').get(jwtAuth, me);
+
+/**
+ * @route   GET /api/users/:username
+ * @desc    Verify auth & return user profile
+ * @access  Private
+ */
+usersRouter.route('/:username').get(jwtAuth, getUser);

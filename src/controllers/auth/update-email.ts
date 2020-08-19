@@ -4,16 +4,12 @@ import { UserProps } from '@model';
 import { UpdateEmailProps } from '@types';
 import { validateUpdateEmail } from '@validation';
 import { sendEmail, templates } from '@email';
-import { errorMessage, updateEmailMess } from '@messages';
+import { updateEmailMess } from '@messages';
 
 /* -------------------------------------------------------------------------- */
 
 export const updateEmail = async (req: Request, res: Response): Promise<Response> => {
   const user = req.user as UserProps;
-
-  if (!user) {
-    return res.status(404).send({ error: errorMessage.noUser });
-  }
 
   /**
    * Validate input with default value is '' because validator only can validate string ( not undefined )

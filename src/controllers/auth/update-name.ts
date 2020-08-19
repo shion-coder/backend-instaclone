@@ -3,16 +3,12 @@ import { Request, Response } from 'express';
 import { UserProps } from '@model';
 import { UpdateNameProps } from '@types';
 import { validateUpdateName } from '@validation';
-import { errorMessage, updateNameMess } from '@messages';
+import { updateNameMess } from '@messages';
 
 /* -------------------------------------------------------------------------- */
 
 export const updateName = async (req: Request, res: Response): Promise<Response> => {
   const user = req.user as UserProps;
-
-  if (!user) {
-    return res.status(404).send({ error: errorMessage.noUser });
-  }
 
   /**
    * Validate input with default value is '' because validator only can validate string ( not undefined )

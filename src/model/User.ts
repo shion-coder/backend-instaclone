@@ -2,6 +2,7 @@ import { Schema, Document, Model, HookNextFunction, model } from 'mongoose';
 import { genSalt, hash, compare } from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 
+import { PostProps } from '@model';
 import { JWT_SECRET, JWT_EXPIRE } from '@config';
 import { errorMessage, userMessage } from '@messages';
 
@@ -22,6 +23,8 @@ type UserSchemaProps = {
   avatar?: string;
   isAdmin?: boolean;
   confirmed?: boolean;
+  posts?: PostProps['id'][];
+  postCount?: number;
 };
 
 export type UserProps = UserSchemaProps &
@@ -73,6 +76,11 @@ const userSchema: Schema = new Schema({
   avatar: {
     type: String,
     default: 'https://res.cloudinary.com/shion-coder/image/upload/v1597746375/avatar/txxeacnh3vanuhsemfc8_hvlpn2.png',
+  },
+  posts: [{ type: Schema.Types.ObjectId, ref: 'Post' }],
+  postCount: {
+    type: Number,
+    default: 0,
   },
   isAdmin: {
     type: Boolean,
