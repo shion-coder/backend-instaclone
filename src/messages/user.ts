@@ -14,14 +14,14 @@ export const userMessage = {
   username: {
     required: 'Username is required',
     maxlength: 'Username must be less than 30 characters',
-    exist: 'This username is already taken',
+    exist: 'This username is not available',
     notFound: 'Could not find a user with that username',
   },
   email: {
     required: 'Email is required',
     invalid: 'Invalid email format',
     notFound: 'Email not found',
-    exist: 'This email is already taken',
+    exist: 'This email is not available',
   },
   usernameOrEmail: {
     required: 'Username or email is required',

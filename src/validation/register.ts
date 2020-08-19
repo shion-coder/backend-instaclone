@@ -20,6 +20,8 @@ export const validateRegister = async ({
   let existingUsername: UserProps | null = null;
   let existingEmail: UserProps | null = null;
 
+  const excludeUsername = ['register', 'login', 'dashboard', 'settings', 'list'];
+
   /**
    * Find existing username & email
    */
@@ -64,7 +66,7 @@ export const validateRegister = async ({
     ? (errors.username = userMessage.username.required)
     : !validator.isLength(username, { max: 30 })
     ? (errors.username = userMessage.username.maxlength)
-    : existingUsername
+    : existingUsername || excludeUsername.includes(username)
     ? (errors.username = userMessage.username.exist)
     : null;
 
