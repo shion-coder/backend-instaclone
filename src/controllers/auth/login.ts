@@ -24,18 +24,10 @@ export const login = async (req: Request, res: Response): Promise<Response> => {
 
   const user = await User.findOne({
     $or: [{ username: usernameOrEmail }, { email: usernameOrEmail }],
-  });
+  }).select('-__v -password');
 
   return res.send({
-    user: {
-      firstName: user?.firstName,
-      lastName: user?.lastName,
-      fullName: user?.fullName,
-      username: user?.username,
-      email: user?.email,
-      avatar: user?.avatar,
-      confirmed: user?.confirmed,
-    },
+    user: { ...user?.toObject(), fullName: user?.fullName },
     token: user?.generateAuthToken(),
   });
 };

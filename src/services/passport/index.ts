@@ -51,7 +51,7 @@ export const passportInit = (): void => {
           const newUser = new User({
             googleId: profile.id,
             firstName: profile.name?.givenName,
-            lastName: profile.name?.familyName,
+            lastName: profile.name?.familyName || '',
             email: profile.emails[0].value,
             confirmed: true,
           });

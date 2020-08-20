@@ -16,5 +16,5 @@ export const getUser = async (req: Request, res: Response): Promise<Response> =>
     return res.status(404).send({ error: userMessage.username.notFound });
   }
 
-  return res.send({ user });
+  return res.send({ user: { ...user.toObject(), fullName: user.fullName } });
 };
