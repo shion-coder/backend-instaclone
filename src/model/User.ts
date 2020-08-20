@@ -4,7 +4,7 @@ import jwt from 'jsonwebtoken';
 
 import { PostProps } from '@model';
 import { JWT_SECRET, JWT_EXPIRE } from '@config';
-import { errorMessage, userMessage } from '@messages';
+import { errorMessage } from '@messages';
 
 /* -------------------------------------------------------------------------- */
 
@@ -21,10 +21,17 @@ type UserSchemaProps = {
   email: string;
   password: string;
   avatar?: string;
-  isAdmin?: boolean;
-  confirmed?: boolean;
+  bio?: string;
+  website?: string;
   posts?: PostProps['id'][];
   postCount?: number;
+  bookmarks?: PostProps['id'][];
+  followers?: UserProps['id'][];
+  followersCount?: number;
+  following?: UserProps['id'][];
+  followingCount?: number;
+  isAdmin?: boolean;
+  confirmed?: boolean;
 };
 
 export type UserProps = UserSchemaProps &
@@ -47,38 +54,47 @@ const userSchema: Schema = new Schema({
   facebookId: String,
   firstName: {
     type: String,
-    required: [true, userMessage.firstName.required],
-    maxlength: [30, userMessage.firstName.maxlength],
+    required: true,
+    maxlength: 30,
   },
   lastName: {
     type: String,
-    maxlength: [30, userMessage.lastName.maxlength],
+    maxlength: 30,
   },
   username: {
     type: String,
-    // required: [true, userMessage.username.required],
-    // maxlength: [30, userMessage.username.required],
     lowercase: true,
     unique: true,
   },
   email: {
     type: String,
-    required: [true, userMessage.email.required],
+    required: true,
     trim: true,
     lowercase: true,
     unique: true,
   },
   password: {
     type: String,
-    // required: [true, userMessage.password.required],
-    // minlength: [6, userMessage.password.minlength],
   },
   avatar: {
     type: String,
     default: 'https://res.cloudinary.com/shion-coder/image/upload/v1597746375/avatar/txxeacnh3vanuhsemfc8_hvlpn2.png',
   },
+  bio: String,
+  website: String,
   posts: [{ type: Schema.Types.ObjectId, ref: 'Post' }],
   postCount: {
+    type: Number,
+    default: 0,
+  },
+  bookmarks: [{ type: Schema.Types.ObjectId, ref: 'Post' }],
+  followers: [{ type: Schema.Types.ObjectId, ref: 'User' }],
+  followersCount: {
+    type: Number,
+    default: 0,
+  },
+  following: [{ type: Schema.Types.ObjectId, ref: 'User' }],
+  followingCount: {
     type: Number,
     default: 0,
   },

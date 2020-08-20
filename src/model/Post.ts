@@ -1,6 +1,6 @@
 import { Schema, Document, Model, model } from 'mongoose';
 
-import { UserProps } from '@model';
+import { UserProps, CommentProps } from '@model';
 
 /* -------------------------------------------------------------------------- */
 
@@ -13,7 +13,11 @@ type PostSchemaProps = {
   thumbnail?: string;
   filter?: string;
   caption?: string;
-  hashtag?: { type: string }[];
+  tags?: { type: string }[];
+  likes?: UserProps['id'][];
+  likesCount?: number;
+  comment?: CommentProps['id'][];
+  commentCount?: number;
   author: UserProps['id'];
 };
 
@@ -31,20 +35,30 @@ const postSchema: Schema = new Schema({
   thumbnail: String,
   filter: String,
   caption: String,
-  hashtags: [
+  tags: [
     {
       type: String,
       lowercase: true,
     },
   ],
-  date: {
-    type: Date,
-    default: Date.now,
+  likes: [{ type: Schema.Types.ObjectId, ref: 'User' }],
+  likesCount: {
+    type: Number,
+    default: 0,
+  },
+  comments: [{ type: Schema.Types.ObjectId, ref: 'Comment' }],
+  commentsCount: {
+    type: Number,
+    default: 0,
   },
   author: {
     type: Schema.Types.ObjectId,
     ref: 'User',
     required: true,
+  },
+  date: {
+    type: Date,
+    default: Date.now,
   },
 });
 
