@@ -14,7 +14,7 @@ export const getUser = async (req: Request, res: Response): Promise<Response> =>
     .populate({ path: 'posts', select: 'image thumbnail caption filter' })
     .populate({ path: 'bookmarks' })
     .populate({ path: 'followers' })
-    .populate({ path: 'followings' });
+    .populate({ path: 'following' });
 
   if (!user) {
     return res.status(404).send({ error: userMessage.username.notFound });
@@ -27,7 +27,7 @@ export const getUser = async (req: Request, res: Response): Promise<Response> =>
   user.followers?.forEach((user) => {
     user.isFollowing = false;
 
-    if (currentUser.followings?.includes(user._id.toString())) {
+    if (currentUser.following?.includes(user._id.toString())) {
       user.isFollowing = true;
     }
   });
@@ -36,10 +36,10 @@ export const getUser = async (req: Request, res: Response): Promise<Response> =>
    * Check following list of this user to see who current user are following or not
    */
 
-  user.followings?.forEach((user) => {
+  user.following?.forEach((user) => {
     user.isFollowing = false;
 
-    if (currentUser.followings?.includes(user._id.toString())) {
+    if (currentUser.following?.includes(user._id.toString())) {
       user.isFollowing = true;
     }
   });

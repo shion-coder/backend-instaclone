@@ -40,16 +40,10 @@ export const register = async (req: Request, res: Response): Promise<Response | 
 
   const user = await User.create({ firstName, lastName, username, email, password });
 
+  const userResult = await User.findOne({ username }).select('-__v -password').lean();
+
   res.status(201).send({
-    user: {
-      firstName: user.firstName,
-      lastName: user.lastName,
-      fullName: user.fullName,
-      username: user.username,
-      email: user.email,
-      avatar: user.avatar,
-      confirmed: user.confirmed,
-    },
+    user: { ...userResult, fullName: user.fullName },
     token: user.generateAuthToken(),
   });
 
