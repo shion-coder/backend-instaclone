@@ -27,8 +27,8 @@ type UserSchemaProps = {
   postCount?: number;
   bookmarks?: PostProps['id'][];
   followers?: UserProps['id'][];
-  followersCount?: number;
-  following?: UserProps['id'][];
+  followerCount?: number;
+  followings?: UserProps['id'][];
   followingCount?: number;
   isAdmin?: boolean;
   confirmed?: boolean;
@@ -90,11 +90,11 @@ const userSchema: Schema = new Schema({
   },
   bookmarks: [{ type: Schema.Types.ObjectId, ref: 'Post' }],
   followers: [{ type: Schema.Types.ObjectId, ref: 'User' }],
-  followersCount: {
+  followerCount: {
     type: Number,
     default: 0,
   },
-  following: [{ type: Schema.Types.ObjectId, ref: 'User' }],
+  followings: [{ type: Schema.Types.ObjectId, ref: 'User' }],
   followingCount: {
     type: Number,
     default: 0,

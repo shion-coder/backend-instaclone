@@ -15,8 +15,8 @@ type PostSchemaProps = {
   caption?: string;
   tags?: { type: string }[];
   likes?: UserProps['id'][];
-  likesCount?: number;
-  comment?: CommentProps['id'][];
+  likeCount?: number;
+  comments?: CommentProps['id'][];
   commentCount?: number;
   author: UserProps['id'];
 };
@@ -42,12 +42,12 @@ const postSchema: Schema = new Schema({
     },
   ],
   likes: [{ type: Schema.Types.ObjectId, ref: 'User' }],
-  likesCount: {
+  likeCount: {
     type: Number,
     default: 0,
   },
   comments: [{ type: Schema.Types.ObjectId, ref: 'Comment' }],
-  commentsCount: {
+  commentCount: {
     type: Number,
     default: 0,
   },
