@@ -1,14 +1,14 @@
 import { Router } from 'express';
 
-import { jwtAuth } from '@middleware';
-import { confirmEmail, resendEmail, me, getUser } from '@controllers/users';
+import { jwtAuth, uploadSingle } from '@middleware';
+import { confirmEmail, resendEmail, me, getUser, changeAvatar } from '@controllers/users';
 
 /* -------------------------------------------------------------------------- */
 
 export const usersRouter = Router();
 
 /**
- * @route   PUT /api/user/email/confirm/:id
+ * @route   PUT /api/users/email/confirm/:id
  * @desc    Confirm email with id
  * @access  Public
  */
@@ -34,3 +34,10 @@ usersRouter.route('/me').get(jwtAuth, me);
  * @access  Private
  */
 usersRouter.route('/:username').get(jwtAuth, getUser);
+
+/**
+ * @route   PUT /api/users/avatar
+ * @desc    Verify auth & update avatar
+ * @access  Private
+ */
+usersRouter.route('/avatar').put(jwtAuth, uploadSingle, changeAvatar);
