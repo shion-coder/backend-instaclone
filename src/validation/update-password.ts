@@ -55,7 +55,7 @@ export const validateUpdatePassword = async ({
     : !validator.isLength(password, { min: 6 })
     ? (errors.newPassword = userMessage.newPassword.minlength)
     : isMatchOld && !errors.password && !errors.confirmNewPassword
-    ? (errors.password = userMessage.newPassword.different)
+    ? (errors.newPassword = userMessage.newPassword.different)
     : null;
 
   /**

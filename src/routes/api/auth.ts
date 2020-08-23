@@ -1,17 +1,7 @@
 import { Router } from 'express';
 
-import { jwtAuth, googleAuth, facebookAuth, addSocket } from '@middleware';
-import {
-  register,
-  login,
-  google,
-  facebook,
-  updateName,
-  updateUsername,
-  updateEmail,
-  updatePassword,
-  logout,
-} from '@controllers/auth';
+import { googleAuth, facebookAuth, addSocket } from '@middleware';
+import { register, login, google, facebook, logout } from '@controllers/auth';
 
 /* -------------------------------------------------------------------------- */
 
@@ -46,34 +36,6 @@ authRouter.route('/google/callback').get(googleAuth, google);
  */
 authRouter.route('/facebook').get(facebookAuth);
 authRouter.route('/facebook/callback').get(facebookAuth, facebook);
-
-/**
- * @route   PUT /api/auth/name
- * @desc    Verify auth & update name
- * @access  Private
- */
-authRouter.route('/name').put(jwtAuth, updateName);
-
-/**
- * @route   PUT /api/auth/username
- * @desc    Verify auth & update username
- * @access  Private
- */
-authRouter.route('/username').put(jwtAuth, updateUsername);
-
-/**
- * @route   PUT /api/auth/email
- * @desc    Verify auth & update email
- * @access  Private
- */
-authRouter.route('/email').put(jwtAuth, updateEmail);
-
-/**
- * @route   PUT /api/auth/password
- * @desc    Verify auth & update password
- * @access  Private
- */
-authRouter.route('/password').put(jwtAuth, updatePassword);
 
 /**
  * @route   GET /api/auth/logout

@@ -6,7 +6,7 @@ import { postMessage } from '@messages';
 
 /* -------------------------------------------------------------------------- */
 
-export const changeAvatar = async (req: Request, res: Response): Promise<Response> => {
+export const updateAvatar = async (req: Request, res: Response): Promise<Response> => {
   const user = req.user as UserProps;
 
   if (!req.file) {

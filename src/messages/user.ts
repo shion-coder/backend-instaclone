@@ -27,6 +27,9 @@ export const userMessage = {
     required: 'Username or email is required',
     notfound: 'Username or email not found',
   },
+  website: {
+    invalid: 'Invalid URL',
+  },
   password: {
     required: 'Password is required',
     minlength: 'Password must be at least 6 characters',
