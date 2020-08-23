@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 
-import { UserProps } from '@model';
+import { User, UserProps } from '@model';
 
 /* -------------------------------------------------------------------------- */
 
@@ -11,9 +11,9 @@ export const me = async (req: Request, res: Response): Promise<Response> => {
 
   const user = req.user as UserProps;
 
-  const { firstName, lastName, fullName, username, email, avatar, confirmed } = user;
+  const userResult = await User.findById(user.id).select('-__v -password').lean();
 
   return res.send({
-    user: { firstName, lastName, fullName, username, email, avatar, confirmed },
+    user: { ...userResult, fullName: user.fullName },
   });
 };

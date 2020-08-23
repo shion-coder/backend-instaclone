@@ -11,9 +11,9 @@ export const validateUpdateProfile = async ({
   firstName,
   lastName,
   username,
-  website,
   email,
-}: UpdateProfileProps): Promise<ValidatorProps<Partial<UpdateProfileProps>>> => {
+  user,
+}: UpdateProfileProps & { user: UserProps }): Promise<ValidatorProps<Partial<UpdateProfileProps>>> => {
   const errors: Partial<UpdateProfileProps> = {};
 
   let existingUsername: UserProps | null = null;
@@ -25,7 +25,7 @@ export const validateUpdateProfile = async ({
    * Find existing username & email
    */
 
-  if (!validator.isEmpty(username)) {
+  if (username !== user.username && !validator.isEmpty(username)) {
     try {
       existingUsername = await User.findOne({ username });
     } catch {
@@ -33,7 +33,7 @@ export const validateUpdateProfile = async ({
     }
   }
 
-  if (!validator.isEmpty(email) && validator.isEmail(email)) {
+  if (email !== user.email && !validator.isEmpty(email) && validator.isEmail(email)) {
     try {
       existingEmail = await User.findOne({ email });
     } catch {
@@ -61,7 +61,7 @@ export const validateUpdateProfile = async ({
    * Username validation
    */
 
-  validator.isEmpty(username)
+  username !== user.username && validator.isEmpty(username)
     ? (errors.username = userMessage.username.required)
     : !validator.isLength(username, { max: 30 })
     ? (errors.username = userMessage.username.maxlength)
@@ -73,19 +73,13 @@ export const validateUpdateProfile = async ({
    * Email validation
    */
 
-  validator.isEmpty(email)
+  email !== user.email && validator.isEmpty(email)
     ? (errors.email = userMessage.email.required)
     : !validator.isEmail(email)
     ? (errors.email = userMessage.email.invalid)
     : existingEmail
     ? (errors.email = userMessage.email.exist)
     : null;
-
-  /**
-   * Website validation
-   */
-
-  website && validator.isURL(website) ? (errors.website = userMessage.website.invalid) : null;
 
   return {
     errors,

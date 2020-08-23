@@ -3,7 +3,6 @@ import { Request, Response } from 'express';
 import { UserProps } from '@model';
 import { UpdateProfileProps } from '@types';
 import { validateUpdateProfile } from '@validation';
-import { updateProfileMess } from '@messages';
 
 /* -------------------------------------------------------------------------- */
 
@@ -22,6 +21,7 @@ export const updateProfile = async (req: Request, res: Response): Promise<Respon
     bio = '',
     email = '',
   }: UpdateProfileProps = req.body;
+
   const { errors, isValid } = await validateUpdateProfile({
     firstName,
     lastName,
@@ -29,6 +29,7 @@ export const updateProfile = async (req: Request, res: Response): Promise<Respon
     website,
     email,
     bio,
+    user,
   });
 
   if (!isValid) {
@@ -41,12 +42,16 @@ export const updateProfile = async (req: Request, res: Response): Promise<Respon
 
   user.firstName = firstName;
   user.lastName = lastName;
-  user.username = username;
+  if (username !== user.username) {
+    user.username = username;
+  }
   user.website = website;
   user.bio = bio;
-  user.email = email;
+  if (email !== user.email) {
+    user.email = email;
+  }
 
   await user.save();
 
-  return res.send({ message: updateProfileMess.success });
+  return res.send({ user });
 };
