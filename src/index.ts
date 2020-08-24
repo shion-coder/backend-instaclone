@@ -5,6 +5,7 @@ import { PORT } from '@config';
 import connectDatabase from 'src/database';
 import { passportInit } from '@passport';
 import app from 'src/app';
+import socketConnection from 'src/socket';
 import { logger } from 'src/logger';
 
 /* -------------------------------------------------------------------------- */
@@ -22,7 +23,7 @@ connectDatabase();
 passportInit();
 
 /**
- * Server and socket
+ * Create server and socket
  */
 
 const server = createServer(app);
@@ -32,5 +33,7 @@ const io = socketIo(server, {
 });
 
 app.set('io', io);
+
+socketConnection();
 
 server.listen(PORT, () => logger.info(`Express - Listening on port ${PORT}`));
