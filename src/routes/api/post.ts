@@ -21,15 +21,15 @@ postRouter.route('/').get(getPosts);
 postRouter.route('/').post(jwtAuth, uploadSingle, createPost);
 
 /**
- * @route   GET /api/post/:postId
+ * @route   GET /api/post/:id
  * @desc    Get post
  * @access  Public
  */
-postRouter.route('/:postId').get(getPost);
+postRouter.route('/:id').get(getPost);
 
 /**
- * @route   DELETE /api/post/:postId
+ * @route   DELETE /api/post/:id
  * @desc    Delete post
  * @access  Private
  */
-postRouter.route('/:postId').delete(jwtAuth, deletePost);
+postRouter.route('/:id').delete(jwtAuth, deletePost);

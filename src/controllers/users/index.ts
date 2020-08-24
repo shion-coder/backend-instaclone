@@ -15,3 +15,5 @@ export * from './update-avatar';
 export * from './update-email';
 
 export * from './update-password';
+
+export * from './follow';

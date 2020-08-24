@@ -10,11 +10,11 @@ export const deletePost = async (req: Request, res: Response): Promise<Response>
   const user = req.user as UserProps;
 
   /**
-   * Validate params
+   * Validate id
    */
 
-  const { postId } = req.params;
-  const { errors, isValid } = await validatePostIdWithAuthor({ id: postId, author: user.id });
+  const { id } = req.params;
+  const { errors, isValid } = await validatePostIdWithAuthor({ id: id, author: user.id });
 
   if (!isValid) {
     return res.status(400).send({ error: errors.id });
@@ -24,7 +24,7 @@ export const deletePost = async (req: Request, res: Response): Promise<Response>
    * Delete post in posts collection
    */
 
-  const postDelete = await Post.deleteOne({ _id: postId });
+  const postDelete = await Post.deleteOne({ _id: id });
 
   if (!postDelete.deletedCount) {
     return res.status(500).send({ error: postMessage.errorDelete });
@@ -34,7 +34,7 @@ export const deletePost = async (req: Request, res: Response): Promise<Response>
    * Delete post in user
    */
 
-  user.posts = user.posts?.filter((id) => id.toString() !== postId.toString());
+  user.posts = user.posts?.filter((postId) => postId.toString() !== id.toString());
 
   if (user.postCount !== undefined) {
     user.postCount = user.postCount - 1;

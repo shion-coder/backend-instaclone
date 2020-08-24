@@ -6,8 +6,8 @@ import { userMessage } from '@messages';
 /* -------------------------------------------------------------------------- */
 
 export const getUser = async (req: Request, res: Response): Promise<Response> => {
-  const { username } = req.params;
   const currentUser = req.user as UserProps;
+  const { username } = req.params;
 
   const user = await User.findOne({ username })
     .select('-__v -password')

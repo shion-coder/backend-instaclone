@@ -8,14 +8,14 @@ import { emailMessage } from '@messages';
 
 export const confirmEmail = async (req: Request, res: Response): Promise<Response> => {
   /**
-   * Validate input with default value is '' because validator only can validate string ( not undefined )
+   * Validate id
    */
 
-  const { id = '' } = req.params;
+  const { id } = req.params;
   const { isValid } = await validateUserId({ id });
 
   if (!isValid) {
-    return res.send({ message: emailMessage.couldNotFind });
+    return res.status(400).send({ message: emailMessage.couldNotFind });
   }
 
   /**

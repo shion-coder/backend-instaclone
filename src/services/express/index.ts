@@ -10,7 +10,7 @@ import { Environment } from '@types';
 import { SESSION_SECRET, CLIENT_ORIGIN } from '@config';
 import { error } from '@middleware';
 import { apiRouter } from '@routes/api';
-import { request } from 'src/logger';
+import { request } from '@logger';
 
 /* -------------------------------------------------------------------------- */
 

@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 
 import { MONGODB_URI } from '@config';
-import { logger } from 'src/logger';
+import { logger } from '@logger';
 
 /* -------------------------------------------------------------------------- */
 

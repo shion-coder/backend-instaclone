@@ -6,7 +6,7 @@ import { postMessage } from '@messages';
 
 /* -------------------------------------------------------------------------- */
 
-export const validatePostId = async ({ id }: PostId): Promise<ValidatorProps<Partial<PostId>>> => {
+export const validatePostId = ({ id }: PostId): ValidatorProps<Partial<PostId>> => {
   const errors: Partial<PostId> = {};
 
   /**

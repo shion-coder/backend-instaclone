@@ -2,7 +2,9 @@ export const userMessage = {
   id: {
     required: 'Id is required',
     invalid: 'Invalid id',
-    notFound: "Couldn't find an account with that id",
+    notFound: "Couldn't find an user with that id",
+    isCurrentUser: "You can't follow/unfollow yourself",
+    alreadyFollow: 'You are already following this user',
   },
   firstName: {
     required: 'First Name is required',

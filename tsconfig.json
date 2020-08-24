@@ -20,8 +20,12 @@
       "@controllers/*": ["src/controllers/*"],
       "@validation": ["src/validation"],
       "@services/*": ["src/services/*"],
-      "@email": ["src/services/email"],
+      "@database": ["src/services/database"],
+      "@express": ["src/services/express"],
+      "@logger": ["src/services/logger"],
+      "@socket": ["src/services/socket"],
       "@passport": ["src/services/passport"],
+      "@email": ["src/services/email"],
       "@multer": ["src/services/multer"],
       "@utils/*": ["src/utils/*"],
       "@messages": ["src/messages"]

@@ -6,10 +6,10 @@ import { userMessage } from '@messages';
 
 /* -------------------------------------------------------------------------- */
 
-export const validateUpdateName = async ({
+export const validateUpdateName = ({
   firstName,
   lastName,
-}: UpdateNameProps): Promise<ValidatorProps<Partial<UpdateNameProps>>> => {
+}: UpdateNameProps): ValidatorProps<Partial<UpdateNameProps>> => {
   const errors: Partial<UpdateNameProps> = {};
 
   /**

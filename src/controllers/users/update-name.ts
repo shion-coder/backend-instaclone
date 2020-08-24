@@ -15,7 +15,7 @@ export const updateName = async (req: Request, res: Response): Promise<Response>
    */
 
   const { firstName = '', lastName = '' }: UpdateNameProps = req.body;
-  const { errors, isValid } = await validateUpdateName({ firstName, lastName });
+  const { errors, isValid } = validateUpdateName({ firstName, lastName });
 
   if (!isValid) {
     return res.status(400).send({ errors });

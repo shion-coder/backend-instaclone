@@ -1,7 +1,7 @@
 import nodemailer from 'nodemailer';
 
 import { MAIL_USER, MAIL_PASS } from '@config';
-import { logger } from 'src/logger';
+import { logger } from '@logger';
 import { errorMessage } from '@messages';
 
 /* -------------------------------------------------------------------------- */

@@ -1,8 +1,8 @@
 import { Server } from 'socket.io';
 import jwt from 'jsonwebtoken';
 
-import app from 'src/app';
-import { TokenVerify } from '@types';
+import { TokenVerify, FollowNotification } from '@types';
+import app from '@express';
 
 /* -------------------------------------------------------------------------- */
 
@@ -14,7 +14,7 @@ declare global {
   }
 }
 
-const socketConnection = (): void => {
+export const socketConnect = (): void => {
   const io: Server = app.get('io');
 
   io.use((socket, next) => {
@@ -32,4 +32,8 @@ const socketConnection = (): void => {
   });
 };
 
-export default socketConnection;
+export const sendNotification = (notification: FollowNotification): void => {
+  const io: Server = app.get('io');
+
+  io.in(notification.receiver).emit('new-notification', notification);
+};

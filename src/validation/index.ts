@@ -1,5 +1,7 @@
 export * from './user-id';
 
+export * from './user-id-follow';
+
 export * from './email';
 
 export * from './register';

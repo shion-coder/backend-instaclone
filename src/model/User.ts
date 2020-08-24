@@ -103,6 +103,7 @@ const userSchema: Schema = new Schema({
     type: Number,
     default: 0,
   },
+  notifications: [{ type: Schema.Types.ObjectId, ref: 'Notification' }],
   isAdmin: {
     type: Boolean,
     default: false,

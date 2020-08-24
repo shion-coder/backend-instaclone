@@ -1,7 +1,15 @@
 import { Router } from 'express';
 
 import { jwtAuth, uploadSingle } from '@middleware';
-import { confirmEmail, resendEmail, getUser, updateAvatar, updateProfile, updatePassword } from '@controllers/users';
+import {
+  confirmEmail,
+  resendEmail,
+  getUser,
+  updateAvatar,
+  updateProfile,
+  updatePassword,
+  follow,
+} from '@controllers/users';
 
 /* -------------------------------------------------------------------------- */
 
@@ -48,3 +56,10 @@ usersRouter.route('/profile').put(jwtAuth, updateProfile);
  * @access  Private
  */
 usersRouter.route('/password').put(jwtAuth, updatePassword);
+
+/**
+ * @route   POST /api/users/:id/follow
+ * @desc    Verify users & follow user with id
+ * @access  Private
+ */
+usersRouter.route('/:id/follow').post(jwtAuth, follow);

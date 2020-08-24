@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 
-import { logger } from 'src/logger';
+import { logger } from '@logger';
 import { errorMessage } from '@messages';
 
 /* -------------------------------------------------------------------------- */

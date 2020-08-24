@@ -2,11 +2,11 @@ import { createServer } from 'http';
 import socketIo from 'socket.io';
 
 import { PORT } from '@config';
-import connectDatabase from 'src/database';
+import connectDatabase from '@database';
+import app from '@express';
 import { passportInit } from '@passport';
-import app from 'src/app';
-import socketConnection from 'src/socket';
-import { logger } from 'src/logger';
+import { socketConnect } from '@socket';
+import { logger } from '@logger';
 
 /* -------------------------------------------------------------------------- */
 
@@ -34,6 +34,6 @@ const io = socketIo(server, {
 
 app.set('io', io);
 
-socketConnection();
+socketConnect();
 
 server.listen(PORT, () => logger.info(`Express - Listening on port ${PORT}`));
