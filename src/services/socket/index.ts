@@ -1,7 +1,7 @@
 import { Server } from 'socket.io';
 import jwt from 'jsonwebtoken';
 
-import { TokenVerify, FollowNotification } from '@types';
+import { TokenVerify, NotificationProps, SocketEvent } from '@types';
 import app from '@express';
 
 /* -------------------------------------------------------------------------- */
@@ -32,8 +32,8 @@ export const socketConnect = (): void => {
   });
 };
 
-export const sendNotification = (notification: FollowNotification): void => {
+export const sendNotification = (notification: NotificationProps): void => {
   const io: Server = app.get('io');
 
-  io.in(notification.receiver).emit('new-notification', notification);
+  io.in(notification.receiver).emit(SocketEvent.NEW_NOTIFICATION, notification);
 };

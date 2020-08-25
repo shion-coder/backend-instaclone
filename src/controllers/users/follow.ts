@@ -3,6 +3,7 @@ import { Request, Response } from 'express';
 import { UserProps, User, Notification } from '@model';
 import { validateUserIdFollow } from '@validation';
 import { sendNotification } from '@socket';
+import { followMess } from '@messages';
 
 /* -------------------------------------------------------------------------- */
 
@@ -14,7 +15,7 @@ export const follow = async (req: Request, res: Response): Promise<Response> => 
    */
 
   const { id }: { id?: UserProps['id'] } = req.params;
-  const { errors, isValid } = await validateUserIdFollow({ id, currentUser: user });
+  const { errors, isValid } = await validateUserIdFollow({ id, user });
 
   if (!isValid) {
     return res.status(400).send({ message: errors.id });
@@ -35,11 +36,17 @@ export const follow = async (req: Request, res: Response): Promise<Response> => 
       $inc: { followingCount: -1 },
     });
 
-    return res.send();
+    return res.send({ message: followMess.unfollow });
   }
 
+  const notification = await Notification.create({
+    notificationType: 'follow',
+    sender: user.id,
+    receiver: id,
+  });
+
   await User.findByIdAndUpdate(id, {
-    $push: { followers: user.id },
+    $push: { followers: user.id, notifications: notification.id },
     $inc: { followerCount: 1 },
   });
 
@@ -48,26 +55,11 @@ export const follow = async (req: Request, res: Response): Promise<Response> => 
     $inc: { followingCount: 1 },
   });
 
-  const notification = await Notification.create({
-    notificationType: 'follow',
-    sender: user.id,
-    receiver: id,
-  });
+  const newNotification = await Notification.findById(notification.id)
+    .select('-__v')
+    .populate({ path: 'sender', select: 'firstName lastName username email avatar followers' });
 
-  user.notifications?.push(notification.id);
+  newNotification && sendNotification(newNotification);
 
-  await user.save();
-
-  sendNotification({
-    notificationType: 'follow',
-    sender: {
-      id: user.id,
-      username: user.username,
-      avatar: user.avatar as string,
-    },
-    receiver: id,
-    date: notification.date as string,
-  });
-
-  return res.send();
+  return res.send({ message: followMess.follow });
 };

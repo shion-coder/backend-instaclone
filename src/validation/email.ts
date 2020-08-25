@@ -10,7 +10,7 @@ import { errorMessage, userMessage } from '@messages';
 export const validateEmail = async ({ email }: Email): Promise<ValidatorProps<Partial<Email>>> => {
   const errors: Partial<Email> = {};
 
-  let user: UserProps | null = null;
+  let userFound: UserProps | null = null;
 
   /**
    * Find existing email and compare password
@@ -18,7 +18,7 @@ export const validateEmail = async ({ email }: Email): Promise<ValidatorProps<Pa
 
   if (!validator.isEmpty(email) && validator.isEmail(email)) {
     try {
-      user = await User.findOne({ email });
+      userFound = await User.findOne({ email });
     } catch {
       throw new Error(errorMessage.findingEmail);
     }
@@ -32,7 +32,7 @@ export const validateEmail = async ({ email }: Email): Promise<ValidatorProps<Pa
     ? (errors.email = userMessage.email.required)
     : !validator.isEmail(email)
     ? (errors.email = userMessage.email.invalid)
-    : !user
+    : !userFound
     ? (errors.email = userMessage.email.notFound)
     : null;
 

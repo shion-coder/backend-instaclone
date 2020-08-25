@@ -6,55 +6,48 @@ import { userMessage } from '@messages';
 /* -------------------------------------------------------------------------- */
 
 export const getUser = async (req: Request, res: Response): Promise<Response> => {
-  const currentUser = req.user as UserProps;
+  const user = req.user as UserProps;
   const { username } = req.params;
 
-  const user = await User.findOne({ username })
+  const userFound = await User.findOne({ username })
     .select('-__v -password')
     .populate({ path: 'posts', select: 'image thumbnail caption filter' })
     .populate({ path: 'bookmarks' })
-    .populate({ path: 'followers' })
-    .populate({ path: 'following' });
+    .populate({ path: 'followers', select: 'firstName lastName username avatar followers following' })
+    .populate({ path: 'following', select: 'firstName lastName username avatar followers following' });
 
-  if (!user) {
+  if (!userFound) {
     return res.status(404).send({ error: userMessage.username.notFound });
   }
 
   /**
-   * Check followers list of this user to see who current user are following or not
+   * Return new followers list with isFollowing value of each follower
    */
 
-  user.followers?.forEach((user) => {
-    user.isFollowing = false;
+  const followers = userFound.followers?.map((follower) => {
+    const isFollowing = user.following?.includes(follower._id.toString());
 
-    if (currentUser.following?.includes(user._id.toString())) {
-      user.isFollowing = true;
-    }
+    return { ...follower.toObject(), isFollowing };
   });
 
   /**
-   * Check following list of this user to see who current user are following or not
+   * Return new following list with isFollowing value of each following
    */
 
-  user.following?.forEach((user) => {
-    user.isFollowing = false;
+  const following = userFound.following?.map((following) => {
+    const isFollowing = user.following?.includes(following._id.toString());
 
-    if (currentUser.following?.includes(user._id.toString())) {
-      user.isFollowing = true;
-    }
+    return { ...following.toObject(), isFollowing };
   });
 
   /**
    * Check current user is following this user or not
    */
 
-  let isFollowing = false;
+  const isFollowing = userFound.followers?.map((follower) => follower._id.toString()).includes(user.id);
 
-  const followers = user.followers?.map((follower) => follower._id.toString());
-
-  if (followers?.includes(currentUser.id)) {
-    isFollowing = true;
-  }
-
-  return res.send({ user: { ...user.toObject(), fullName: user.fullName }, isFollowing });
+  return res.send({
+    user: { ...userFound.toObject(), followers, following, fullName: userFound.fullName },
+    isFollowing,
+  });
 };

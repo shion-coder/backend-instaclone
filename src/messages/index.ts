@@ -15,3 +15,5 @@ export * from './update-email';
 export * from './update-password';
 
 export * from './post';
+
+export * from './follow';

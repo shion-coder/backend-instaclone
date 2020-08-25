@@ -1,1 +1,1 @@
-export * from './follow';
+export * from './props';

@@ -13,7 +13,7 @@ export const validateLogin = async ({
 }: LoginProps): Promise<ValidatorProps<Partial<LoginProps>>> => {
   const errors: Partial<LoginProps> = {};
 
-  let user: UserProps | null = null;
+  let userFound: UserProps | null = null;
   let isMatch = false;
 
   /**
@@ -22,12 +22,12 @@ export const validateLogin = async ({
 
   if (!validator.isEmpty(usernameOrEmail)) {
     try {
-      user = await User.findOne({
+      userFound = await User.findOne({
         $or: [{ username: usernameOrEmail }, { email: usernameOrEmail }],
       });
 
-      if (user) {
-        isMatch = await user.comparePassword(password);
+      if (userFound) {
+        isMatch = await userFound.comparePassword(password);
       }
     } catch {
       throw new Error(errorMessage.findingUsernameOrEmail);
@@ -40,7 +40,7 @@ export const validateLogin = async ({
 
   validator.isEmpty(usernameOrEmail)
     ? (errors.usernameOrEmail = userMessage.usernameOrEmail.required)
-    : !user
+    : !userFound
     ? (errors.usernameOrEmail = userMessage.usernameOrEmail.notfound)
     : null;
 

@@ -9,11 +9,11 @@ import { errorMessage, userMessage } from '@messages';
 
 export const validateUserIdFollow = async ({
   id,
-  currentUser,
-}: UserId & { currentUser: UserProps }): Promise<ValidatorProps<Partial<UserId>>> => {
+  user,
+}: UserId & { user: UserProps }): Promise<ValidatorProps<Partial<UserId>>> => {
   const errors: Partial<UserId> = {};
 
-  let user: UserProps | null = null;
+  let userFound: UserProps | null = null;
 
   /**
    * Find existing email and compare password
@@ -21,7 +21,7 @@ export const validateUserIdFollow = async ({
 
   if (!validator.isEmpty(id) && validator.isMongoId(id)) {
     try {
-      user = await User.findById(id);
+      userFound = await User.findById(id);
     } catch {
       throw new Error(errorMessage.findingId);
     }
@@ -33,11 +33,11 @@ export const validateUserIdFollow = async ({
 
   validator.isEmpty(id)
     ? (errors.id = userMessage.id.required)
-    : id === currentUser?.id
+    : id === user?.id
     ? (errors.id = userMessage.id.isCurrentUser)
     : !validator.isMongoId(id)
     ? (errors.id = userMessage.id.invalid)
-    : !user
+    : !userFound
     ? (errors.id = userMessage.id.notFound)
     : null;
 
