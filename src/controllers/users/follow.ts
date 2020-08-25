@@ -54,6 +54,10 @@ export const follow = async (req: Request, res: Response): Promise<Response> => 
     receiver: id,
   });
 
+  user.notifications?.push(notification.id);
+
+  await user.save();
+
   sendNotification({
     notificationType: 'follow',
     sender: {

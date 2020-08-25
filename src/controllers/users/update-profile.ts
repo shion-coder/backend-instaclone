@@ -3,6 +3,7 @@ import { Request, Response } from 'express';
 import { UserProps } from '@model';
 import { UpdateProfileProps } from '@types';
 import { validateUpdateProfile } from '@validation';
+import { sendEmail, templates } from '@email';
 
 /* -------------------------------------------------------------------------- */
 
@@ -49,6 +50,9 @@ export const updateProfile = async (req: Request, res: Response): Promise<Respon
   user.bio = bio;
   if (email !== user.email) {
     user.email = email;
+    user.confirmed = false;
+
+    sendEmail(email, templates.confirm(user.id));
   }
 
   await user.save();

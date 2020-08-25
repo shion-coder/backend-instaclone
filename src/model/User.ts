@@ -2,7 +2,7 @@ import { Schema, Document, Model, HookNextFunction, model } from 'mongoose';
 import { genSalt, hash, compare } from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 
-import { PostProps } from '@model';
+import { PostProps, NotificationProps } from '@model';
 import { JWT_SECRET, JWT_EXPIRE } from '@config';
 import { errorMessage } from '@messages';
 
@@ -30,6 +30,7 @@ type UserSchemaProps = {
   followerCount?: number;
   following?: UserProps['id'][];
   followingCount?: number;
+  notifications?: NotificationProps['id'][];
   isAdmin?: boolean;
   confirmed?: boolean;
 };

@@ -39,7 +39,7 @@ export const createPost = async (req: Request, res: Response): Promise<Response>
     user.postCount = user.postCount + 1;
   }
 
-  user.save();
+  await user.save();
 
   const data = await post.populate({ path: 'author', select: '-__v -password -posts' }).execPopulate();
 
