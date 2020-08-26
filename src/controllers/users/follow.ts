@@ -3,7 +3,6 @@ import { Request, Response } from 'express';
 import { UserProps, User, Notification } from '@model';
 import { validateUserIdFollow } from '@validation';
 import { sendNotification } from '@socket';
-import { followMess } from '@messages';
 
 /* -------------------------------------------------------------------------- */
 
@@ -36,7 +35,7 @@ export const follow = async (req: Request, res: Response): Promise<Response> => 
       $inc: { followingCount: -1 },
     });
 
-    return res.send({ message: followMess.unfollow });
+    return res.send({ isFollowing: false });
   }
 
   const notification = await Notification.create({
@@ -61,5 +60,5 @@ export const follow = async (req: Request, res: Response): Promise<Response> => 
 
   newNotification && sendNotification(newNotification);
 
-  return res.send({ message: followMess.follow });
+  return res.send({ isFollowing: true });
 };

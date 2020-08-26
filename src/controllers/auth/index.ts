@@ -6,6 +6,4 @@ export * from './google';
 
 export * from './facebook';
 
-export * from './me';
-
 export * from './logout';

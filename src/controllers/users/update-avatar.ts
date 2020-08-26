@@ -17,5 +17,5 @@ export const updateAvatar = (req: Request, res: Response): Response => {
 
   user.save();
 
-  return res.send({ user });
+  return res.send({ avatar: user.avatar });
 };

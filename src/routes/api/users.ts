@@ -4,6 +4,7 @@ import { jwtAuth, uploadSingle } from '@middleware';
 import {
   confirmEmail,
   resendEmail,
+  me,
   getUser,
   updateAvatar,
   updateProfile,
@@ -28,6 +29,13 @@ usersRouter.route('/email/confirm/:id').put(confirmEmail);
  * @access  Public
  */
 usersRouter.route('/email/resend').post(resendEmail);
+
+/**
+ * @route   GET /api/users/me
+ * @desc    Verify auth & return user data
+ * @access  Private
+ */
+usersRouter.route('/me').get(jwtAuth, me);
 
 /**
  * @route   GET /api/users/:username

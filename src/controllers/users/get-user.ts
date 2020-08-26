@@ -27,7 +27,7 @@ export const getUser = async (req: Request, res: Response): Promise<Response> =>
   const followers = userFound.followers?.map((follower) => {
     const isFollowing = user.following?.includes(follower._id.toString());
 
-    return { ...follower.toObject(), isFollowing };
+    return { ...follower.toObject(), fullName: follower.fullName, isFollowing };
   });
 
   /**
@@ -37,7 +37,7 @@ export const getUser = async (req: Request, res: Response): Promise<Response> =>
   const following = userFound.following?.map((following) => {
     const isFollowing = user.following?.includes(following._id.toString());
 
-    return { ...following.toObject(), isFollowing };
+    return { ...following.toObject(), fullName: following.fullName, isFollowing };
   });
 
   /**
