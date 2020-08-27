@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 
-import { UserProps } from '@model';
+import { UserProps, User } from '@model';
 import { UpdateProfileProps } from '@types';
 import { validateUpdateProfile } from '@validation';
 import { sendEmail, templates } from '@email';
@@ -57,5 +57,7 @@ export const updateProfile = async (req: Request, res: Response): Promise<Respon
 
   await user.save();
 
-  return res.send({ user });
+  const userResult = await User.findById(user.id).select('-__v -password').lean();
+
+  return res.send({ user: { ...userResult, fullName: user.fullName } });
 };

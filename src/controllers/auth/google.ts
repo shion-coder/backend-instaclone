@@ -1,15 +1,17 @@
 import { Request } from 'express';
-import { UserProps } from '@model';
+import { UserProps, User } from '@model';
 
 /* -------------------------------------------------------------------------- */
 
-export const google = (req: Request): void => {
+export const google = async (req: Request): Promise<void> => {
   const io = req.app.get('io');
 
   const user = req.user as UserProps;
 
+  const userResult = await User.findById(user.id).select('-__v -password').lean();
+
   io.in(req.session?.socketId).emit('google', {
-    user: { ...user.toObject(), fullName: user.fullName },
+    user: { ...userResult, fullName: user.fullName },
     token: user.generateAuthToken(),
   });
 };
