@@ -17,7 +17,7 @@ type CommentSchemaProps = {
 export type CommentProps = CommentSchemaProps & Document;
 
 /**
- * User schema
+ * Comment schema
  */
 
 const commentSchema: Schema = new Schema({

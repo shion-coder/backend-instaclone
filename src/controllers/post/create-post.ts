@@ -41,7 +41,10 @@ export const createPost = async (req: Request, res: Response): Promise<Response>
 
   await user.save();
 
-  const data = await post.populate({ path: 'author', select: '-__v -password -posts' }).execPopulate();
+  const postResult = await Post.findById(post.id)
+    .select('-__v')
+    .populate({ path: 'author', select: 'fullName username avatar' })
+    .lean();
 
-  return res.send({ data });
+  return res.send({ post: postResult });
 };

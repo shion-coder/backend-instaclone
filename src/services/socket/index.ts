@@ -1,7 +1,8 @@
 import { Server } from 'socket.io';
 import jwt from 'jsonwebtoken';
 
-import { TokenVerify, NotificationProps, SocketEvent } from '@types';
+import { NotificationProps } from '@model';
+import { TokenVerify, SocketEvent } from '@types';
 import app from '@express';
 
 /* -------------------------------------------------------------------------- */

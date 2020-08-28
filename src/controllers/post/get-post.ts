@@ -18,7 +18,10 @@ export const getPost = async (req: Request, res: Response): Promise<Response | v
     return res.status(400).send({ error: errors.id });
   }
 
-  const post = await Post.findById(id).select('-__v');
+  const post = await Post.findById(id)
+    .select('-__v')
+    .populate({ path: 'author', select: 'fullName username avatar' })
+    .lean();
 
   if (!post) {
     return res.status(404).send({ error: postMessage.noPost });

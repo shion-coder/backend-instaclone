@@ -20,7 +20,7 @@ type NotificationSchemaProps = {
 export type NotificationProps = NotificationSchemaProps & Document;
 
 /**
- * User schema
+ * Notification schema
  */
 
 const notificationSchema: Schema = new Schema({

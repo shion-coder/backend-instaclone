@@ -1,8 +1,8 @@
 import { Request, Response } from 'express';
 
-import { UserProps, Post } from '@model';
+import { UserProps, Post, Comment } from '@model';
 import { validatePostIdWithAuthor } from '@validation';
-import { postMessage } from '@messages';
+import { postMessage, commentMessage } from '@messages';
 
 /* -------------------------------------------------------------------------- */
 
@@ -31,6 +31,16 @@ export const deletePost = async (req: Request, res: Response): Promise<Response>
   }
 
   /**
+   * Delete all comment related with this post
+   */
+
+  const commentDelete = await Comment.deleteMany({ post: id });
+
+  if (!commentDelete.deletedCount) {
+    return res.status(500).send({ error: commentMessage.errorDelete });
+  }
+
+  /**
    * Delete post in user
    */
 
@@ -42,5 +52,5 @@ export const deletePost = async (req: Request, res: Response): Promise<Response>
 
   user.save();
 
-  return res.status(204).send();
+  return res.status(204).send({ message: postMessage.delete });
 };

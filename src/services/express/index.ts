@@ -44,9 +44,6 @@ app.get('env') === Environment.DEVELOPMENT && app.use(request);
  *  Routes
  */
 
-// Catch a start up request so that a sleepy Heroku instance can be responsive as soon as possible
-app.get('/wake-up', (req, res) => res.send('Hello'));
-
 app.use('/api', apiRouter);
 
 /**

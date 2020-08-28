@@ -24,10 +24,10 @@ export const login = async (req: Request, res: Response): Promise<Response> => {
 
   const user = await User.findOne({
     $or: [{ username: usernameOrEmail }, { email: usernameOrEmail }],
-  }).select('-__v -password');
+  }).select('id firstName lastName fullName username email website bio avatar');
 
   return res.send({
-    user: { ...user?.toObject(), fullName: user?.fullName },
+    user: { ...user?.toObject() },
     token: user?.generateAuthToken(),
   });
 };

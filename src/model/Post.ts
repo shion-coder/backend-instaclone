@@ -24,7 +24,7 @@ type PostSchemaProps = {
 export type PostProps = PostSchemaProps & Document;
 
 /**
- * User schema
+ * Post schema
  */
 
 const postSchema: Schema = new Schema({

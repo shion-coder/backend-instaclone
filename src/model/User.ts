@@ -17,6 +17,7 @@ type UserSchemaProps = {
   facebookId?: string;
   firstName: string;
   lastName?: string;
+  fullName?: string;
   username: string;
   email: string;
   password: string;
@@ -37,7 +38,6 @@ type UserSchemaProps = {
 
 export type UserProps = UserSchemaProps &
   Document & {
-    fullName?: string;
     comparePassword: (password: string) => Promise<boolean>;
     generateAuthToken: () => string;
   };
@@ -63,6 +63,9 @@ const userSchema: Schema = new Schema({
     maxlength: 30,
     default: '',
   },
+  fullName: {
+    type: String,
+  },
   username: {
     type: String,
     lowercase: true,
@@ -87,7 +90,10 @@ const userSchema: Schema = new Schema({
     type: String,
     default: '',
   },
-  website: String,
+  website: {
+    type: String,
+    default: '',
+  },
   posts: [{ type: Schema.Types.ObjectId, ref: 'Post' }],
   postCount: {
     type: Number,
@@ -120,10 +126,16 @@ const userSchema: Schema = new Schema({
 });
 
 /**
- * Hash password before save user
+ * Set full name, default username as id when no username exist, hash password before save user
  */
 
 userSchema.pre('save', async function (this: UserProps, next: HookNextFunction): Promise<void> {
+  if (!this.lastName) {
+    this.fullName = this.firstName;
+  } else {
+    this.fullName = `${this.firstName} ${this.lastName}`;
+  }
+
   if (!this.username) {
     this.username = this._id;
   }
@@ -139,18 +151,6 @@ userSchema.pre('save', async function (this: UserProps, next: HookNextFunction):
   }
 
   next();
-});
-
-/**
- * Get full name
- */
-
-userSchema.virtual('fullName').get(function (this: UserProps): string {
-  if (!this.lastName) {
-    return this.firstName;
-  }
-
-  return `${this.firstName} ${this.lastName}`;
 });
 
 /**

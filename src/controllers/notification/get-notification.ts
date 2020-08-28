@@ -1,22 +1,23 @@
 import { Request, Response } from 'express';
 
-import { UserProps } from '@model';
+import { UserProps, User } from '@model';
 
 /* -------------------------------------------------------------------------- */
 
 export const getNotification = async (req: Request, res: Response): Promise<Response> => {
   const user = req.user as UserProps;
 
-  const { notifications } = await user
+  const userResult = await User.findById(user.id)
+    .select('notifications')
     .populate({
       path: 'notifications',
       select: '-__v',
       populate: {
         path: 'sender',
-        select: 'firstName lastName username email avatar followers',
+        select: 'fullName username avatar followers',
       },
     })
-    .execPopulate();
+    .lean();
 
-  return res.send({ notifications });
+  return res.send({ user: userResult });
 };

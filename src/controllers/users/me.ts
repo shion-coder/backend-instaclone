@@ -11,9 +11,11 @@ export const me = async (req: Request, res: Response): Promise<Response> => {
 
   const user = req.user as UserProps;
 
-  const userResult = await User.findById(user.id).select('-__v -password').lean();
+  const userResult = await User.findById(user.id)
+    .select('id firstName lastName fullName username email website bio avatar')
+    .lean();
 
   return res.send({
-    user: { ...userResult, fullName: user.fullName },
+    user: { ...userResult },
   });
 };

@@ -11,4 +11,5 @@ export const postMessage = {
   errorDelete: "Couldn't delete the post",
   noPost: 'No post found with that id',
   noPosts: 'No posts found',
+  delete: 'Delete successfully',
 };

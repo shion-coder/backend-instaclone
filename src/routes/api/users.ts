@@ -10,6 +10,7 @@ import {
   updateProfile,
   updatePassword,
   follow,
+  getFollowers,
 } from '@controllers/users';
 
 /* -------------------------------------------------------------------------- */
@@ -21,6 +22,7 @@ export const usersRouter = Router();
  * @desc    Confirm email with id
  * @access  Public
  */
+
 usersRouter.route('/email/confirm/:id').put(confirmEmail);
 
 /**
@@ -28,6 +30,7 @@ usersRouter.route('/email/confirm/:id').put(confirmEmail);
  * @desc    Resend confirm email
  * @access  Public
  */
+
 usersRouter.route('/email/resend').post(resendEmail);
 
 /**
@@ -35,6 +38,7 @@ usersRouter.route('/email/resend').post(resendEmail);
  * @desc    Verify auth & return user data
  * @access  Private
  */
+
 usersRouter.route('/me').get(jwtAuth, me);
 
 /**
@@ -42,6 +46,7 @@ usersRouter.route('/me').get(jwtAuth, me);
  * @desc    Verify auth & return user profile
  * @access  Private
  */
+
 usersRouter.route('/:username').get(jwtAuth, getUser);
 
 /**
@@ -49,6 +54,7 @@ usersRouter.route('/:username').get(jwtAuth, getUser);
  * @desc    Verify auth & update avatar
  * @access  Private
  */
+
 usersRouter.route('/avatar').put(jwtAuth, uploadSingle, updateAvatar);
 
 /**
@@ -56,6 +62,7 @@ usersRouter.route('/avatar').put(jwtAuth, uploadSingle, updateAvatar);
  * @desc    Verify auth & update avatar
  * @access  Private
  */
+
 usersRouter.route('/profile').put(jwtAuth, updateProfile);
 
 /**
@@ -63,6 +70,7 @@ usersRouter.route('/profile').put(jwtAuth, updateProfile);
  * @desc    Verify users & update password
  * @access  Private
  */
+
 usersRouter.route('/password').put(jwtAuth, updatePassword);
 
 /**
@@ -70,4 +78,13 @@ usersRouter.route('/password').put(jwtAuth, updatePassword);
  * @desc    Verify users & follow user with id
  * @access  Private
  */
+
 usersRouter.route('/:id/follow').post(jwtAuth, follow);
+
+/**
+ * @route   POST /api/users/:id/:offset/followers
+ * @desc    Verify users & get followers list
+ * @access  Private
+ */
+
+usersRouter.route('/:id/:offset/followers').post(jwtAuth, getFollowers);

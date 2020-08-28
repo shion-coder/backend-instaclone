@@ -12,6 +12,7 @@ export const notificationRouter = Router();
  * @desc    Get notification
  * @access  Private
  */
+
 notificationRouter.route('/').get(jwtAuth, getNotification);
 
 /**
@@ -19,4 +20,5 @@ notificationRouter.route('/').get(jwtAuth, getNotification);
  * @desc    Read notification
  * @access  Private
  */
+
 notificationRouter.route('/').put(jwtAuth, readNotification);

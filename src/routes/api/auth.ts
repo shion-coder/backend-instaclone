@@ -1,7 +1,7 @@
 import { Router } from 'express';
 
-import { googleAuth, facebookAuth, addSocket } from '@middleware';
-import { register, login, google, facebook, logout } from '@controllers/auth';
+import { googleAuth, addSocket } from '@middleware';
+import { register, login, google } from '@controllers/auth';
 
 /* -------------------------------------------------------------------------- */
 
@@ -12,6 +12,7 @@ export const authRouter = Router();
  * @desc    Register & return JWT token
  * @access  Public
  */
+
 authRouter.route('/register').post(register);
 
 /**
@@ -19,6 +20,7 @@ authRouter.route('/register').post(register);
  * @desc    Login & return JWT token
  * @access  Public
  */
+
 authRouter.route('/login').post(login);
 
 /**
@@ -26,20 +28,6 @@ authRouter.route('/login').post(login);
  * @desc    Login with google
  * @access  Public
  */
+
 authRouter.route('/google').get(addSocket, googleAuth);
 authRouter.route('/google/callback').get(googleAuth, google);
-
-/**
- * @route   GET /api/auth/facebook
- * @desc    Login with facebook
- * @access  Public
- */
-authRouter.route('/facebook').get(facebookAuth);
-authRouter.route('/facebook/callback').get(facebookAuth, facebook);
-
-/**
- * @route   GET /api/auth/logout
- * @desc    Logout
- * @access  Public
- */
-authRouter.route('/logout').get(logout);
