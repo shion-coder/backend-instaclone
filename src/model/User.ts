@@ -81,18 +81,18 @@ const userSchema: Schema = new Schema({
   password: {
     type: String,
   },
-  avatar: {
+  website: {
     type: String,
-    default:
-      'https://res.cloudinary.com/shion-coder/image/upload/v1597954454/avatar/187-050b834aa2ef8e6508f03a2e7c6e70a994d77eebde95022f161d3728608ab6fa_ncsfg4.png',
+    default: '',
   },
   bio: {
     type: String,
     default: '',
   },
-  website: {
+  avatar: {
     type: String,
-    default: '',
+    default:
+      'https://res.cloudinary.com/shion-coder/image/upload/v1597954454/avatar/187-050b834aa2ef8e6508f03a2e7c6e70a994d77eebde95022f161d3728608ab6fa_ncsfg4.png',
   },
   posts: [{ type: Schema.Types.ObjectId, ref: 'Post' }],
   postCount: {
