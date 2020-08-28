@@ -12,6 +12,7 @@ type CommentSchemaProps = {
   message: string;
   post: PostProps['id'];
   author: UserProps['id'];
+  date?: string;
 };
 
 export type CommentProps = CommentSchemaProps & Document;

@@ -34,6 +34,7 @@ type UserSchemaProps = {
   notifications?: NotificationProps['id'][];
   isAdmin?: boolean;
   confirmed?: boolean;
+  date?: string;
 };
 
 export type UserProps = UserSchemaProps &

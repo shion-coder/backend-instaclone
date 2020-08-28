@@ -19,6 +19,7 @@ type PostSchemaProps = {
   comments?: CommentProps['id'][];
   commentCount?: number;
   author: UserProps['id'];
+  date?: string;
 };
 
 export type PostProps = PostSchemaProps & Document;
