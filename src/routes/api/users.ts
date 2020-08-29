@@ -82,9 +82,9 @@ usersRouter.route('/password').put(jwtAuth, updatePassword);
 usersRouter.route('/:id/follow').post(jwtAuth, follow);
 
 /**
- * @route   POST /api/users/:id/:offset/followers
+ * @route   GET /api/users/:id/:offset/followers
  * @desc    Verify users & get followers list
  * @access  Private
  */
 
-usersRouter.route('/:id/:offset/followers').post(jwtAuth, getFollowers);
+usersRouter.route('/:id/:offset/followers').get(jwtAuth, getFollowers);

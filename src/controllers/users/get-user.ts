@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 
-import { User, UserProps } from '@model';
+import { UserProps, User } from '@model';
 import { userMessage } from '@messages';
 
 /* -------------------------------------------------------------------------- */
@@ -17,17 +17,11 @@ export const getUser = async (req: Request, res: Response): Promise<Response> =>
     return res.status(404).send({ error: userMessage.username.notFound });
   }
 
-  const isFollowing = userFound.followers?.map((follower) => follower._id.toString()).includes(user.id);
-
   /**
-   * Return new followers list with isFollowing value of each follower
+   * Check current user is following this user or not
    */
 
-  // const followers = userFound.followers?.map((follower) => {
-  //   const isFollowing = user.following?.includes(follower._id.toString());
-
-  //   return { user: { ...follower.toObject() }, isFollowing };
-  // });
+  const isFollowing = userFound.followers?.map((follower) => follower._id.toString()).includes(user.id);
 
   /**
    * Return new following list with isFollowing value of each following
@@ -38,10 +32,6 @@ export const getUser = async (req: Request, res: Response): Promise<Response> =>
 
   //   return { user: { ...following.toObject() }, isFollowing };
   // });
-
-  /**
-   * Check current user is following this user or not
-   */
 
   return res.send({
     user: { ...userFound },
