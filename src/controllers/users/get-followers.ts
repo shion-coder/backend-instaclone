@@ -17,7 +17,7 @@ export const getFollowers = async (req: Request, res: Response): Promise<Respons
     return res.status(400).send({ message: errors.id });
   }
 
-  const limit = 1;
+  const limit = 3;
 
   const userFound = await User.findById(id)
     .select('followers')
