@@ -11,6 +11,7 @@ import {
   updatePassword,
   follow,
   getFollowers,
+  getFollowing,
 } from '@controllers/users';
 
 /* -------------------------------------------------------------------------- */
@@ -88,3 +89,11 @@ usersRouter.route('/:id/follow').post(jwtAuth, follow);
  */
 
 usersRouter.route('/:id/:offset/followers').get(jwtAuth, getFollowers);
+
+/**
+ * @route   GET /api/users/:id/:offset/following
+ * @desc    Verify users & get following list
+ * @access  Private
+ */
+
+usersRouter.route('/:id/:offset/following').get(jwtAuth, getFollowing);

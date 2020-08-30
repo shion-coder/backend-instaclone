@@ -6,7 +6,7 @@ import { userMessage } from '@messages';
 
 /* -------------------------------------------------------------------------- */
 
-export const getFollowers = async (req: Request, res: Response): Promise<Response> => {
+export const getFollowing = async (req: Request, res: Response): Promise<Response> => {
   const user = req.user as UserProps;
   const { id, offset } = req.params;
 
@@ -19,9 +19,9 @@ export const getFollowers = async (req: Request, res: Response): Promise<Respons
   const limit = 3;
 
   const userFound = await User.findById(id)
-    .select('followers')
+    .select('following')
     .populate({
-      path: 'followers',
+      path: 'following',
       select: 'fullName username avatar',
       options: { skip: Number(offset), limit },
     })
@@ -31,15 +31,15 @@ export const getFollowers = async (req: Request, res: Response): Promise<Respons
     return res.status(404).send({ error: userMessage.username.notFound });
   }
 
-  const followers = userFound.followers?.map((follower) => {
-    const isFollowing = user.following?.includes(follower._id.toString());
+  const following = userFound.following?.map((following) => {
+    const isFollowing = user.following?.includes(following._id.toString());
 
-    return { user: { ...follower }, isFollowing };
+    return { user: { ...following }, isFollowing };
   });
 
-  if (followers?.length === limit) {
-    return res.send({ users: followers, next: Number(offset) + limit });
+  if (following?.length === limit) {
+    return res.send({ users: following, next: Number(offset) + limit });
   }
 
-  return res.send({ users: followers });
+  return res.send({ users: following });
 };

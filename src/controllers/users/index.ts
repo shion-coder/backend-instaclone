@@ -15,3 +15,5 @@ export * from './update-password';
 export * from './follow';
 
 export * from './get-followers';
+
+export * from './get-following';
