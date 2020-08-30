@@ -55,8 +55,8 @@ export const follow = async (req: Request, res: Response): Promise<Response> => 
   });
 
   const newNotification = await Notification.findById(notification.id)
-    .select('-__v')
-    .populate({ path: 'sender', select: 'fullNam username avatar followers' });
+    .select('sender notificationType notificationData read date')
+    .populate({ path: 'sender', select: 'fullNam username avatar' });
 
   newNotification && sendNotification(newNotification);
 

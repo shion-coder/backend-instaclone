@@ -8,12 +8,12 @@ import { getNotification, readNotification } from '@controllers/notification';
 export const notificationRouter = Router();
 
 /**
- * @route   GET /api/notification
+ * @route   GET /api/notification/:offset
  * @desc    Get notification
  * @access  Private
  */
 
-notificationRouter.route('/').get(jwtAuth, getNotification);
+notificationRouter.route('/:offset').get(jwtAuth, getNotification);
 
 /**
  * @route   PUT /api/notification
