@@ -19,4 +19,4 @@ apiRouter.use('/users', usersRouter);
 
 apiRouter.use('/post', postRouter);
 
-apiRouter.use('/notification', notificationRouter);
+apiRouter.use('/notifications', notificationRouter);

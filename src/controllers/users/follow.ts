@@ -55,8 +55,8 @@ export const follow = async (req: Request, res: Response): Promise<Response> => 
   });
 
   const newNotification = await Notification.findById(notification.id)
-    .select('sender notificationType notificationData read date')
-    .populate({ path: 'sender', select: 'fullNam username avatar' });
+    .select('sender receiver notificationType notificationData read date')
+    .populate({ path: 'sender', select: 'fullName username avatar' });
 
   newNotification && sendNotification(newNotification);
 
