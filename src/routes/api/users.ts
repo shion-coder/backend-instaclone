@@ -12,6 +12,7 @@ import {
   follow,
   getFollowers,
   getFollowing,
+  getPosts,
 } from '@controllers/users';
 
 /* -------------------------------------------------------------------------- */
@@ -49,6 +50,14 @@ usersRouter.route('/me').get(jwtAuth, me);
  */
 
 usersRouter.route('/:username').get(jwtAuth, getUser);
+
+/**
+ * @route   GET /api/users/:username/posts/:offset
+ * @desc    Verify auth & return posts of user
+ * @access  Private
+ */
+
+usersRouter.route('/:username/posts/:offset').get(jwtAuth, getPosts);
 
 /**
  * @route   PUT /api/users/avatar

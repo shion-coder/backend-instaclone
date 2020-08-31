@@ -23,16 +23,6 @@ export const getUser = async (req: Request, res: Response): Promise<Response> =>
 
   const isFollowing = userFound.followers?.map((follower) => follower._id.toString()).includes(user.id);
 
-  /**
-   * Return new following list with isFollowing value of each following
-   */
-
-  // const following = userFound.following?.map((following) => {
-  //   const isFollowing = user.following?.includes(following._id.toString());
-
-  //   return { user: { ...following.toObject() }, isFollowing };
-  // });
-
   return res.send({
     user: { ...userFound },
     isFollowing,
