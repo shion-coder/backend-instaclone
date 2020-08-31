@@ -12,8 +12,11 @@ export const getUser = async (req: Request, res: Response): Promise<Response> =>
   const limit = 9;
 
   const userFound = await User.findOne({ username })
-    .select('id fullName username email website bio avatar posts postCount followers followerCount followingCount')
+    .select(
+      'id fullName username email website bio avatar posts postCount saved followers followerCount followingCount',
+    )
     .populate({ path: 'posts', select: '-__v', options: { sort: { date: -1 }, limit } })
+    .populate({ path: 'saved', select: '-__v', options: { sort: { date: -1 }, limit } })
     .lean();
 
   if (!userFound) {
