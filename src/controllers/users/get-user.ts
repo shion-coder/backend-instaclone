@@ -9,8 +9,11 @@ export const getUser = async (req: Request, res: Response): Promise<Response> =>
   const user = req.user as UserProps;
   const { username } = req.params;
 
+  const limit = 9;
+
   const userFound = await User.findOne({ username })
-    .select('id fullName username email website bio avatar postCount followers followerCount followingCount')
+    .select('id fullName username email website bio avatar posts postCount followers followerCount followingCount')
+    .populate({ path: 'posts', select: '-__v', options: { sort: { date: -1 }, limit } })
     .lean();
 
   if (!userFound) {
