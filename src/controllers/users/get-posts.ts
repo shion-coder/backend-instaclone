@@ -1,12 +1,11 @@
 import { Request, Response } from 'express';
 
-import { UserProps, User, Post } from '@model';
+import { User, Post } from '@model';
 import { userMessage } from '@messages';
 
 /* -------------------------------------------------------------------------- */
 
 export const getPosts = async (req: Request, res: Response): Promise<Response> => {
-  const user = req.user as UserProps;
   const { username, offset } = req.params;
 
   /**
@@ -21,12 +20,16 @@ export const getPosts = async (req: Request, res: Response): Promise<Response> =
 
   const limit = 9;
 
-  const posts = await Post.find({ author: user.id })
+  const posts = await Post.find({ author: userFound.id })
     .sort({ date: -1 })
     .select('-__v')
     .skip(Number(offset))
     .limit(limit)
     .lean();
+
+  if (posts?.length === limit) {
+    return res.send({ posts: posts, next: Number(offset) + limit });
+  }
 
   return res.send({ posts });
 };
