@@ -28,12 +28,12 @@ export const usersRouter = Router();
 usersRouter.route('/email/confirm/:id').put(confirmEmail);
 
 /**
- * @route   POST /api/users/email/resend
+ * @route   GET /api/users/email/resend
  * @desc    Resend confirm email
  * @access  Public
  */
 
-usersRouter.route('/email/resend').post(resendEmail);
+usersRouter.route('/email/resend').get(jwtAuth, resendEmail);
 
 /**
  * @route   GET /api/users/me
