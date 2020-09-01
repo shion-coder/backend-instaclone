@@ -24,7 +24,7 @@ export const login = async (req: Request, res: Response): Promise<Response> => {
 
   const user = await User.findOne({
     $or: [{ username: usernameOrEmail }, { email: usernameOrEmail }],
-  }).select('id firstName lastName fullName username email website bio avatar');
+  }).select('id firstName lastName fullName username email website bio avatar confirmed');
 
   return res.send({
     user: { ...user?.toObject() },

@@ -41,7 +41,7 @@ export const register = async (req: Request, res: Response): Promise<Response | 
   const user = await User.create({ firstName, lastName, username, email, password });
 
   const userResult = await User.findOne({ username })
-    .select('id firstName lastName fullName username email website bio avatar')
+    .select('id firstName lastName fullName username email website bio avatar confirmed')
     .lean();
 
   res.status(201).send({
