@@ -45,6 +45,7 @@ export type UserProps = UserSchemaProps &
 
 export type TokenPayloadProps = {
   id: UserProps['id'];
+  username: UserProps['username'];
 };
 
 /**
@@ -179,6 +180,7 @@ userSchema.methods.comparePassword = async function (this: UserProps, password: 
 userSchema.methods.generateAuthToken = function (this: UserProps): string {
   const payload: TokenPayloadProps = {
     id: this.id,
+    username: this.username,
   };
 
   return jwt.sign(payload, JWT_SECRET, { expiresIn: JWT_EXPIRE });
