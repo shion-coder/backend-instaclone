@@ -12,11 +12,16 @@ export const getPost = async (req: Request, res: Response): Promise<Response | v
    */
 
   const { id } = req.params;
+
   const { errors, isValid } = validatePostId({ id });
 
   if (!isValid) {
     return res.status(400).send({ error: errors.id });
   }
+
+  /**
+   * Find post with id in params and populate with author info to send client
+   */
 
   const post = await Post.findById(id)
     .select('-__v')

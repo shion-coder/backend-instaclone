@@ -10,7 +10,7 @@ export const createPost = async (req: Request, res: Response): Promise<Response>
   const user = req.user as UserProps;
 
   /**
-   * Create new post
+   * Check file in request
    */
 
   if (!req.file) {
@@ -21,6 +21,10 @@ export const createPost = async (req: Request, res: Response): Promise<Response>
 
   const { caption, filter } = req.body;
 
+  /**
+   * Create new post
+   */
+
   const post = await Post.create({
     image: path,
     thumbnail: formatCloudinaryUrl(path, { mode: 'thumb', width: 400, height: 400 }),
@@ -30,7 +34,7 @@ export const createPost = async (req: Request, res: Response): Promise<Response>
   });
 
   /**
-   * Save new post to user
+   * Push new post id in Post model and increment 1 in post count of user
    */
 
   user.posts?.push(post.id);
@@ -40,6 +44,10 @@ export const createPost = async (req: Request, res: Response): Promise<Response>
   }
 
   await user.save();
+
+  /**
+   * Send result with Post fields and author info
+   */
 
   const postResult = await Post.findById(post.id)
     .select('-__v')

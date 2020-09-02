@@ -57,6 +57,10 @@ export const updateProfile = async (req: Request, res: Response): Promise<Respon
 
   await user.save();
 
+  /**
+   * Send user info after update back to client
+   */
+
   const userResult = await User.findById(user.id)
     .select('id firstName lastName fullName username email website bio avatar')
     .lean();

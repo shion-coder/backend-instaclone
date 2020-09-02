@@ -49,5 +49,9 @@ export const register = async (req: Request, res: Response): Promise<Response | 
     token: user.generateAuthToken(),
   });
 
+  /**
+   * Send confirmation email
+   */
+
   sendEmail(user.email, templates.confirm(user.id));
 };

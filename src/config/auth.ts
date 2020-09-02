@@ -1,3 +1,4 @@
+import { Environment } from '@types';
 import { FB_CLIENT_ID, FB_CLIENT_SECRET, GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET } from './env';
 
 /* -------------------------------------------------------------------------- */
@@ -5,7 +6,7 @@ import { FB_CLIENT_ID, FB_CLIENT_SECRET, GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET 
 const providers = ['google', 'facebook'];
 
 const callbacks = providers.map((provider) => {
-  return process.env.NODE_ENV === 'production' ? '' : `/api/auth/${provider}/callback`;
+  return process.env.NODE_ENV === Environment.PRODUCTION ? '' : `/api/auth/${provider}/callback`;
 });
 
 const [googleURL, facebookURL] = callbacks;

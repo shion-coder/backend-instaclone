@@ -13,6 +13,14 @@ const storage = cloudinaryStorage({
   },
 });
 
+/**
+ * Handle upload single file
+ */
+
 export const multerUploadSingle = multer({ storage }).single('image');
+
+/**
+ * Handle upload multi file
+ */
 
 export const multerUploadMulti = multer({ storage }).array('images');

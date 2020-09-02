@@ -1,3 +1,7 @@
+/**
+ * Format image with cloudinary
+ */
+
 export const formatCloudinaryUrl = (
   url: string,
   option: {

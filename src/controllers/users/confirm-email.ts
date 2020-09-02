@@ -12,6 +12,7 @@ export const confirmEmail = async (req: Request, res: Response): Promise<Respons
    */
 
   const { id } = req.params;
+
   const { isValid } = await validateUserId({ id });
 
   if (!isValid) {
@@ -19,7 +20,7 @@ export const confirmEmail = async (req: Request, res: Response): Promise<Respons
   }
 
   /**
-   * Get user & update confirmed field of user in database
+   * Get user & update confirmed field of user in database then send message to client
    */
 
   const user = await User.findById(id);

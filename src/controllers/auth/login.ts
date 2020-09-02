@@ -12,6 +12,7 @@ export const login = async (req: Request, res: Response): Promise<Response> => {
    */
 
   const { usernameOrEmail = '', password = '' }: LoginProps = req.body;
+
   const { errors, isValid } = await validateLogin({ usernameOrEmail, password });
 
   if (!isValid) {

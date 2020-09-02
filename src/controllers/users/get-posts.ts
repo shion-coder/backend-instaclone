@@ -20,12 +20,20 @@ export const getPosts = async (req: Request, res: Response): Promise<Response> =
 
   const limit = 9;
 
+  /**
+   * Find posts by username with limit number and offset
+   */
+
   const posts = await Post.find({ author: userFound.id })
     .sort({ date: -1 })
     .select('-__v')
     .skip(Number(offset))
     .limit(limit)
     .lean();
+
+  /**
+   * Send posts and next number to use in query next time when posts get reach limit number
+   */
 
   if (posts?.length === limit) {
     return res.send({ posts: posts, next: Number(offset) + limit });

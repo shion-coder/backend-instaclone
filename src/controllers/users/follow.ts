@@ -14,6 +14,7 @@ export const follow = async (req: Request, res: Response): Promise<Response> => 
    */
 
   const { id }: { id?: UserProps['id'] } = req.params;
+
   const { errors, isValid } = await validateUserIdFollow({ id, user });
 
   if (!isValid) {
@@ -21,7 +22,7 @@ export const follow = async (req: Request, res: Response): Promise<Response> => 
   }
 
   /**
-   * Toggle follow / unfollow
+   * If user already follow this user id then unfollow and decrease 1 number of follower count in this user, 1 number of following count in current user
    */
 
   if (user.following?.includes(id)) {
@@ -38,6 +39,10 @@ export const follow = async (req: Request, res: Response): Promise<Response> => 
     return res.send({ isFollowing: false });
   }
 
+  /**
+   * Create new follow notification, follow user and increase 1 number of follower count in this user, 1 number of following count in current user
+   */
+
   const notification = await Notification.create({
     notificationType: 'follow',
     sender: user.id,
@@ -53,6 +58,10 @@ export const follow = async (req: Request, res: Response): Promise<Response> => 
     $push: { following: id },
     $inc: { followingCount: 1 },
   });
+
+  /**
+   * Send new follow notification with sender info and is following state with this user
+   */
 
   const newNotification = await Notification.findById(notification.id)
     .select('sender receiver notificationType notificationData read date')

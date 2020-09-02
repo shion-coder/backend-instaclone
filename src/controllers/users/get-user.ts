@@ -7,9 +7,18 @@ import { userMessage } from '@messages';
 
 export const getUser = async (req: Request, res: Response): Promise<Response> => {
   const user = req.user as UserProps;
+
+  /**
+   * Get username in params and set limit number
+   */
+
   const { username } = req.params;
 
   const limit = 9;
+
+  /**
+   * Find user by username and populate User model with posts and saved field
+   */
 
   const userFound = await User.findOne({ username })
     .select(
@@ -28,6 +37,10 @@ export const getUser = async (req: Request, res: Response): Promise<Response> =>
    */
 
   const isFollowing = userFound.followers?.map((follower) => follower._id.toString()).includes(user.id);
+
+  /**
+   * Send user info with isFollowing state
+   */
 
   return res.send({
     user: { ...userFound },

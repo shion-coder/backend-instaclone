@@ -6,6 +6,10 @@ import { postMessage } from '@messages';
 /* -------------------------------------------------------------------------- */
 
 export const getPosts = async (req: Request, res: Response): Promise<Response | void> => {
+  /**
+   * Get all posts with sort in newest time and author info
+   */
+
   const posts = await Post.find()
     .sort({ date: -1 })
     .select('-__v')

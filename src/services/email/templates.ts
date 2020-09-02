@@ -8,6 +8,10 @@ type EMAIL_TEMPLATE = {
   text: string;
 };
 
+/**
+ * Confirm email template with id to send
+ */
+
 const confirm = (id: string): EMAIL_TEMPLATE => ({
   subject: 'Confirm Email',
   text: `Click to confirm email: ${CLIENT_ORIGIN}/confirm/${id}`,

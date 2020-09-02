@@ -7,6 +7,10 @@ import { UserProps, User } from '@model';
 export const google = async (req: Request): Promise<void> => {
   const io = req.app.get('io');
 
+  /**
+   * Get user from google passport and filter fields to send to client through socket io with socked id room save in session
+   */
+
   const user = req.user as UserProps;
 
   const userResult = await User.findById(user.id)

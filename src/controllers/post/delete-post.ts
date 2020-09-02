@@ -14,6 +14,7 @@ export const deletePost = async (req: Request, res: Response): Promise<Response>
    */
 
   const { id } = req.params;
+
   const { errors, isValid } = await validatePostIdWithAuthor({ id: id, author: user.id });
 
   if (!isValid) {
@@ -51,6 +52,10 @@ export const deletePost = async (req: Request, res: Response): Promise<Response>
   }
 
   user.save();
+
+  /**
+   * Send message notification delete successful
+   */
 
   return res.status(204).send({ message: postMessage.delete });
 };

@@ -48,6 +48,10 @@ export const passportInit = (): void => {
             return done(undefined, user);
           }
 
+          /**
+           * Create new user with google info
+           */
+
           const newUser = new User({
             googleId: profile.id,
             firstName: profile.name?.givenName,
