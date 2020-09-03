@@ -39,11 +39,18 @@ export const getUser = async (req: Request, res: Response): Promise<Response> =>
   const isFollowing = userFound.followers?.map((follower) => follower._id.toString()).includes(user.id);
 
   /**
+   * Check is current user or not
+   */
+
+  const isCurrentUser = userFound.username === user.username;
+
+  /**
    * Send user info with isFollowing state
    */
 
   return res.send({
     user: { ...userFound },
     isFollowing,
+    isCurrentUser,
   });
 };
