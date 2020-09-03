@@ -3,8 +3,6 @@ export const userMessage = {
     required: 'Id is required',
     invalid: 'Invalid id',
     notFound: "Couldn't find an user with that id",
-    isCurrentUser: "You can't follow/unfollow yourself",
-    alreadyFollow: 'You are already following this user',
   },
   firstName: {
     required: 'First Name is required',
@@ -51,5 +49,8 @@ export const userMessage = {
     required: 'Confirm new password is required',
     minlength: 'Password must be at least 6 characters',
     notMatch: "Passwords don't match",
+  },
+  follow: {
+    isCurrentUser: "You can't follow/unfollow yourself",
   },
 };

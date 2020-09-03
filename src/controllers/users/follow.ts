@@ -10,10 +10,14 @@ export const follow = async (req: Request, res: Response): Promise<Response> => 
   const user = req.user as UserProps;
 
   /**
-   * Get username in params and find this user
+   * Get username in params, validate it and find this user
    */
 
   const { username } = req.params;
+
+  if (user.username === username) {
+    return res.status(404).send({ error: userMessage.follow.isCurrentUser });
+  }
 
   const userFound = await User.findOne({ username }).select('id').lean();
 
