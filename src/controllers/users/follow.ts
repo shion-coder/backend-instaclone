@@ -1,8 +1,8 @@
 import { Request, Response } from 'express';
 
 import { UserProps, User, Notification } from '@model';
-import { validateUserIdFollow } from '@validation';
 import { sendNotification } from '@socket';
+import { userMessage } from '@messages';
 
 /* -------------------------------------------------------------------------- */
 
@@ -10,29 +10,29 @@ export const follow = async (req: Request, res: Response): Promise<Response> => 
   const user = req.user as UserProps;
 
   /**
-   * Validate id
+   * Get username in params and find this user
    */
 
-  const { id }: { id?: UserProps['id'] } = req.params;
+  const { username } = req.params;
 
-  const { errors, isValid } = await validateUserIdFollow({ id, user });
+  const userFound = await User.findOne({ username }).select('id').lean();
 
-  if (!isValid) {
-    return res.status(400).send({ message: errors.id });
+  if (!userFound) {
+    return res.status(404).send({ error: userMessage.username.notFound });
   }
 
   /**
    * If user already follow this user id then unfollow and decrease 1 number of follower count in this user, 1 number of following count in current user
    */
 
-  if (user.following?.includes(id)) {
-    await User.findByIdAndUpdate(id, {
+  if (user.following?.includes(userFound._id)) {
+    await User.findByIdAndUpdate(userFound._id, {
       $pull: { followers: user.id },
       $inc: { followerCount: -1 },
     });
 
     await User.findByIdAndUpdate(user.id, {
-      $pull: { following: id },
+      $pull: { following: userFound._id },
       $inc: { followingCount: -1 },
     });
 
@@ -46,16 +46,16 @@ export const follow = async (req: Request, res: Response): Promise<Response> => 
   const notification = await Notification.create({
     notificationType: 'follow',
     sender: user.id,
-    receiver: id,
+    receiver: userFound._id,
   });
 
-  await User.findByIdAndUpdate(id, {
+  await User.findByIdAndUpdate(userFound._id, {
     $push: { followers: user.id, notifications: notification.id },
     $inc: { followerCount: 1 },
   });
 
   await User.findByIdAndUpdate(user.id, {
-    $push: { following: id },
+    $push: { following: userFound._id },
     $inc: { followingCount: 1 },
   });
 

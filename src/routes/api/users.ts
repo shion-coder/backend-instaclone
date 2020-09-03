@@ -84,25 +84,25 @@ usersRouter.route('/profile').put(jwtAuth, updateProfile);
 usersRouter.route('/password').put(jwtAuth, updatePassword);
 
 /**
- * @route   POST /api/users/:id/follow
+ * @route   POST /api/users/:username/follow
  * @desc    Verify users & follow user with id
  * @access  Private
  */
 
-usersRouter.route('/:id/follow').post(jwtAuth, follow);
+usersRouter.route('/:username/follow').post(jwtAuth, follow);
 
 /**
- * @route   GET /api/users/:id/:offset/followers
+ * @route   GET /api/users/:username/:offset/followers
  * @desc    Verify users & get followers list
  * @access  Private
  */
 
-usersRouter.route('/:id/:offset/followers').get(jwtAuth, getFollowers);
+usersRouter.route('/:username/:offset/followers').get(jwtAuth, getFollowers);
 
 /**
- * @route   GET /api/users/:id/:offset/following
+ * @route   GET /api/users/:username/:offset/following
  * @desc    Verify users & get following list
  * @access  Private
  */
 
-usersRouter.route('/:id/:offset/following').get(jwtAuth, getFollowing);
+usersRouter.route('/:username/:offset/following').get(jwtAuth, getFollowing);

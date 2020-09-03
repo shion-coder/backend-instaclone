@@ -1,7 +1,6 @@
 import { Request, Response } from 'express';
 
 import { UserProps, User } from '@model';
-import { validateUserId } from '@validation';
 import { userMessage } from '@messages';
 
 /* -------------------------------------------------------------------------- */
@@ -10,16 +9,10 @@ export const getFollowing = async (req: Request, res: Response): Promise<Respons
   const user = req.user as UserProps;
 
   /**
-   * Get is and offset in params and valid id
+   * Get username and offset in params and set limit number
    */
 
-  const { id, offset } = req.params;
-
-  const { errors, isValid } = await validateUserId({ id });
-
-  if (!isValid) {
-    return res.status(400).send({ message: errors.id });
-  }
+  const { username, offset } = req.params;
 
   const limit = 3;
 
@@ -27,7 +20,7 @@ export const getFollowing = async (req: Request, res: Response): Promise<Respons
    * Find user with id in params and select following with limit number and offset
    */
 
-  const userFound = await User.findById(id)
+  const userFound = await User.findOne({ username })
     .select('following')
     .populate({
       path: 'following',
