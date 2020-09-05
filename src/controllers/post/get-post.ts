@@ -1,12 +1,14 @@
 import { Request, Response } from 'express';
 
-import { Post } from '@model';
+import { UserProps, Post } from '@model';
 import { validatePostId } from '@validation';
 import { postMessage } from '@messages';
 
 /* -------------------------------------------------------------------------- */
 
 export const getPost = async (req: Request, res: Response): Promise<Response | void> => {
+  const user = req.user as UserProps;
+
   /**
    * Validate id
    */
@@ -24,7 +26,7 @@ export const getPost = async (req: Request, res: Response): Promise<Response | v
    */
 
   const post = await Post.findById(id)
-    .select('-__v')
+    .select('-__v -likes -comments')
     .populate({ path: 'author', select: 'fullName username avatar' })
     .lean();
 
@@ -32,5 +34,11 @@ export const getPost = async (req: Request, res: Response): Promise<Response | v
     return res.status(404).send({ error: postMessage.noPost });
   }
 
-  return res.send({ post });
+  /**
+   * Check current user is following author of this post or not
+   */
+
+  const isFollowing = user.following?.map((following) => following._id.toString()).includes(post.author._id.toString());
+
+  return res.send({ post: { ...post, author: { ...post.author, isFollowing } } });
 };

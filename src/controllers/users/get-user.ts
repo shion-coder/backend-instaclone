@@ -8,13 +8,7 @@ import { userMessage } from '@messages';
 export const getUser = async (req: Request, res: Response): Promise<Response> => {
   const user = req.user as UserProps;
 
-  /**
-   * Get username in params and set limit number
-   */
-
   const { username } = req.params;
-
-  const limit = 9;
 
   /**
    * Find user by username and populate User model with posts and saved field
@@ -24,8 +18,6 @@ export const getUser = async (req: Request, res: Response): Promise<Response> =>
     .select(
       'id fullName username email website bio avatar posts postCount saved followers followerCount followingCount',
     )
-    .populate({ path: 'posts', select: '-__v', options: { sort: { date: -1 }, limit } })
-    .populate({ path: 'saved', select: '-__v', options: { sort: { date: -1 }, limit } })
     .lean();
 
   if (!userFound) {

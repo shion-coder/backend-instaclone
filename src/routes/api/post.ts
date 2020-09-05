@@ -13,7 +13,7 @@ export const postRouter = Router();
  * @access  Public
  */
 
-postRouter.route('/').get(getPosts);
+postRouter.route('/').get(jwtAuth, getPosts);
 
 /**
  * @route   GET /api/post/:id
@@ -21,7 +21,7 @@ postRouter.route('/').get(getPosts);
  * @access  Public
  */
 
-postRouter.route('/:id').get(getPost);
+postRouter.route('/:id').get(jwtAuth, getPost);
 
 /**
  * @route   POST /api/post
