@@ -62,7 +62,7 @@ export const updateProfile = async (req: Request, res: Response): Promise<Respon
    */
 
   const userResult = await User.findById(user.id)
-    .select('id firstName lastName fullName username email website bio avatar')
+    .select('id firstName lastName fullName username email website bio avatar confirmed')
     .lean();
 
   return res.send({ user: { ...userResult } });
