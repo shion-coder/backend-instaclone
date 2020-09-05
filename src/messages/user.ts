@@ -38,7 +38,7 @@ export const userMessage = {
   confirmPassword: {
     required: 'Confirm password is required',
     minlength: 'Password must be at least 6 characters',
-    notMatch: "Passwords don't match",
+    notMatch: 'Passwords must match',
   },
   newPassword: {
     required: 'New password is required',
@@ -48,9 +48,9 @@ export const userMessage = {
   confirmNewPassword: {
     required: 'Confirm new password is required',
     minlength: 'Password must be at least 6 characters',
-    notMatch: "Passwords don't match",
+    notMatch: 'Passwords must match',
   },
   follow: {
-    isCurrentUser: "You can't follow/unfollow yourself",
+    isCurrentUser: "You can't follow / unfollow yourself",
   },
 };
