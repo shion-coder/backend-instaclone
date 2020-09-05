@@ -21,9 +21,9 @@ type UserSchemaProps = {
   username: string;
   email: string;
   password: string;
-  avatar?: string;
   bio?: string;
   website?: string;
+  avatar?: string;
   posts?: PostProps['id'][];
   postCount?: number;
   saved?: PostProps['id'][];
@@ -83,11 +83,11 @@ const userSchema: Schema = new Schema({
   password: {
     type: String,
   },
-  website: {
+  bio: {
     type: String,
     default: '',
   },
-  bio: {
+  website: {
     type: String,
     default: '',
   },

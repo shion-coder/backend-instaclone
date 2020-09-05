@@ -40,7 +40,13 @@ export const getFollowing = async (req: Request, res: Response): Promise<Respons
   const following = userFound.following?.map((following) => {
     const isFollowing = user.following?.includes(following._id.toString());
 
-    return { user: { ...following }, isFollowing };
+    /**
+     * Check is current user or not
+     */
+
+    const isCurrentUser = following.username === user.username;
+
+    return { user: { ...following }, isFollowing, isCurrentUser };
   });
 
   if (following?.length === limit) {
