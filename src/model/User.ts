@@ -48,6 +48,14 @@ export type TokenPayloadProps = {
   username: UserProps['username'];
 };
 
+declare global {
+  namespace Express {
+    export interface Request {
+      user?: UserProps;
+    }
+  }
+}
+
 /**
  * User schema
  */
