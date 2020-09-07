@@ -41,7 +41,7 @@ export const getPosts = async (req: Request, res: Response): Promise<Response> =
    */
 
   if (posts?.length === limit) {
-    return res.send({ posts: posts, next: Number(offset) + limit });
+    return res.send({ posts, next: Number(offset) + limit });
   }
 
   return res.send({ posts });

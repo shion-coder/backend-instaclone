@@ -9,6 +9,7 @@ import {
   getFollowers,
   getFollowing,
   getPosts,
+  getSaved,
   updateAvatar,
   updateProfile,
   updatePassword,
@@ -74,6 +75,14 @@ usersRouter.route('/:username/:offset/following').get(jwtAuth, getFollowing);
  */
 
 usersRouter.route('/:username/posts/:offset').get(jwtAuth, getPosts);
+
+/**
+ * @route   GET /api/users/:username/saved/:offset
+ * @desc    Get saved post of user with username and offset
+ * @access  Private
+ */
+
+usersRouter.route('/:username/saved/:offset').get(jwtAuth, getSaved);
 
 /**
  * @route   PUT /api/users/avatar

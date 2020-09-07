@@ -12,6 +12,8 @@ export * from './get-following';
 
 export * from './get-posts';
 
+export * from './get-saved';
+
 export * from './update-avatar';
 
 export * from './update-profile';
