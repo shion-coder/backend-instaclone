@@ -3,24 +3,23 @@ import isEmpty from 'is-empty';
 
 import { User, UserProps } from '@model';
 import { ValidatorProps, RegisterProps } from '@types';
-import { errorMessage, userMessage } from '@messages';
+import { excludeUsername } from '@utils';
+import { errorMessage, dataMessage } from '@messages';
 
 /* -------------------------------------------------------------------------- */
 
 export const validateRegister = async ({
-  firstName,
-  lastName,
-  username,
-  email,
-  password,
-  confirmPassword,
+  firstName = '',
+  lastName = '',
+  username = '',
+  email = '',
+  password = '',
+  confirmPassword = '',
 }: RegisterProps): Promise<ValidatorProps<Partial<RegisterProps>>> => {
   const errors: Partial<RegisterProps> = {};
 
   let existingUsername: UserProps | null = null;
   let existingEmail: UserProps | null = null;
-
-  const excludeUsername = ['register', 'login', 'dashboard', 'settings', 'list'];
 
   /**
    * Find existing username & email
@@ -47,27 +46,27 @@ export const validateRegister = async ({
    */
 
   validator.isEmpty(firstName)
-    ? (errors.firstName = userMessage.firstName.required)
+    ? (errors.firstName = dataMessage.firstName.required)
     : !validator.isLength(firstName, { max: 30 })
-    ? (errors.firstName = userMessage.firstName.maxlength)
+    ? (errors.firstName = dataMessage.firstName.maxlength)
     : null;
 
   /**
    * Last name validation
    */
 
-  lastName && !validator.isLength(lastName, { max: 30 }) ? (errors.lastName = userMessage.lastName.maxlength) : null;
+  lastName && !validator.isLength(lastName, { max: 30 }) ? (errors.lastName = dataMessage.lastName.maxlength) : null;
 
   /**
    * Username validation
    */
 
   validator.isEmpty(username)
-    ? (errors.username = userMessage.username.required)
+    ? (errors.username = dataMessage.username.required)
     : !validator.isLength(username, { max: 30 })
-    ? (errors.username = userMessage.username.maxlength)
+    ? (errors.username = dataMessage.username.maxlength)
     : existingUsername || excludeUsername.includes(username)
-    ? (errors.username = userMessage.username.exist)
+    ? (errors.username = dataMessage.username.notAvailable)
     : null;
 
   /**
@@ -75,11 +74,11 @@ export const validateRegister = async ({
    */
 
   validator.isEmpty(email)
-    ? (errors.email = userMessage.email.required)
+    ? (errors.email = dataMessage.email.required)
     : !validator.isEmail(email)
-    ? (errors.email = userMessage.email.invalid)
+    ? (errors.email = dataMessage.email.invalid)
     : existingEmail
-    ? (errors.email = userMessage.email.exist)
+    ? (errors.email = dataMessage.email.notAvailable)
     : null;
 
   /**
@@ -87,9 +86,9 @@ export const validateRegister = async ({
    */
 
   validator.isEmpty(password)
-    ? (errors.password = userMessage.password.required)
+    ? (errors.password = dataMessage.password.required)
     : !validator.isLength(password, { min: 6 })
-    ? (errors.password = userMessage.password.minlength)
+    ? (errors.password = dataMessage.password.minlength)
     : null;
 
   /**
@@ -97,11 +96,11 @@ export const validateRegister = async ({
    */
 
   validator.isEmpty(confirmPassword)
-    ? (errors.confirmPassword = userMessage.confirmPassword.required)
+    ? (errors.confirmPassword = dataMessage.confirmPassword.required)
     : !validator.isLength(password, { min: 6 })
-    ? (errors.confirmPassword = userMessage.confirmPassword.minlength)
+    ? (errors.confirmPassword = dataMessage.confirmPassword.minlength)
     : !validator.equals(password, confirmPassword)
-    ? (errors.confirmPassword = userMessage.confirmPassword.notMatch)
+    ? (errors.confirmPassword = dataMessage.confirmPassword.notMatch)
     : null;
 
   return {

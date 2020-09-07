@@ -1,13 +1,19 @@
 import passport from 'passport';
 
+import { PASSPORT } from '@types';
+
 /* -------------------------------------------------------------------------- */
 
-export const jwtAuth = passport.authenticate('jwt', { session: false });
+/**
+ * Passport authenticate
+ */
 
-export const googleAuth = passport.authenticate('google', {
+export const jwtAuth = passport.authenticate(PASSPORT.JWT, { session: false });
+
+export const googleAuth = passport.authenticate(PASSPORT.GOOGLE, {
   scope: ['profile', 'email'],
   prompt: 'select_account',
   session: false,
 });
 
-export const facebookAuth = passport.authenticate('facebook', { session: false });
+export const facebookAuth = passport.authenticate(PASSPORT.FACEBOOK, { session: false });

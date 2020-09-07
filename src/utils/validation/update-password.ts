@@ -3,16 +3,14 @@ import isEmpty from 'is-empty';
 
 import { UserProps } from '@model';
 import { ValidatorProps, UpdatePasswordProps } from '@types';
-import { errorMessage, userMessage } from '@messages';
+import { errorMessage, dataMessage } from '@messages';
 
 /* -------------------------------------------------------------------------- */
 
-export const validateUpdatePassword = async ({
-  password,
-  newPassword,
-  confirmNewPassword,
-  user,
-}: UpdatePasswordProps & { user: UserProps }): Promise<ValidatorProps<Partial<UpdatePasswordProps>>> => {
+export const validateUpdatePassword = async (
+  { password = '', newPassword = '', confirmNewPassword = '' }: UpdatePasswordProps,
+  user: UserProps,
+): Promise<ValidatorProps<Partial<UpdatePasswordProps>>> => {
   const errors: Partial<UpdatePasswordProps> = {};
 
   let isMatchCurrent = false;
@@ -39,11 +37,11 @@ export const validateUpdatePassword = async ({
    */
 
   validator.isEmpty(password)
-    ? (errors.password = userMessage.password.required)
+    ? (errors.password = dataMessage.password.required)
     : !validator.isLength(password, { min: 6 })
-    ? (errors.password = userMessage.password.minlength)
+    ? (errors.password = dataMessage.password.minlength)
     : !isMatchCurrent && !errors.newPassword && !errors.confirmNewPassword
-    ? (errors.password = userMessage.password.incorrect)
+    ? (errors.password = dataMessage.password.incorrect)
     : null;
 
   /**
@@ -51,11 +49,11 @@ export const validateUpdatePassword = async ({
    */
 
   validator.isEmpty(newPassword)
-    ? (errors.newPassword = userMessage.newPassword.required)
+    ? (errors.newPassword = dataMessage.newPassword.required)
     : !validator.isLength(password, { min: 6 })
-    ? (errors.newPassword = userMessage.newPassword.minlength)
+    ? (errors.newPassword = dataMessage.newPassword.minlength)
     : isMatchOld && !errors.password && !errors.confirmNewPassword
-    ? (errors.newPassword = userMessage.newPassword.different)
+    ? (errors.newPassword = dataMessage.newPassword.different)
     : null;
 
   /**
@@ -63,11 +61,11 @@ export const validateUpdatePassword = async ({
    */
 
   validator.isEmpty(confirmNewPassword)
-    ? (errors.confirmNewPassword = userMessage.confirmNewPassword.required)
+    ? (errors.confirmNewPassword = dataMessage.confirmNewPassword.required)
     : !validator.isLength(password, { min: 6 })
-    ? (errors.confirmNewPassword = userMessage.confirmNewPassword.minlength)
+    ? (errors.confirmNewPassword = dataMessage.confirmNewPassword.minlength)
     : !validator.equals(newPassword, confirmNewPassword)
-    ? (errors.confirmNewPassword = userMessage.confirmNewPassword.notMatch)
+    ? (errors.confirmNewPassword = dataMessage.confirmNewPassword.notMatch)
     : null;
 
   return {

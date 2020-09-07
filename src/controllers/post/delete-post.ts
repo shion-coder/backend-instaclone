@@ -1,19 +1,22 @@
 import { Request, Response } from 'express';
 
-import { UserProps, Post, Comment } from '@model';
+import { PostProps, Post, Comment, User } from '@model';
 import { validatePostIdWithAuthor } from '@validation';
-import { postMessage, commentMessage } from '@messages';
+import { dataMessage } from '@messages';
 
 /* -------------------------------------------------------------------------- */
 
 export const deletePost = async (req: Request, res: Response): Promise<Response> => {
-  const user = req.user as UserProps;
+  const user = req.user;
+  const { id }: { id?: PostProps['id'] } = req.params;
+
+  if (!user) {
+    return res.send({ error: dataMessage.noUser });
+  }
 
   /**
    * Validate id
    */
-
-  const { id } = req.params;
 
   const { errors, isValid } = await validatePostIdWithAuthor({ id: id, author: user.id });
 
@@ -22,40 +25,21 @@ export const deletePost = async (req: Request, res: Response): Promise<Response>
   }
 
   /**
-   * Delete post in posts collection
+   * Delete post in posts collection, all comment related with this post and post in posts of user
    */
 
-  const postDelete = await Post.deleteOne({ _id: id });
+  await Post.deleteOne({ _id: id });
 
-  if (!postDelete.deletedCount) {
-    return res.status(500).send({ error: postMessage.errorDelete });
-  }
+  await Comment.deleteMany({ post: id });
+
+  await User.findByIdAndUpdate(user.id, {
+    $pull: { posts: id },
+    $inc: { postCount: -1 },
+  });
 
   /**
-   * Delete all comment related with this post
+   * Send empty response with status 204 ( No Content )
    */
 
-  const commentDelete = await Comment.deleteMany({ post: id });
-
-  if (!commentDelete.deletedCount) {
-    return res.status(500).send({ error: commentMessage.errorDelete });
-  }
-
-  /**
-   * Delete post in user
-   */
-
-  user.posts = user.posts?.filter((postId) => postId.toString() !== id.toString());
-
-  if (user.postCount !== undefined) {
-    user.postCount = user.postCount - 1;
-  }
-
-  user.save();
-
-  /**
-   * Send message notification delete successful
-   */
-
-  return res.status(204).send({ message: postMessage.delete });
+  return res.status(204).send();
 };

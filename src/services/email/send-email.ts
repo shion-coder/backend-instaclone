@@ -16,6 +16,10 @@ const transporter = nodemailer.createTransport({
   },
 });
 
+/**
+ * Send email with nodemailer
+ */
+
 export const sendEmail = async (to: string, content: Record<string, unknown>): Promise<void> => {
   const contacts = {
     from: MAIL_USER,

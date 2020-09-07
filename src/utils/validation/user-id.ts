@@ -3,7 +3,7 @@ import isEmpty from 'is-empty';
 
 import { User, UserProps } from '@model';
 import { ValidatorProps, UserId } from '@types';
-import { errorMessage, userMessage } from '@messages';
+import { errorMessage, dataMessage } from '@messages';
 
 /* -------------------------------------------------------------------------- */
 
@@ -29,11 +29,11 @@ export const validateUserId = async ({ id }: UserId): Promise<ValidatorProps<Par
    */
 
   validator.isEmpty(id)
-    ? (errors.id = userMessage.id.required)
+    ? (errors.id = dataMessage.id.required)
     : !validator.isMongoId(id)
-    ? (errors.id = userMessage.id.invalid)
+    ? (errors.id = dataMessage.id.invalid)
     : !userFound
-    ? (errors.id = userMessage.id.notFound)
+    ? (errors.id = dataMessage.noUser)
     : null;
 
   return {

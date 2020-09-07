@@ -1,21 +1,23 @@
 import { Schema, Document, Model, model } from 'mongoose';
 
 import { UserProps, PostProps } from '@model';
+import { MODEL } from '@types';
 
 /* -------------------------------------------------------------------------- */
-
-/**
- * Types
- */
 
 type CommentSchemaProps = {
   message: string;
   post: PostProps['id'];
   author: UserProps['id'];
-  date?: string;
+  date: string;
 };
 
 export type CommentProps = CommentSchemaProps & Document;
+
+export enum COMMENT_PATH {
+  POSTS = 'post',
+  AUTHOR = 'author',
+}
 
 /**
  * Comment schema
@@ -28,12 +30,12 @@ const commentSchema: Schema = new Schema({
   },
   post: {
     type: Schema.Types.ObjectId,
-    ref: 'Post',
+    ref: MODEL.POST,
     required: true,
   },
   author: {
     type: Schema.Types.ObjectId,
-    ref: 'User',
+    ref: MODEL.USER,
     required: true,
   },
   date: {
@@ -42,4 +44,4 @@ const commentSchema: Schema = new Schema({
   },
 });
 
-export const Comment: Model<CommentProps> = model<CommentProps>('Comment', commentSchema);
+export const Comment: Model<CommentProps> = model<CommentProps>(MODEL.COMMENT, commentSchema);

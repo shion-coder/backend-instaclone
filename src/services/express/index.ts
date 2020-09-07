@@ -4,9 +4,10 @@ import passport from 'passport';
 import session from 'express-session';
 import cors from 'cors';
 import compression from 'compression';
+
 import 'express-async-errors';
 
-import { Environment } from '@types';
+import { APP_VAlUES, ENVIRONMENT } from '@types';
 import { SESSION_SECRET, CLIENT_ORIGIN } from '@config';
 import { error } from '@middleware';
 import { apiRouter } from '@routes/api';
@@ -14,7 +15,7 @@ import { request } from '@logger';
 
 /* -------------------------------------------------------------------------- */
 
-const app = express();
+export const app = express();
 
 /**
  *  Middleware
@@ -38,7 +39,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(compression());
 
-app.get('env') === Environment.DEVELOPMENT && app.use(request);
+app.get(APP_VAlUES.ENV) === ENVIRONMENT.DEVELOPMENT && app.use(request);
 
 /**
  *  Routes
@@ -51,5 +52,3 @@ app.use('/api', apiRouter);
  */
 
 app.use(error);
-
-export default app;

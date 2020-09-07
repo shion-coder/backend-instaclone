@@ -1,19 +1,23 @@
 import { Request, Response } from 'express';
 
-import { UserProps, Post } from '@model';
+import { PostProps, Post, POST_PATH } from '@model';
 import { validatePostId } from '@validation';
-import { postMessage } from '@messages';
+import { selectPostInfo, selectPostAuthorInfo } from '@utils';
+import { dataMessage } from '@messages';
 
 /* -------------------------------------------------------------------------- */
 
 export const getPost = async (req: Request, res: Response): Promise<Response | void> => {
-  const user = req.user as UserProps;
+  const user = req.user;
+  const { id }: { id?: PostProps['id'] } = req.params;
+
+  if (!user) {
+    return res.send({ error: dataMessage.noUser });
+  }
 
   /**
    * Validate id
    */
-
-  const { id } = req.params;
 
   const { errors, isValid } = validatePostId({ id });
 
@@ -22,23 +26,23 @@ export const getPost = async (req: Request, res: Response): Promise<Response | v
   }
 
   /**
-   * Find post with id in params and populate with author info to send client
+   * Find post with id, then populate author path to get author info
    */
 
   const post = await Post.findById(id)
-    .select('-__v -likes -comments')
-    .populate({ path: 'author', select: 'fullName username avatar' })
+    .select(selectPostInfo)
+    .populate({ path: POST_PATH.AUTHOR, select: selectPostAuthorInfo })
     .lean();
 
   if (!post) {
-    return res.status(404).send({ error: postMessage.noPost });
+    return res.status(404).send({ error: dataMessage.noPost });
   }
 
   /**
-   * Check current user is following author of this post or not
+   * Check user is following author of this post or not, then return post info with author info plus ifFollowing property
    */
 
-  const isFollowing = user.following?.map((following) => following._id.toString()).includes(post.author._id.toString());
+  const isFollowing = user.following.map((following) => following._id.toString()).includes(post.author._id.toString());
 
   return res.send({ post: { ...post, author: { ...post.author, isFollowing } } });
 };

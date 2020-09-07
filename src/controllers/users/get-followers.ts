@@ -1,55 +1,59 @@
 import { Request, Response } from 'express';
 
-import { UserProps, User } from '@model';
-import { userMessage } from '@messages';
+import { UserProps, User, USER_PATH } from '@model';
+import { selectFollowers, selectFollowerInfo } from '@utils';
+import { dataMessage } from '@messages';
 
 /* -------------------------------------------------------------------------- */
 
 export const getFollowers = async (req: Request, res: Response): Promise<Response> => {
-  const user = req.user as UserProps;
+  const user = req.user;
+  const { username, offset }: { username?: UserProps['username']; offset?: string } = req.params;
+
+  if (!user) {
+    return res.send({ error: dataMessage.noUser });
+  }
 
   /**
-   * Get username and offset in params and set limit number
+   * Limit number of followers send to client each request
    */
-
-  const { username, offset } = req.params;
 
   const limit = 3;
 
   /**
-   * Find user with id in params and select followers with limit number and offset
+   * Find user with username, then populate followers path to get followers info, get result with offset and limit
    */
 
   const userFound = await User.findOne({ username })
-    .select('followers')
+    .select(selectFollowers)
     .populate({
-      path: 'followers',
-      select: 'fullName username avatar',
+      path: USER_PATH.FOLLOWERS,
+      select: selectFollowerInfo,
       options: { skip: Number(offset), limit },
     })
     .lean();
 
   if (!userFound) {
-    return res.status(404).send({ error: userMessage.username.notFound });
+    return res.status(404).send({ error: dataMessage.username.notFound });
   }
 
   /**
-   * Push is following state of current user with each user in followers and send followers to client
+   * Push isFollowing, isCurrentUser to each user in followers
    */
 
-  const followers = userFound.followers?.map((follower) => {
-    const isFollowing = user.following?.includes(follower._id.toString());
-
-    /**
-     * Check is current user or not
-     */
+  const followers = userFound.followers.map((follower) => {
+    const isFollowing = user.following.includes(follower._id.toString());
 
     const isCurrentUser = follower.username === user.username;
 
     return { user: { ...follower }, isFollowing, isCurrentUser };
   });
 
-  if (followers?.length === limit) {
+  /**
+   * If followers send reach limit number then send followers with next number to use in next query
+   */
+
+  if (followers.length === limit) {
     return res.send({ users: followers, next: Number(offset) + limit });
   }
 

@@ -3,32 +3,32 @@ import { Request, Response } from 'express';
 import { User } from '@model';
 import { LoginProps } from '@types';
 import { validateLogin } from '@validation';
+import { selectUserInfo } from '@utils';
 
 /* -------------------------------------------------------------------------- */
 
 export const login = async (req: Request, res: Response): Promise<Response> => {
   /**
-   * Validate input with default value is '' because validator only can validate string ( not undefined )
+   * Validate login props
    */
 
-  const { usernameOrEmail = '', password = '' }: LoginProps = req.body;
-
-  const { errors, isValid } = await validateLogin({ usernameOrEmail, password });
+  const { errors, isValid } = await validateLogin(req.body);
 
   if (!isValid) {
     return res.status(400).send({ errors });
   }
 
   /**
-   * Get user & return user info with token
+   * Get user info and return it with token
    */
+
+  const { usernameOrEmail }: LoginProps = req.body;
 
   const user = await User.findOne({
     $or: [{ username: usernameOrEmail }, { email: usernameOrEmail }],
-  }).select('id firstName lastName fullName username email website bio avatar confirmed');
+  }).select(selectUserInfo);
 
   return res.send({
-    user: { ...user?.toObject() },
-    token: user?.generateAuthToken(),
+    user: { ...user?.toObject(), token: user?.generateAuthToken() },
   });
 };

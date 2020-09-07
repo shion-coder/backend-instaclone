@@ -3,7 +3,7 @@ import { Strategy as JwtStrategy, ExtractJwt } from 'passport-jwt';
 import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
 import { Strategy as FacebookStrategy } from 'passport-facebook';
 
-import { User, TokenPayloadProps } from '@model';
+import { User, TokenDecodeProps } from '@model';
 import { JWT_SECRET, FACEBOOK_CONFIG, GOOGLE_CONFIG } from '@config';
 
 /* -------------------------------------------------------------------------- */
@@ -19,7 +19,7 @@ export const passportInit = (): void => {
    */
 
   passport.use(
-    new JwtStrategy(options, async (payload: TokenPayloadProps, done) => {
+    new JwtStrategy(options, async (payload: TokenDecodeProps, done) => {
       try {
         const user = await User.findById(payload.id);
 
@@ -39,7 +39,7 @@ export const passportInit = (): void => {
    */
 
   passport.use(
-    new GoogleStrategy(GOOGLE_CONFIG, async (accessToken, refreshToken, profile, done) => {
+    new GoogleStrategy(GOOGLE_CONFIG, async (_accessToken, _refreshToken, profile, done) => {
       try {
         if (profile.emails) {
           const user = await User.findOne({ $or: [{ googleId: profile.id }, { email: profile.emails[0].value }] });
@@ -78,7 +78,7 @@ export const passportInit = (): void => {
    */
 
   passport.use(
-    new FacebookStrategy(FACEBOOK_CONFIG, async (accessToken, refreshToken, profile, done) => {
+    new FacebookStrategy(FACEBOOK_CONFIG, async (_accessToken, _refreshToken, profile, done) => {
       try {
         const user = await User.findOne({ facebookId: profile.id });
 

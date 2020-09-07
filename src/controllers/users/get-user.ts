@@ -1,43 +1,39 @@
 import { Request, Response } from 'express';
 
 import { UserProps, User } from '@model';
-import { userMessage } from '@messages';
+import { selectUserProfile } from '@utils';
+import { dataMessage } from '@messages';
 
 /* -------------------------------------------------------------------------- */
 
 export const getUser = async (req: Request, res: Response): Promise<Response> => {
-  const user = req.user as UserProps;
+  const user = req.user;
+  const { username }: { username?: UserProps['username'] } = req.params;
 
-  const { username } = req.params;
-
-  /**
-   * Find user by username and populate User model with posts and saved field
-   */
-
-  const userFound = await User.findOne({ username })
-    .select(
-      'id fullName username email website bio avatar posts postCount saved followers followerCount followingCount',
-    )
-    .lean();
-
-  if (!userFound) {
-    return res.status(404).send({ error: userMessage.username.notFound });
+  if (!user) {
+    return res.send({ error: dataMessage.noUser });
   }
 
   /**
-   * Check current user is following this user or not
+   * Find user with username
    */
 
-  const isFollowing = userFound.followers?.map((follower) => follower._id.toString()).includes(user.id);
+  const userFound = await User.findOne({ username }).select(selectUserProfile).lean();
+
+  if (!userFound) {
+    return res.status(404).send({ error: dataMessage.username.notFound });
+  }
 
   /**
-   * Check is current user or not
+   * Check user is following this user or not and whether is current user
    */
+
+  const isFollowing = userFound.followers.map((follower) => follower._id.toString()).includes(user.id);
 
   const isCurrentUser = userFound.username === user.username;
 
   /**
-   * Send user info with isFollowing state
+   * Send user info with isFollowing and isCurrentUser state
    */
 
   return res.send({

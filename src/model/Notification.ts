@@ -1,44 +1,47 @@
 import { Schema, Document, Model, model } from 'mongoose';
 
 import { UserProps } from '@model';
+import { MODEL } from '@types';
 
 /* -------------------------------------------------------------------------- */
 
-/**
- * Types
- */
-
 type NotificationSchemaProps = {
-  sender: UserProps['id'];
-  receiver: UserProps['id'];
   notificationType: string;
   notificationData?: Record<string, unknown>;
-  read?: boolean;
-  date?: string;
+  sender: UserProps['id'];
+  receiver: UserProps['id'];
+  read: boolean;
+  date: string;
 };
 
 export type NotificationProps = NotificationSchemaProps & Document;
+
+export enum NOTIFICATION_PATH {
+  SENDER = 'sender',
+  RECEIVER = 'receiver',
+}
 
 /**
  * Notification schema
  */
 
 const notificationSchema: Schema = new Schema({
+  notificationType: {
+    type: String,
+    enum: ['follow', 'like', 'comment', 'mention'],
+    required: true,
+  },
+  notificationData: Object,
   sender: {
     type: Schema.Types.ObjectId,
-    ref: 'User',
+    ref: MODEL.USER,
     required: true,
   },
   receiver: {
     type: Schema.Types.ObjectId,
-    ref: 'User',
+    ref: MODEL.USER,
     required: true,
   },
-  notificationType: {
-    type: String,
-    enum: ['follow', 'like', 'comment', 'mention'],
-  },
-  notificationData: Object,
   read: {
     type: Boolean,
     default: false,
@@ -49,4 +52,4 @@ const notificationSchema: Schema = new Schema({
   },
 });
 
-export const Notification: Model<NotificationProps> = model<NotificationProps>('Notification', notificationSchema);
+export const Notification: Model<NotificationProps> = model<NotificationProps>(MODEL.NOTIFICATION, notificationSchema);

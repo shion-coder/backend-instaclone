@@ -1,6 +1,7 @@
 import { createLogger, format, transports } from 'winston';
 import expressWinston from 'express-winston';
 import path from 'path';
+
 import 'winston-daily-rotate-file';
 
 /* -------------------------------------------------------------------------- */

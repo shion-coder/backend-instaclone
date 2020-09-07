@@ -1,3 +1,3 @@
-export * from './get-notification';
+export * from './get-notifications';
 
-export * from './read-notification';
+export * from './read-notifications';

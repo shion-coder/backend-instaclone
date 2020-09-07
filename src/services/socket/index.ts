@@ -1,19 +1,16 @@
 import { Server } from 'socket.io';
 import jwt from 'jsonwebtoken';
 
-import { NotificationProps } from '@model';
-import { TokenVerify, SocketEvent } from '@types';
-import app from '@express';
+import { TokenDecodeProps, NotificationProps } from '@model';
+import { APP_VAlUES, SOCKET_EVENT } from '@types';
+import { JWT_SECRET } from '@config';
+import { app } from '@express';
 
 /* -------------------------------------------------------------------------- */
 
-declare global {
-  namespace SocketIO {
-    interface Socket {
-      user?: TokenVerify;
-    }
-  }
-}
+/**
+ * Handle socket connect, if token exist then decode token and set socket.user then join in room with in decode
+ */
 
 export const socketConnect = (): void => {
   const io: Server = app.get('io');
@@ -22,19 +19,23 @@ export const socketConnect = (): void => {
     const token = socket.handshake.query.token;
 
     if (token) {
-      const user = jwt.decode(token) as TokenVerify;
+      const decoded = jwt.verify(token, JWT_SECRET) as TokenDecodeProps;
 
-      socket.user = user;
+      socket.user = decoded;
     }
 
     next();
-  }).on('connection', (socket) => {
+  }).on(SOCKET_EVENT.CONNECTION, (socket) => {
     socket.user && socket.join(socket.user.id);
   });
 };
 
-export const sendNotification = (notification: NotificationProps): void => {
-  const io: Server = app.get('io');
+/**
+ * Send notification event
+ */
 
-  io.in(notification.receiver).emit(SocketEvent.NEW_NOTIFICATION, notification);
+export const sendNotification = (notification: NotificationProps): void => {
+  const io: Server = app.get(APP_VAlUES.IO);
+
+  io.in(notification.receiver).emit(SOCKET_EVENT.NEW_NOTIFICATION, notification);
 };

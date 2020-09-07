@@ -1,23 +1,26 @@
 import { Request, Response } from 'express';
 
-import { UserProps } from '@model';
 import { sendEmail, templates } from '@email';
-import { emailMessage } from '@messages';
+import { dataMessage, actionMessage } from '@messages';
 
 /* -------------------------------------------------------------------------- */
 
 export const resendEmail = async (req: Request, res: Response): Promise<Response> => {
-  const user = req.user as UserProps;
+  const user = req.user;
 
-  /**
-   * Get user & send confirm email
-   */
-
-  if (!user.confirmed) {
-    await sendEmail(user.email, templates.confirm(user.id));
-
-    return res.send({ message: emailMessage.resend });
+  if (!user) {
+    return res.send({ error: dataMessage.noUser });
   }
 
-  return res.send({ message: emailMessage.alreadyConfirmed });
+  /**
+   * Send confirmation email to user if email still not yet confirmed and send message back to client base on confirm state
+   */
+
+  if (user && user.confirmed) {
+    await sendEmail(user.email, templates.confirm(user.id));
+
+    return res.send({ message: actionMessage.email.resend });
+  }
+
+  return res.send({ message: actionMessage.email.alreadyConfirmed });
 };

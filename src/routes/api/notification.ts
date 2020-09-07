@@ -1,7 +1,7 @@
 import { Router } from 'express';
 
 import { jwtAuth } from '@middleware';
-import { getNotification, readNotification } from '@controllers/notification';
+import { getNotifications, readNotifications } from '@controllers/notification';
 
 /* -------------------------------------------------------------------------- */
 
@@ -9,16 +9,16 @@ export const notificationRouter = Router();
 
 /**
  * @route   GET /api/notifications/:offset
- * @desc    Get notification
+ * @desc    Get notifications
  * @access  Private
  */
 
-notificationRouter.route('/:offset').get(jwtAuth, getNotification);
+notificationRouter.route('/:offset').get(jwtAuth, getNotifications);
 
 /**
  * @route   PUT /api/notifications
- * @desc    Read notification
+ * @desc    Read notifications
  * @access  Private
  */
 
-notificationRouter.route('/').put(jwtAuth, readNotification);
+notificationRouter.route('/').put(jwtAuth, readNotifications);

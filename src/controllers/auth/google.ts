@@ -1,20 +1,27 @@
-import { Request } from 'express';
+import { Request, Response } from 'express';
 
 import { User } from '@model';
+import { SOCKET_EVENT, APP_VAlUES } from '@types';
+import { selectUserInfo } from '@utils';
+import { dataMessage } from '@messages';
 
 /* -------------------------------------------------------------------------- */
 
-export const google = async (req: Request): Promise<void> => {
-  const io = req.app.get('io');
-
+export const google = async (req: Request, res: Response): Promise<Response | void> => {
   const user = req.user;
+  const io = req.app.get(APP_VAlUES.IO);
 
-  const userResult = await User.findById(user?.id)
-    .select('id firstName lastName fullName username email website bio avatar confirmed')
-    .lean();
+  if (!user) {
+    return res.send({ error: dataMessage.noUser });
+  }
 
-  io.in(req.session?.socketId).emit('google', {
-    user: { ...userResult },
-    token: user?.generateAuthToken(),
+  /**
+   * Get user info and return it with token
+   */
+
+  const userResult = await User.findById(user?.id).select(selectUserInfo).lean();
+
+  io.in(req.session?.socketId).emit(SOCKET_EVENT.GOOGLE, {
+    user: { ...userResult, token: user?.generateAuthToken() },
   });
 };

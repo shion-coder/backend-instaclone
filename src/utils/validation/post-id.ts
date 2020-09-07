@@ -2,11 +2,11 @@ import validator from 'validator';
 import isEmpty from 'is-empty';
 
 import { ValidatorProps, PostId } from '@types';
-import { postMessage } from '@messages';
+import { dataMessage } from '@messages';
 
 /* -------------------------------------------------------------------------- */
 
-export const validatePostId = ({ id }: PostId): ValidatorProps<Partial<PostId>> => {
+export const validatePostId = ({ id = '' }: PostId): ValidatorProps<Partial<PostId>> => {
   const errors: Partial<PostId> = {};
 
   /**
@@ -14,9 +14,9 @@ export const validatePostId = ({ id }: PostId): ValidatorProps<Partial<PostId>> 
    */
 
   validator.isEmpty(id)
-    ? (errors.id = postMessage.id.required)
+    ? (errors.id = dataMessage.id.required)
     : !validator.isMongoId(id)
-    ? (errors.id = postMessage.id.invalid)
+    ? (errors.id = dataMessage.id.invalid)
     : null;
 
   return {

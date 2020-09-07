@@ -2,25 +2,25 @@ import { Request, Response } from 'express';
 
 import { User } from '@model';
 import { validateUserId } from '@validation';
-import { emailMessage } from '@messages';
+import { actionMessage } from '@messages';
 
 /* -------------------------------------------------------------------------- */
 
 export const confirmEmail = async (req: Request, res: Response): Promise<Response> => {
+  const { id } = req.params;
+
   /**
    * Validate id
    */
 
-  const { id } = req.params;
-
-  const { isValid } = await validateUserId({ id });
+  const { errors, isValid } = await validateUserId({ id });
 
   if (!isValid) {
-    return res.status(400).send({ message: emailMessage.couldNotFind });
+    return res.status(400).send({ error: errors.id });
   }
 
   /**
-   * Get user & update confirmed field of user in database then send message to client
+   * Get user and update confirmed property of user if it is false to true then send message to client
    */
 
   const user = await User.findById(id);
@@ -28,8 +28,8 @@ export const confirmEmail = async (req: Request, res: Response): Promise<Respons
   if (user && !user.confirmed) {
     await User.findByIdAndUpdate(id, { confirmed: true });
 
-    return res.send({ message: emailMessage.confirmed });
+    return res.send({ message: actionMessage.email.confirmed });
   }
 
-  return res.send({ message: emailMessage.alreadyConfirmed });
+  return res.send({ message: actionMessage.email.alreadyConfirmed });
 };

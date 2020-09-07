@@ -7,16 +7,28 @@ import { notificationRouter } from './notification';
 
 /* -------------------------------------------------------------------------- */
 
-/**
- * API Router for /api
- */
-
 export const apiRouter = Router();
+
+/**
+ * @route   /api/auth
+ */
 
 apiRouter.use('/auth', authRouter);
 
+/**
+ * @route   /api/users
+ */
+
 apiRouter.use('/users', usersRouter);
 
+/**
+ * @route   /api/post
+ */
+
 apiRouter.use('/post', postRouter);
+
+/**
+ * @route   /api/notifications
+ */
 
 apiRouter.use('/notifications', notificationRouter);

@@ -1,8 +1,7 @@
-export const userMessage = {
+export const dataMessage = {
   id: {
     required: 'Id is required',
     invalid: 'Invalid id',
-    notFound: "Couldn't find an user with that id",
   },
   firstName: {
     required: 'First Name is required',
@@ -14,14 +13,14 @@ export const userMessage = {
   username: {
     required: 'Username is required',
     maxlength: 'Username must be less than 30 characters',
-    exist: 'This username is not available',
+    notAvailable: 'This username is not available',
     notFound: 'Could not find a user with that username',
   },
   email: {
     required: 'Email is required',
     invalid: 'Invalid email format',
+    notAvailable: 'This email is not available',
     notFound: 'Email not found',
-    exist: 'This email is not available',
   },
   usernameOrEmail: {
     required: 'Username or email is required',
@@ -50,7 +49,11 @@ export const userMessage = {
     minlength: 'Password must be at least 6 characters',
     notMatch: 'Passwords must match',
   },
-  follow: {
-    isCurrentUser: "You can't follow / unfollow yourself",
+  image: {
+    required: 'Image is required',
   },
+  noUser: 'User not found',
+  noPost: 'Post not found',
+  noPosts: 'No posts found',
+  noPostDeletePermission: "You don't have permission to delete this post",
 };

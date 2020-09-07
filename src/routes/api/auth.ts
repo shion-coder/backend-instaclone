@@ -9,7 +9,7 @@ export const authRouter = Router();
 
 /**
  * @route   POST /api/auth/register
- * @desc    Register & return JWT token
+ * @desc    Register and return user info with token
  * @access  Public
  */
 
@@ -17,7 +17,7 @@ authRouter.route('/register').post(register);
 
 /**
  * @route   POST /api/auth/login
- * @desc    Login & return JWT token
+ * @desc    Login and return user info with token
  * @access  Public
  */
 
@@ -25,7 +25,7 @@ authRouter.route('/login').post(login);
 
 /**
  * @route   GET /api/auth/google
- * @desc    Login with google
+ * @desc    Login with google oauth and return user info with token
  * @access  Public
  */
 

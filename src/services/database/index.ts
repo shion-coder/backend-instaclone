@@ -5,7 +5,11 @@ import { logger } from '@logger';
 
 /* -------------------------------------------------------------------------- */
 
-const connectDatabase = async (): Promise<void> => {
+/**
+ * Connect mongoDB in cloud
+ */
+
+export const connectDatabase = async (): Promise<void> => {
   try {
     await mongoose.connect(MONGODB_URI, {
       useNewUrlParser: true,
@@ -19,5 +23,3 @@ const connectDatabase = async (): Promise<void> => {
     logger.error('MongoDB - Database connection error -', exception);
   }
 };
-
-export default connectDatabase;

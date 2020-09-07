@@ -4,8 +4,6 @@ export * from './post-id';
 
 export * from './post-id-with-author';
 
-export * from './email';
-
 export * from './register';
 
 export * from './login';

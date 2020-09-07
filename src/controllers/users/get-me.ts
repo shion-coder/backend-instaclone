@@ -1,27 +1,23 @@
 import { Request, Response } from 'express';
 
 import { User } from '@model';
-import { SOCKET_EVENT, APP_VAlUES } from '@types';
 import { selectUserInfo } from '@utils';
 import { dataMessage } from '@messages';
 
 /* -------------------------------------------------------------------------- */
 
-export const facebook = async (req: Request, res: Response): Promise<Response | void> => {
+export const getMe = async (req: Request, res: Response): Promise<Response> => {
   const user = req.user;
-  const io = req.app.get(APP_VAlUES.IO);
 
   if (!user) {
     return res.send({ error: dataMessage.noUser });
   }
 
   /**
-   * Get user info and return it with token
+   * Select user properties to send client
    */
 
   const userResult = await User.findById(user.id).select(selectUserInfo).lean();
 
-  io.in(req.session?.socketId).emit(SOCKET_EVENT.FACEBOOK, {
-    user: { ...userResult, token: user.generateAuthToken() },
-  });
+  return res.send({ user: { ...userResult } });
 };

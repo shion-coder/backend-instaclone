@@ -5,6 +5,10 @@ import { errorMessage } from '@messages';
 
 /* -------------------------------------------------------------------------- */
 
+/**
+ * Handle upload single image
+ */
+
 export const uploadSingle = (req: Request, res: Response, next: NextFunction): void => {
   multerUploadSingle(req, res, (err: unknown) => {
     if (err) {
@@ -14,6 +18,10 @@ export const uploadSingle = (req: Request, res: Response, next: NextFunction): v
     next();
   });
 };
+
+/**
+ * Handle upload multi images
+ */
 
 export const uploadMulti = (req: Request, res: Response, next: NextFunction): void => {
   multerUploadMulti(req, res, (err: unknown) => {

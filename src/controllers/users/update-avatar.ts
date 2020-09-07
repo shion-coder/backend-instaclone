@@ -1,29 +1,34 @@
 import { Request, Response } from 'express';
 
-import { UserProps } from '@model';
-import { formatCloudinaryUrl } from '@utils/format-cloudinary-url';
-import { postMessage } from '@messages';
+import { formatCloudinaryUrl, CLOUDINARY_MODE } from '@utils';
+import { dataMessage } from '@messages';
 
 /* -------------------------------------------------------------------------- */
 
-export const updateAvatar = (req: Request, res: Response): Response => {
-  const user = req.user as UserProps;
+export const updateAvatar = async (req: Request, res: Response): Promise<Response> => {
+  const user = req.user;
+
+  if (!user) {
+    return res.send({ error: dataMessage.noUser });
+  }
 
   /**
    * Validate file
    */
 
   if (!req.file) {
-    return res.status(400).send({ error: postMessage.image.required });
+    return res.status(400).send({ error: dataMessage.image.required });
   }
 
   /**
-   * Format file in thumb with 200 width and 200 height, save it to user and send to client
+   * Format file in thumb mode with 200 width, 200 height then update user avatar and send new avatar to client
    */
 
-  user.avatar = formatCloudinaryUrl(req.file.path, { mode: 'thumb', width: 200, height: 200 });
+  const avatar = formatCloudinaryUrl(req.file.path, { mode: CLOUDINARY_MODE.THUMB, width: 200, height: 200 });
 
-  user.save();
+  user.avatar = avatar;
 
-  return res.send({ avatar: user.avatar });
+  await user.save();
+
+  return res.send({ avatar });
 };

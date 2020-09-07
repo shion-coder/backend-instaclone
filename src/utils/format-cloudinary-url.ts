@@ -18,9 +18,17 @@ export const formatCloudinaryUrl = (
   const x = option.x ? `x_${option.x},` : '';
   const y = option.y ? `y_${option.y},` : '';
 
+  /**
+   * Split url to modified then return new url
+   */
+
   const splitUrl = url.split('upload/');
 
   splitUrl[0] += `upload/${mode}${height}${width}${x}${y}/`;
 
   return splitUrl[0] + splitUrl[1];
 };
+
+export enum CLOUDINARY_MODE {
+  THUMB = 'thumb',
+}

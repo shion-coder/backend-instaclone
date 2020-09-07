@@ -3,23 +3,19 @@ import isEmpty from 'is-empty';
 
 import { User, UserProps } from '@model';
 import { ValidatorProps, UpdateProfileProps } from '@types';
-import { errorMessage, userMessage } from '@messages';
+import { excludeUsername } from '@utils';
+import { errorMessage, dataMessage } from '@messages';
 
 /* -------------------------------------------------------------------------- */
 
-export const validateUpdateProfile = async ({
-  firstName,
-  lastName,
-  username,
-  email,
-  user,
-}: UpdateProfileProps & { user: UserProps }): Promise<ValidatorProps<Partial<UpdateProfileProps>>> => {
+export const validateUpdateProfile = async (
+  { firstName = '', lastName = '', username = '', email = '' }: UpdateProfileProps,
+  user: UserProps,
+): Promise<ValidatorProps<Partial<UpdateProfileProps>>> => {
   const errors: Partial<UpdateProfileProps> = {};
 
   let existingUsername: UserProps | null = null;
   let existingEmail: UserProps | null = null;
-
-  const excludeUsername = ['register', 'login', 'dashboard', 'settings', 'list'];
 
   /**
    * Find existing username & email
@@ -46,27 +42,27 @@ export const validateUpdateProfile = async ({
    */
 
   validator.isEmpty(firstName)
-    ? (errors.firstName = userMessage.firstName.required)
+    ? (errors.firstName = dataMessage.firstName.required)
     : !validator.isLength(firstName, { max: 30 })
-    ? (errors.firstName = userMessage.firstName.maxlength)
+    ? (errors.firstName = dataMessage.firstName.maxlength)
     : null;
 
   /**
    * Last name validation
    */
 
-  lastName && !validator.isLength(lastName, { max: 30 }) ? (errors.lastName = userMessage.lastName.maxlength) : null;
+  lastName && !validator.isLength(lastName, { max: 30 }) ? (errors.lastName = dataMessage.lastName.maxlength) : null;
 
   /**
    * Username validation
    */
 
   username !== user.username && validator.isEmpty(username)
-    ? (errors.username = userMessage.username.required)
+    ? (errors.username = dataMessage.username.required)
     : !validator.isLength(username, { max: 30 })
-    ? (errors.username = userMessage.username.maxlength)
+    ? (errors.username = dataMessage.username.maxlength)
     : existingUsername || excludeUsername.includes(username)
-    ? (errors.username = userMessage.username.exist)
+    ? (errors.username = dataMessage.username.notAvailable)
     : null;
 
   /**
@@ -74,11 +70,11 @@ export const validateUpdateProfile = async ({
    */
 
   email !== user.email && validator.isEmpty(email)
-    ? (errors.email = userMessage.email.required)
+    ? (errors.email = dataMessage.email.required)
     : !validator.isEmail(email)
-    ? (errors.email = userMessage.email.invalid)
+    ? (errors.email = dataMessage.email.invalid)
     : existingEmail
-    ? (errors.email = userMessage.email.exist)
+    ? (errors.email = dataMessage.email.notAvailable)
     : null;
 
   return {

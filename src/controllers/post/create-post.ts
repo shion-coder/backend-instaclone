@@ -1,57 +1,53 @@
 import { Request, Response } from 'express';
 
-import { UserProps, Post } from '@model';
-import { formatCloudinaryUrl } from '@utils/format-cloudinary-url';
-import { postMessage } from '@messages';
+import { PostProps, Post, POST_PATH, User } from '@model';
+import { CreatePostProps } from '@types';
+import { formatCloudinaryUrl, CLOUDINARY_MODE, selectPostInfo, selectPostAuthorInfo } from '@utils';
+import { dataMessage } from '@messages';
 
 /* -------------------------------------------------------------------------- */
 
 export const createPost = async (req: Request, res: Response): Promise<Response> => {
-  const user = req.user as UserProps;
-
   /**
-   * Check file in request
+   * Validate file
    */
 
   if (!req.file) {
-    return res.status(400).send({ error: postMessage.image.required });
+    return res.status(400).send({ error: dataMessage.image.required });
   }
 
+  const user = req.user;
   const { path } = req.file;
+  const { filter, caption }: CreatePostProps = req.body;
 
-  const { caption, filter } = req.body;
+  if (!user) {
+    return res.send({ error: dataMessage.noUser });
+  }
 
   /**
-   * Create new post
+   * Create new post then push new post id in posts of user and increment postCount to 1
    */
 
   const post = await Post.create({
     image: path,
-    thumbnail: formatCloudinaryUrl(path, { mode: 'thumb', width: 400, height: 400 }),
-    caption,
+    thumbnail: formatCloudinaryUrl(path, { mode: CLOUDINARY_MODE.THUMB, width: 400, height: 400 }),
     filter,
+    caption,
     author: user.id,
+  } as PostProps);
+
+  await User.findByIdAndUpdate(user.id, {
+    $push: { posts: post.id },
+    $inc: { postCount: 1 },
   });
 
   /**
-   * Push new post id in Post model and increment 1 in post count of user
-   */
-
-  user.posts?.push(post.id);
-
-  if (user.postCount !== undefined) {
-    user.postCount = user.postCount + 1;
-  }
-
-  await user.save();
-
-  /**
-   * Send result with Post fields and author info
+   * Send result with new post properties and author info
    */
 
   const postResult = await Post.findById(post.id)
-    .select('-__v')
-    .populate({ path: 'author', select: 'fullName username avatar' })
+    .select(selectPostInfo)
+    .populate({ path: POST_PATH.AUTHOR, select: selectPostAuthorInfo })
     .lean();
 
   return res.send({ post: postResult });
