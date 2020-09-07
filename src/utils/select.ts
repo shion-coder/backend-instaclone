@@ -1,7 +1,7 @@
 export const selectUserInfo = 'firstName lastName fullName username email website bio avatar confirmed date';
 
 export const selectUserProfile =
-  'firstName lastName fullName username email website bio avatar postCount followerCount followingCount';
+  'firstName lastName fullName username email website bio avatar postCount followers followerCount followingCount';
 
 export const selectFollowers = 'followers';
 
@@ -18,5 +18,3 @@ export const selectPostAuthorInfo = 'fullName username avatar';
 export const selectNotificationInfo = 'notificationType notificationData sender read date';
 
 export const selectNotificationSenderInfo = 'fullName username avatar';
-
-export const excludeUsername = ['register', 'login', 'dashboard', 'explore', 'settings', 'list'];
