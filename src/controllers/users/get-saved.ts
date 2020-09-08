@@ -39,8 +39,8 @@ export const getSaved = async (req: Request, res: Response): Promise<Response> =
    */
 
   if (saved.length === limit) {
-    return res.send({ saved, next: Number(offset) + limit });
+    return res.send({ posts: saved, next: Number(offset) + limit });
   }
 
-  return res.send({ saved });
+  return res.send({ posts: saved });
 };
