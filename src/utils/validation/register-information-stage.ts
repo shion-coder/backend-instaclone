@@ -8,7 +8,7 @@ import { errorMessage, dataMessage } from '@messages';
 
 /* -------------------------------------------------------------------------- */
 
-export const validateRegisterInformation = async ({
+export const validateRegisterInformationStage = async ({
   firstName = '',
   lastName = '',
   username = '',

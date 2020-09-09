@@ -1,7 +1,7 @@
 import { Router } from 'express';
 
 import { googleAuth, addSocket } from '@middleware';
-import { registerInformation, register, login, google } from '@controllers/auth';
+import { registerInformationStage, register, login, google } from '@controllers/auth';
 
 /* -------------------------------------------------------------------------- */
 
@@ -9,11 +9,11 @@ export const authRouter = Router();
 
 /**
  * @route   POST /api/auth/register/information
- * @desc    Validate register information part
+ * @desc    Validate register information stage
  * @access  Public
  */
 
-authRouter.route('/register/information').post(registerInformation);
+authRouter.route('/register/information').post(registerInformationStage);
 
 /**
  * @route   POST /api/auth/register

@@ -1,4 +1,4 @@
-export * from './register-information';
+export * from './register-information-stage';
 
 export * from './register';
 
