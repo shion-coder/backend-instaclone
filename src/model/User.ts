@@ -24,6 +24,7 @@ type UserSchemaProps = {
   posts: PostProps['id'][];
   postCount: number;
   saved: PostProps['id'][];
+  tagged: PostProps['id'][];
   followers: UserProps['id'][];
   followerCount: number;
   following: UserProps['id'][];
@@ -53,6 +54,7 @@ export type TokenDecodeProps = TokenProps & {
 export enum USER_PATH {
   POSTS = 'posts',
   SAVED = 'saved',
+  TAGGED = 'tagged',
   FOLLOWERS = 'followers',
   FOLLOWING = 'following',
   NOTIFICATIONS = 'notifications',
@@ -109,6 +111,7 @@ const userSchema: Schema = new Schema({
     default: 0,
   },
   saved: [{ type: Schema.Types.ObjectId, ref: MODEL.POST }],
+  tagged: [{ type: Schema.Types.ObjectId, ref: MODEL.POST }],
   followers: [{ type: Schema.Types.ObjectId, ref: MODEL.USER }],
   followerCount: {
     type: Number,

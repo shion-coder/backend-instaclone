@@ -14,6 +14,8 @@ export * from './get-posts';
 
 export * from './get-saved';
 
+export * from './get-tagged';
+
 export * from './update-avatar';
 
 export * from './update-profile';

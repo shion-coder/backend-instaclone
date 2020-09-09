@@ -9,6 +9,8 @@ export const selectFollowing = 'following';
 
 export const selectSaved = 'saved';
 
+export const selectTagged = 'tagged';
+
 export const selectFollowerInfo = 'fullName username avatar';
 
 export const selectFollowingInfo = 'fullName username avatar';
