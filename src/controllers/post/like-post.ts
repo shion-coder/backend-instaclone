@@ -57,39 +57,41 @@ export const likePost = async (req: Request, res: Response): Promise<Response | 
   }
 
   /**
-   * User still not yet like this post, create new like notification, add this user id to likes and increase 1 number of likeCount in this post,
+   * User still not yet like this post, create new like notification if author of post is not current user, add this user id to likes and increase 1 number of likeCount in this post,
    * and send isLiked as true to client
    */
-
-  const notification = await Notification.create({
-    notificationType: NOTIFICATION_TYPE.LIKE,
-    sender: user.id,
-    receiver: post.author,
-    notificationData: {
-      postId: id,
-      image: formatCloudinaryUrl(post.image, { mode: CLOUDINARY_MODE.THUMB, width: 100, height: 100 }),
-      filter: post.filter,
-    },
-  } as NotificationProps);
 
   await Post.findByIdAndUpdate(id, {
     $push: { likes: user.id },
     $inc: { likeCount: 1 },
   });
 
-  await User.findByIdAndUpdate(post.author, {
-    $push: { notifications: notification.id },
-  });
+  if (post.author.toString() !== user.id) {
+    const notification = await Notification.create({
+      notificationType: NOTIFICATION_TYPE.LIKE,
+      sender: user.id,
+      receiver: post.author,
+      notificationData: {
+        postId: id,
+        image: formatCloudinaryUrl(post.image, { mode: CLOUDINARY_MODE.THUMB, width: 100, height: 100 }),
+        filter: post.filter,
+      },
+    } as NotificationProps);
 
-  /**
-   * Send new like notification with sender info through socket and send isLiked state with this user back to client
-   */
+    await User.findByIdAndUpdate(post.author, {
+      $push: { notifications: notification.id },
+    });
 
-  const newNotification = await Notification.findById(notification.id)
-    .select(selectNotificationInfo)
-    .populate({ path: NOTIFICATION_PATH.SENDER, select: selectNotificationSenderInfo });
+    /**
+     * Send new like notification with sender info through socket and send isLiked state with this user back to client
+     */
 
-  newNotification && sendNotification(newNotification);
+    const newNotification = await Notification.findById(notification.id)
+      .select(selectNotificationInfo)
+      .populate({ path: NOTIFICATION_PATH.SENDER, select: selectNotificationSenderInfo });
+
+    newNotification && sendNotification(newNotification);
+  }
 
   return res.send({ isLiked: true });
 };
