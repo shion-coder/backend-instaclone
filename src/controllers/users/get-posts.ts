@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 
-import { UserProps, User, Post } from '@model';
-import { selectPostInfo } from '@utils';
+import { UserProps, User, Post, POST_PATH } from '@model';
+import { selectPostInfo, selectPostAuthorInfo } from '@utils';
 import { dataMessage } from '@messages';
 
 /* -------------------------------------------------------------------------- */
@@ -32,6 +32,7 @@ export const getPosts = async (req: Request, res: Response): Promise<Response> =
   const posts = await Post.find({ author: userFound.id })
     .sort({ date: -1 })
     .select(selectPostInfo)
+    .populate({ path: POST_PATH.AUTHOR, select: selectPostAuthorInfo })
     .skip(Number(offset))
     .limit(limit)
     .lean();
