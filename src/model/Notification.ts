@@ -7,7 +7,11 @@ import { MODEL } from '@types';
 
 type NotificationSchemaProps = {
   notificationType: string;
-  notificationData?: Record<string, unknown>;
+  notificationData?: {
+    postId: string;
+    image: string;
+    filter: string;
+  };
   sender: UserProps['id'];
   receiver: UserProps['id'];
   read: boolean;
