@@ -67,7 +67,7 @@ export const likePost = async (req: Request, res: Response): Promise<Response | 
     receiver: post.author,
     notificationData: {
       postId: id,
-      image: formatCloudinaryUrl(post.image, { mode: CLOUDINARY_MODE.THUMB, width: 50, height: 50 }),
+      image: formatCloudinaryUrl(post.image, { mode: CLOUDINARY_MODE.THUMB, width: 100, height: 100 }),
       filter: post.filter,
     },
   } as NotificationProps);

@@ -35,7 +35,11 @@ const notificationSchema: Schema = new Schema({
     enum: ['follow', 'like', 'comment', 'mention'],
     required: true,
   },
-  notificationData: Object,
+  notificationData: {
+    postId: String,
+    image: String,
+    filter: String,
+  },
   sender: {
     type: Schema.Types.ObjectId,
     ref: MODEL.USER,
