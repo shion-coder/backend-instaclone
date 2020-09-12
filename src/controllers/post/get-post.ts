@@ -39,10 +39,38 @@ export const getPost = async (req: Request, res: Response): Promise<Response | v
   }
 
   /**
+   * Check current user is author of this post or not
+   */
+
+  const isMine = user.id === post.author._id.toString();
+
+  /**
+   * Check user is liked this post or not
+   */
+
+  const isLiked = post.likes.map((like) => like.toString()).includes(user.id.toString());
+
+  /**
+   * Check user is saved this post or not
+   */
+
+  const isSaved = user.saved.map((save) => save.toString()).includes(id);
+
+  /**
+   * Check is there any comment of this post belongs to user
+   */
+
+  const comments = post.comments.map((comment) => {
+    const isCommentMine = user.id === comment.author._id.toString();
+
+    return { comment, isCommentMine };
+  });
+
+  /**
    * Check user is following author of this post or not, then return post info with author info plus ifFollowing property
    */
 
   const isFollowing = user.following.map((following) => following._id.toString()).includes(post.author._id.toString());
 
-  return res.send({ post: { ...post, author: { ...post.author, isFollowing } } });
+  return res.send({ post: { ...post, comments, author: { ...post.author, isFollowing } }, isMine, isLiked, isSaved });
 };

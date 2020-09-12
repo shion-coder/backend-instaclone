@@ -15,9 +15,11 @@ export const selectFollowerInfo = 'fullName username avatar';
 
 export const selectFollowingInfo = 'fullName username avatar';
 
-export const selectPostInfo = '-__v -likes -comments';
+export const selectPostInfo = '-__v';
 
 export const selectPostAuthorInfo = 'fullName username avatar';
+
+export const selectPostLikedInfo = 'fullName username avatar';
 
 export const selectNotificationInfo = 'notificationType notificationData sender receiver read date';
 
