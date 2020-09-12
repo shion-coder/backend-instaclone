@@ -47,7 +47,7 @@ export const likePost = async (req: Request, res: Response): Promise<Response | 
    * If user liked this post then unlike, decrease 1 number of likeCount in this post and send isLiked as false to client
    */
 
-  if (post.likes.includes(user.id)) {
+  if (post.likes.map((like) => like.toString()).includes(user.id)) {
     await Post.findByIdAndUpdate(id, {
       $pull: { likes: user.id },
       $inc: { likeCount: -1 },
