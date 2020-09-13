@@ -58,5 +58,7 @@ export const dataMessage = {
   noUser: 'User not found',
   noPost: 'Post not found',
   noPosts: 'No posts found',
+  noComment: 'Comment not found',
   noPostDeletePermission: "You don't have permission to delete this post",
+  noCommentDeletePermission: "You don't have permission to delete this comment",
 };

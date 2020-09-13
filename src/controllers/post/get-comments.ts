@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 
-import { Post, POST_PATH, COMMENT_PATH } from '@model';
+import { PostProps, Post, POST_PATH, COMMENT_PATH } from '@model';
 import { selectComments, selectCommentInfo, selectCommentAuthorInfo } from '@utils';
 import { dataMessage } from '@messages';
 
@@ -8,7 +8,7 @@ import { dataMessage } from '@messages';
 
 export const getComments = async (req: Request, res: Response): Promise<Response> => {
   const user = req.user;
-  const { id, offset }: { id?: string; offset?: string } = req.params;
+  const { id, offset }: { id?: PostProps['id']; offset?: string } = req.params;
 
   if (!user) {
     return res.send({ error: dataMessage.noUser });

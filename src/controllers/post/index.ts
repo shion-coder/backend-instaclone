@@ -11,3 +11,5 @@ export * from './save-post';
 export * from './create-comment';
 
 export * from './get-comments';
+
+export * from './delete-comment';
