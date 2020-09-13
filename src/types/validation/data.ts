@@ -21,6 +21,10 @@ export type CreatePostProps = {
   filter: string;
 };
 
+export type CreateCommentProp = {
+  message: string;
+};
+
 export type UpdateProfileProps = {
   firstName: UserProps['firstName'];
   lastName: UserProps['lastName'];

@@ -52,6 +52,9 @@ export const dataMessage = {
   image: {
     required: 'Image is required',
   },
+  message: {
+    required: 'Message is required',
+  },
   noUser: 'User not found',
   noPost: 'Post not found',
   noPosts: 'No posts found',

@@ -1,7 +1,7 @@
 import { Router } from 'express';
 
 import { jwtAuth, uploadSingle } from '@middleware';
-import { createPost, deletePost, getPost, likePost, savePost } from '@controllers/post';
+import { createPost, deletePost, getPost, likePost, savePost, createComment } from '@controllers/post';
 
 /* -------------------------------------------------------------------------- */
 
@@ -46,3 +46,11 @@ postRouter.route('/:id/like').post(jwtAuth, likePost);
  */
 
 postRouter.route('/:id/save').post(jwtAuth, savePost);
+
+/**
+ * @route   POST /api/post/:id/comment
+ * @desc    Comment
+ * @access  Private
+ */
+
+postRouter.route('/:id/comment').post(jwtAuth, createComment);

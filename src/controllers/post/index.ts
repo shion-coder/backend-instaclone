@@ -7,3 +7,5 @@ export * from './delete-post';
 export * from './like-post';
 
 export * from './save-post';
+
+export * from './create-comment';

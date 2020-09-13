@@ -21,6 +21,10 @@ export const selectPostAuthorInfo = 'fullName username avatar';
 
 export const selectPostLikedInfo = 'fullName username avatar';
 
+export const selectCommentInfo = '-__v';
+
+export const selectCommentAuthorInfo = 'fullName username avatar';
+
 export const selectNotificationInfo = 'notificationType notificationData sender receiver read date';
 
 export const selectNotificationSenderInfo = 'fullName username avatar';
