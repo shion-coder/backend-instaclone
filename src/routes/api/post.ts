@@ -1,7 +1,7 @@
 import { Router } from 'express';
 
 import { jwtAuth, uploadSingle } from '@middleware';
-import { createPost, deletePost, getPost, likePost, savePost, createComment } from '@controllers/post';
+import { createPost, deletePost, getPost, likePost, savePost, createComment, getComments } from '@controllers/post';
 
 /* -------------------------------------------------------------------------- */
 
@@ -54,3 +54,11 @@ postRouter.route('/:id/save').post(jwtAuth, savePost);
  */
 
 postRouter.route('/:id/comment').post(jwtAuth, createComment);
+
+/**
+ * @route   GET /api/post/:id/comments/:offset
+ * @desc    Get comments of post
+ * @access  Private
+ */
+
+postRouter.route('/:id/comments/:offset').get(jwtAuth, getComments);
