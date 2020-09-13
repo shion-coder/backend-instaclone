@@ -1,7 +1,7 @@
 import { Router } from 'express';
 
 import { jwtAuth, uploadSingle } from '@middleware';
-import { createPost, deletePost, getPost, likePost } from '@controllers/post';
+import { createPost, deletePost, getPost, likePost, savePost } from '@controllers/post';
 
 /* -------------------------------------------------------------------------- */
 
@@ -38,3 +38,11 @@ postRouter.route('/:id').delete(jwtAuth, deletePost);
  */
 
 postRouter.route('/:id/like').post(jwtAuth, likePost);
+
+/**
+ * @route   POST /api/post/:id/save
+ * @desc    Save / un save post with id
+ * @access  Private
+ */
+
+postRouter.route('/:id/save').post(jwtAuth, savePost);

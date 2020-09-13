@@ -37,7 +37,7 @@ export const likePost = async (req: Request, res: Response): Promise<Response | 
    * Find post with id
    */
 
-  const post = await Post.findById(id).select(selectPostInfo).lean();
+  const post = await Post.findById(id).select(selectPostInfo);
 
   if (!post) {
     return res.status(404).send({ error: dataMessage.noPost });
@@ -47,11 +47,13 @@ export const likePost = async (req: Request, res: Response): Promise<Response | 
    * If user liked this post then unlike, decrease 1 number of likeCount in this post and send isLiked as false to client
    */
 
-  if (post.likes.map((like) => like.toString()).includes(user.id)) {
-    await Post.findByIdAndUpdate(id, {
-      $pull: { likes: user.id },
-      $inc: { likeCount: -1 },
-    });
+  if (post.likes.includes(user.id)) {
+    const index = post.likes.indexOf(user.id);
+
+    post.likes.splice(index, 1);
+    post.likeCount = post.likeCount - 1;
+
+    await post.save();
 
     return res.send({ isLiked: false });
   }
@@ -61,10 +63,10 @@ export const likePost = async (req: Request, res: Response): Promise<Response | 
    * and send isLiked as true to client
    */
 
-  await Post.findByIdAndUpdate(id, {
-    $push: { likes: user.id },
-    $inc: { likeCount: 1 },
-  });
+  post.likes.push(user.id);
+  post.likeCount = post.likeCount + 1;
+
+  await post.save();
 
   if (post.author.toString() !== user.id) {
     const notification = await Notification.create({
