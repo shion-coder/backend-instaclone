@@ -4,6 +4,7 @@ import { jwtAuth, uploadSingle } from '@middleware';
 import {
   createPost,
   deletePost,
+  getSuggestedPosts,
   getPost,
   likePost,
   likeComment,
@@ -16,6 +17,14 @@ import {
 /* -------------------------------------------------------------------------- */
 
 export const postRouter = Router();
+
+/**
+ * @route   GET /api/post/suggested/:offset
+ * @desc    Get suggested posts
+ * @access  Private
+ */
+
+postRouter.route('/suggested/:offset').get(jwtAuth, getSuggestedPosts);
 
 /**
  * @route   GET /api/post/:id

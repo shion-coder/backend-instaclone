@@ -1,3 +1,5 @@
+export * from './get-suggested-posts';
+
 export * from './get-post';
 
 export * from './create-post';

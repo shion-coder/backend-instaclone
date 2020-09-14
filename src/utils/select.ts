@@ -19,6 +19,8 @@ export const selectFollowingInfo = 'fullName username avatar';
 
 export const selectPostInfo = '-__v';
 
+export const selectPostSuggestedInfo = '-__v -comments -likes';
+
 export const selectPostAuthorInfo = 'fullName username avatar';
 
 export const selectPostLikedInfo = 'fullName username avatar';
