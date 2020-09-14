@@ -6,6 +6,7 @@ import {
   deletePost,
   getPost,
   likePost,
+  likeComment,
   savePost,
   createComment,
   getComments,
@@ -47,6 +48,14 @@ postRouter.route('/:id').delete(jwtAuth, deletePost);
  */
 
 postRouter.route('/:id/like').post(jwtAuth, likePost);
+
+/**
+ * @route   POST /api/post/comments/:id/like
+ * @desc    Like / unlike comment with id
+ * @access  Private
+ */
+
+postRouter.route('/comments/:id/like').post(jwtAuth, likeComment);
 
 /**
  * @route   POST /api/post/:id/save

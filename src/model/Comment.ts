@@ -8,6 +8,10 @@ import { MODEL } from '@types';
 type CommentSchemaProps = {
   message: string;
   post: PostProps['id'];
+  likes: UserProps['id'][];
+  likeCount: number;
+  comments: CommentProps['id'][];
+  commentCount: number;
   author: UserProps['id'];
   date: string;
 };
@@ -32,6 +36,16 @@ const commentSchema: Schema = new Schema({
     type: Schema.Types.ObjectId,
     ref: MODEL.POST,
     required: true,
+  },
+  likes: [{ type: Schema.Types.ObjectId, ref: MODEL.USER }],
+  likeCount: {
+    type: Number,
+    default: 0,
+  },
+  comments: [{ type: Schema.Types.ObjectId, ref: MODEL.COMMENT }],
+  commentCount: {
+    type: Number,
+    default: 0,
   },
   author: {
     type: Schema.Types.ObjectId,

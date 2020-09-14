@@ -96,7 +96,7 @@ export const createComment = async (req: Request, res: Response): Promise<Respon
 
   if (post.author.toString() !== user.id) {
     const notification = await Notification.create({
-      notificationType: NOTIFICATION_TYPE.COMMENT,
+      notificationType: NOTIFICATION_TYPE.COMMENT_POST,
       sender: user.id,
       receiver: post.author,
       notificationData: {

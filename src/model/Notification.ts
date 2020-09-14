@@ -1,7 +1,7 @@
 import { Schema, Document, Model, model } from 'mongoose';
 
 import { UserProps } from '@model';
-import { MODEL } from '@types';
+import { MODEL, NOTIFICATION_TYPE } from '@types';
 
 /* -------------------------------------------------------------------------- */
 
@@ -32,7 +32,14 @@ export enum NOTIFICATION_PATH {
 const notificationSchema: Schema = new Schema({
   notificationType: {
     type: String,
-    enum: ['follow', 'like', 'comment', 'mention'],
+    enum: [
+      NOTIFICATION_TYPE.FOLLOW,
+      NOTIFICATION_TYPE.LIKE_POST,
+      NOTIFICATION_TYPE.LIKE_COMMENT,
+      NOTIFICATION_TYPE.COMMENT_POST,
+      NOTIFICATION_TYPE.COMMENT_COMMENT,
+      NOTIFICATION_TYPE.MENTION,
+    ],
     required: true,
   },
   notificationData: {

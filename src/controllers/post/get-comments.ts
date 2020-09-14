@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 
-import { PostProps, Post, POST_PATH, COMMENT_PATH } from '@model';
+import { PostProps, Post, POST_PATH, COMMENT_PATH, CommentProps } from '@model';
 import { selectComments, selectCommentInfo, selectCommentAuthorInfo } from '@utils';
 import { dataMessage } from '@messages';
 
@@ -45,10 +45,11 @@ export const getComments = async (req: Request, res: Response): Promise<Response
    * Push isMine to each comment in comments
    */
 
-  const comments = post.comments.map((comment) => {
+  const comments = post.comments.map((comment: CommentProps) => {
     const isMine = comment.author._id.toString() === user.id;
+    const isLiked = comment.likes.map((like) => like.toString()).includes(user.id);
 
-    return { ...comment, isMine };
+    return { ...comment, isMine, isLiked };
   });
 
   /**

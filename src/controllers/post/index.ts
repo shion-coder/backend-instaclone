@@ -13,3 +13,5 @@ export * from './create-comment';
 export * from './get-comments';
 
 export * from './delete-comment';
+
+export * from './like-comment';

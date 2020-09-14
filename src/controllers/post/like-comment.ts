@@ -1,10 +1,11 @@
 import { Request, Response } from 'express';
 
-import { PostProps, Post, NotificationProps, Notification, NOTIFICATION_PATH, User } from '@model';
+import { CommentProps, Comment, Post, User, NotificationProps, Notification, NOTIFICATION_PATH } from '@model';
 import { NOTIFICATION_TYPE } from '@types';
 import { validatePostId } from '@validation';
 import {
   selectPostInfo,
+  selectCommentInfo,
   selectNotificationInfo,
   selectNotificationSenderInfo,
   formatCloudinaryUrl,
@@ -15,9 +16,9 @@ import { dataMessage } from '@messages';
 
 /* -------------------------------------------------------------------------- */
 
-export const likePost = async (req: Request, res: Response): Promise<Response | void> => {
+export const likeComment = async (req: Request, res: Response): Promise<Response | void> => {
   const user = req.user;
-  const { id }: { id?: PostProps['id'] } = req.params;
+  const { id }: { id?: CommentProps['id'] } = req.params;
 
   if (!user) {
     return res.send({ error: dataMessage.noUser });
@@ -34,10 +35,16 @@ export const likePost = async (req: Request, res: Response): Promise<Response | 
   }
 
   /**
-   * Find post with id
+   * Find comment with id and post of this comment
    */
 
-  const post = await Post.findById(id).select(selectPostInfo);
+  const comment = await Comment.findById(id).select(selectCommentInfo);
+
+  if (!comment) {
+    return res.status(404).send({ error: dataMessage.noComment });
+  }
+
+  const post = await Post.findById(comment.post).select(selectPostInfo);
 
   if (!post) {
     return res.status(404).send({ error: dataMessage.noPost });
@@ -47,32 +54,32 @@ export const likePost = async (req: Request, res: Response): Promise<Response | 
    * If user liked this post then unlike, decrease 1 number of likeCount in this post and send isLiked as false to client
    */
 
-  if (post.likes.includes(user.id)) {
-    const index = post.likes.indexOf(user.id);
+  if (comment.likes.includes(user.id)) {
+    const index = comment.likes.indexOf(user.id);
 
-    post.likes.splice(index, 1);
-    post.likeCount = post.likeCount - 1;
+    comment.likes.splice(index, 1);
+    comment.likeCount = comment.likeCount - 1;
 
-    await post.save();
+    await comment.save();
 
     return res.send({ isLiked: false });
   }
 
   /**
-   * User still not yet like this post, create new like notification if author of post is not current user, add this user id to likes and increase 1 number of likeCount in this post,
+   * User still not yet like this comment, create new like notification if author of post is not current user, add this user id to likes and increase 1 number of likeCount in this comment,
    * and send isLiked as true to client
    */
 
-  post.likes.push(user.id);
-  post.likeCount = post.likeCount + 1;
+  comment.likes.push(user.id);
+  comment.likeCount = comment.likeCount + 1;
 
-  await post.save();
+  await comment.save();
 
-  if (post.author.toString() !== user.id) {
+  if (comment.author.toString() !== user.id) {
     const notification = await Notification.create({
-      notificationType: NOTIFICATION_TYPE.LIKE_POST,
+      notificationType: NOTIFICATION_TYPE.LIKE_COMMENT,
       sender: user.id,
-      receiver: post.author,
+      receiver: comment.author,
       notificationData: {
         postId: id,
         image: formatCloudinaryUrl(post.image, { mode: CLOUDINARY_MODE.THUMB, width: 100, height: 100 }),
@@ -80,7 +87,7 @@ export const likePost = async (req: Request, res: Response): Promise<Response | 
       },
     } as NotificationProps);
 
-    await User.findByIdAndUpdate(post.author, {
+    await User.findByIdAndUpdate(comment.author, {
       $push: { notifications: notification.id },
     });
 
