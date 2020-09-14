@@ -55,12 +55,10 @@ export const likeComment = async (req: Request, res: Response): Promise<Response
    */
 
   if (comment.likes.includes(user.id)) {
-    const index = comment.likes.indexOf(user.id);
-
-    comment.likes.splice(index, 1);
-    comment.likeCount = comment.likeCount - 1;
-
-    await comment.save();
+    await Comment.findByIdAndUpdate(comment.id, {
+      $pull: { likes: user.id },
+      $inc: { likeCount: -1 },
+    });
 
     return res.send({ isLiked: false });
   }
@@ -70,10 +68,10 @@ export const likeComment = async (req: Request, res: Response): Promise<Response
    * and send isLiked as true to client
    */
 
-  comment.likes.push(user.id);
-  comment.likeCount = comment.likeCount + 1;
-
-  await comment.save();
+  await Comment.findByIdAndUpdate(comment.id, {
+    $push: { likes: user.id },
+    $inc: { likeCount: 1 },
+  });
 
   if (comment.author.toString() !== user.id) {
     const notification = await Notification.create({
