@@ -6,6 +6,8 @@ export * from './get-me';
 
 export * from './get-user';
 
+export * from './get-suggested-users';
+
 export * from './get-followers';
 
 export * from './get-following';

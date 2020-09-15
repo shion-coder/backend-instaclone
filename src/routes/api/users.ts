@@ -6,6 +6,7 @@ import {
   resendEmail,
   getMe,
   getUser,
+  getSuggestedUser,
   getFollowers,
   getFollowing,
   getPosts,
@@ -45,6 +46,14 @@ usersRouter.route('/email/resend').post(jwtAuth, resendEmail);
  */
 
 usersRouter.route('/me').get(jwtAuth, getMe);
+
+/**
+ * @route   GET /api/users/suggested
+ * @desc    Get suggested users
+ * @access  Private
+ */
+
+usersRouter.route('/suggested').get(jwtAuth, getSuggestedUser);
 
 /**
  * @route   GET /api/users/:username
