@@ -14,6 +14,7 @@ import {
   updateAvatar,
   updateProfile,
   updatePassword,
+  searchUsername,
   follow,
 } from '@controllers/users';
 
@@ -124,3 +125,11 @@ usersRouter.route('/password').put(jwtAuth, updatePassword);
  */
 
 usersRouter.route('/:username/follow').post(jwtAuth, follow);
+
+/**
+ * @route   GET /api/users/:username/:offset/search
+ * @desc    Search username
+ * @access  Private
+ */
+
+usersRouter.route('/:username/:offset/search').get(jwtAuth, searchUsername);

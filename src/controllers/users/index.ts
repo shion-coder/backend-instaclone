@@ -23,3 +23,5 @@ export * from './update-profile';
 export * from './update-password';
 
 export * from './follow';
+
+export * from './search-username';
