@@ -4,6 +4,7 @@ import { jwtAuth, uploadSingle } from '@middleware';
 import {
   createPost,
   deletePost,
+  getPostsFeed,
   getSuggestedPosts,
   getPost,
   likePost,
@@ -17,6 +18,14 @@ import {
 /* -------------------------------------------------------------------------- */
 
 export const postRouter = Router();
+
+/**
+ * @route   GET /api/post/feed/:offset
+ * @desc    Get posts feed
+ * @access  Private
+ */
+
+postRouter.route('/feed/:offset').get(jwtAuth, getPostsFeed);
 
 /**
  * @route   GET /api/post/suggested/:offset

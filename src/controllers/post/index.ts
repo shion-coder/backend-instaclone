@@ -1,3 +1,5 @@
+export * from './get-posts-feed';
+
 export * from './get-suggested-posts';
 
 export * from './get-post';

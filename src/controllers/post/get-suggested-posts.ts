@@ -15,7 +15,7 @@ export const getSuggestedPosts = async (req: Request, res: Response): Promise<Re
   }
 
   /**
-   * Limit number of notifications send to client each request
+   * Limit number of suggested posts send to client each request
    */
 
   const limit = 9;
