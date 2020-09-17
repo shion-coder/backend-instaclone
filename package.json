@@ -6,7 +6,7 @@
   "license": "ISC",
   "scripts": {
     "build": "rimraf build && tsc",
-    "start": "node src/index.js",
+    "start": "node src/index.ts",
     "start:dev": "ts-node -r dotenv/config -r tsconfig-paths/register -r  src/index.ts",
     "dev": "nodemon",
     "lint": "eslint . --ext .ts",
