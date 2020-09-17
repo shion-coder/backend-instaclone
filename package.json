@@ -7,7 +7,7 @@
   "scripts": {
     "build-ts": "tsc",
     "postinstall": "npm run build-ts",
-    "start": "node -r dotenv/config -r ts-node/register/transpile-only -r tsconfig-paths/register build/index.js",
+    "start": "node -r ts-node/register/transpile-only -r tsconfig-paths/register build/index.js",
     "start:dev": "ts-node -r dotenv/config -r tsconfig-paths/register -r  src/index.ts",
     "dev": "nodemon",
     "lint": "eslint . --ext .ts"
