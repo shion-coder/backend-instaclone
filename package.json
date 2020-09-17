@@ -5,12 +5,12 @@
   "private": true,
   "license": "ISC",
   "scripts": {
-    "build-ts": "tsc",
-    "postinstall": "npm run build-ts",
-    "start": "ts-node -r tsconfig-paths/register build/index.js",
+    "build": "rimraf build && tsc",
+    "start": "node src/index.js",
     "start:dev": "ts-node -r dotenv/config -r tsconfig-paths/register -r  src/index.ts",
     "dev": "nodemon",
-    "lint": "eslint . --ext .ts"
+    "lint": "eslint . --ext .ts",
+    "postinstall": "tsc"
   },
   "husky": {
     "hooks": {
