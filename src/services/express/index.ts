@@ -47,6 +47,8 @@ app.get(APP_VAlUES.ENV) === ENVIRONMENT.DEVELOPMENT && app.use(request);
 
 app.use('/api', apiRouter);
 
+app.use('/', (_req, res) => res.send('...'));
+
 /**
  * Error handling
  */
