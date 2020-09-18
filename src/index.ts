@@ -1,3 +1,9 @@
+/**
+ * Path alias for build to deploy
+ */
+
+import 'module-alias/register';
+
 import { createServer } from 'http';
 import socketIo from 'socket.io';
 

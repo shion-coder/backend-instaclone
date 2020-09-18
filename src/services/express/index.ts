@@ -10,7 +10,7 @@ import 'express-async-errors';
 import { APP_VAlUES, ENVIRONMENT } from '@types';
 import { SESSION_SECRET, CLIENT_ORIGIN } from '@config';
 import { error } from '@middleware';
-import { apiRouter } from '@routes/api';
+import { apiRouter } from '@api';
 import { request } from '@logger';
 
 /* -------------------------------------------------------------------------- */
@@ -47,7 +47,7 @@ app.get(APP_VAlUES.ENV) === ENVIRONMENT.DEVELOPMENT && app.use(request);
 
 app.use('/api', apiRouter);
 
-app.use('/', (_req, res) => res.send('...'));
+app.use('/', (_req, res) => res.send());
 
 /**
  * Error handling

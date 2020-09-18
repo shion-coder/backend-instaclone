@@ -7,7 +7,7 @@
   "scripts": {
     "build": "rimraf build && tsc",
     "start": "node build/index.js",
-    "start:dev": "ts-node -r dotenv/config -r tsconfig-paths/register -r  src/index.ts",
+    "start:dev": "ts-node -r dotenv/config -r tsconfig-paths/register -r index.ts",
     "dev": "nodemon",
     "lint": "eslint . --ext .ts",
     "postinstall": "tsc"
@@ -55,6 +55,7 @@
     "typescript": "^3.9.7"
   },
   "dependencies": {
+    "@types/module-alias": "^2.0.0",
     "bcryptjs": "^2.4.3",
     "cloudinary": "^1.22.0",
     "compression": "^1.7.4",
@@ -66,6 +67,7 @@
     "helmet": "^3.23.3",
     "is-empty": "^1.2.0",
     "jsonwebtoken": "^8.5.1",
+    "module-alias": "^2.2.2",
     "mongoose": "^5.9.25",
     "multer": "^1.4.2",
     "multer-storage-cloudinary": "^4.0.0",
@@ -78,5 +80,26 @@
     "validator": "^13.1.1",
     "winston": "^3.3.3",
     "winston-daily-rotate-file": "^4.5.0"
+  },
+  "_moduleAliases": {
+    "@types": "build/types",
+    "@config": "build/config",
+    "@middleware": "build/middleware",
+    "@model": "build/model",
+    "@api": "build/routes/api",
+    "@controllers/auth": "build/controllers/auth",
+    "@controllers/notification": "build/controllers/notification",
+    "@controllers/post": "build/controllers/post",
+    "@controllers/users": "build/controllers/users",
+    "@database": "build/services/database",
+    "@express": "build/services/express",
+    "@logger": "build/services/logger",
+    "@socket": "build/services/socket",
+    "@passport": "build/services/passport",
+    "@email": "build/services/email",
+    "@multer": "build/services/multer",
+    "@utils": "build/utils",
+    "@messages": "build/utils/messages",
+    "@validation": "build/utils/validation"
   }
 }
