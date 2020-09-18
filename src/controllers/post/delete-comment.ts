@@ -37,9 +37,5 @@ export const deleteComment = async (req: Request, res: Response): Promise<Respon
     $inc: { commentCount: -1 },
   });
 
-  /**
-   * Send empty response with status 204 ( No Content )
-   */
-
-  return res.status(204).send();
+  return res.send({ id });
 };
