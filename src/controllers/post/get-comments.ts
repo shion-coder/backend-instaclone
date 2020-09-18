@@ -29,7 +29,7 @@ export const getComments = async (req: Request, res: Response): Promise<Response
     .populate({
       path: POST_PATH.COMMENTS,
       select: selectCommentInfo,
-      options: { skip: Number(offset), limit },
+      options: { skip: Number(offset), limit, sort: { date: -1 } },
       populate: {
         path: COMMENT_PATH.AUTHOR,
         select: selectCommentAuthorInfo,
@@ -42,7 +42,7 @@ export const getComments = async (req: Request, res: Response): Promise<Response
   }
 
   /**
-   * Push isMine to each comment in comments
+   * Push isMine and isLiked to each comment in comments
    */
 
   const comments = post.comments.map((comment: CommentProps) => {

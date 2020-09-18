@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 
-import { Post, POST_PATH } from '@model';
-import { selectPostAuthorInfo, selectPostInfo } from '@utils';
+import { Post, POST_PATH, CommentProps, COMMENT_PATH } from '@model';
+import { selectPostAuthorInfo, selectPostInfo, selectCommentInfo, selectCommentAuthorInfo } from '@utils';
 import { dataMessage } from '@messages';
 
 /* -------------------------------------------------------------------------- */
@@ -28,11 +28,31 @@ export const getPostsFeed = async (req: Request, res: Response): Promise<Respons
     .sort({ date: -1 })
     .select(selectPostInfo)
     .populate({ path: POST_PATH.AUTHOR, select: selectPostAuthorInfo })
+    .populate({
+      path: POST_PATH.COMMENTS,
+      select: selectCommentInfo,
+      options: { limit: 2, sort: { date: -1 } },
+      populate: {
+        path: COMMENT_PATH.AUTHOR,
+        select: selectCommentAuthorInfo,
+      },
+    })
     .skip(Number(offset))
     .limit(limit)
     .lean();
 
   const newPosts = posts.map((post) => {
+    /**
+     * Push isMine and isLiked to each comment in comments
+     */
+
+    const comments = post.comments.map((comment: CommentProps) => {
+      const isMine = comment.author._id.toString() === user.id;
+      const isLiked = comment.likes.map((like) => like.toString()).includes(user.id);
+
+      return { ...comment, isMine, isLiked };
+    });
+
     /**
      * Check current user is author of this post or not
      */
@@ -51,7 +71,7 @@ export const getPostsFeed = async (req: Request, res: Response): Promise<Respons
 
     const isSaved = user.saved.map((save) => save.toString()).includes(post._id.toString());
 
-    return { post, isMine, isLiked, isSaved };
+    return { post: { ...post, comments }, isMine, isLiked, isSaved };
   });
 
   /**

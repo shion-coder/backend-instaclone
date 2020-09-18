@@ -88,7 +88,7 @@ export const createComment = async (req: Request, res: Response): Promise<Respon
     .populate({ path: COMMENT_PATH.AUTHOR, select: selectCommentAuthorInfo })
     .lean();
 
-  res.send({ comment: commentResult });
+  res.send({ comment: { ...commentResult, isMine: true, isLiked: false } });
 
   /**
    * If user not is author of this post then create new notification and send notification through socket
