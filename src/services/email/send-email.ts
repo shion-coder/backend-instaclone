@@ -1,6 +1,7 @@
 import nodemailer from 'nodemailer';
 
 import { MAIL_USER, MAIL_PASS } from '@config';
+import { logger } from '@logger';
 import { errorMessage } from '@messages';
 
 /* -------------------------------------------------------------------------- */
@@ -32,10 +33,10 @@ export const sendEmail = async (to: string, content: Record<string, unknown>): P
   const email = Object.assign({}, content, contacts);
 
   try {
-    await transporter.sendMail(email);
+    const info = await transporter.sendMail(email);
 
-    // logger.info(`Message sent: ${info.messageId}`);
-    // logger.info(`Preview URL: ${nodemailer.getTestMessageUrl(info)}`);
+    logger.info(`Message sent: ${info.messageId}`);
+    logger.info(`Preview URL: ${nodemailer.getTestMessageUrl(info)}`);
   } catch {
     throw new Error(errorMessage.sendingEmail);
   }
