@@ -16,7 +16,7 @@ export const resendEmail = async (req: Request, res: Response): Promise<Response
    * Send confirmation email to user if email still not yet confirmed and send message back to client base on confirm state
    */
 
-  if (user && user.confirmed) {
+  if (user && !user.confirmed) {
     await sendEmail(user.email, templates.confirm(user.id));
 
     return res.send({ message: actionMessage.email.resend });
