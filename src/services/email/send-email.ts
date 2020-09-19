@@ -25,12 +25,15 @@ export const sendEmail = async (to: string, content: Record<string, unknown>): P
     from: MAIL_USER,
     to,
   };
+  console.log(MAIL_USER);
+  console.log(MAIL_PASS);
 
   /**
    * Combining the content and contacts into a single object that can be passed to Nodemailer.
    */
 
   const email = Object.assign({}, content, contacts);
+  console.log(email);
 
   try {
     const info = await transporter.sendMail(email);
